@@ -1,0 +1,134 @@
+# 🕉️ GitaLingo: Duolingo-style Bhagavad Gita Quiz Engine & Database
+
+A production-grade, pedagogically structured quiz database and learning engine designed to power a Duolingo-like interactive experience for the Bhagavad Gita.
+
+---
+
+## 🌟 Why This Architecture?
+
+Duolingo works because it breaks language learning into a progressive cognitive ramp rather than random trivia. This system divides each Shloka into **10 to 20 structured questions across 4 distinct learning levels**:
+
+```mermaid
+graph TD
+    L1[Level 1: Vocabulary & Roots] --> L2[Level 2: Shloka Flow & Recitation]
+    L2 --> L3[Level 3: Context & Translation]
+    L3 --> L4[Level 4: Philosophy & Modern Dilemmas]
+```
+
+### 1. Level 1: Vocabulary & Word Mastery (4–5 Questions)
+- **Match Pairs (`match_pairs`)**: Interactive tile matching connecting Sanskrit root words with English meanings.
+- **Direct Vocabulary MCQ (`mcq_vocab`)**: Identify the meaning of key Sanskrit words from the shloka.
+- **Reverse Vocabulary MCQ (`mcq_reverse_vocab`)**: Given an English meaning, pick the corresponding Sanskrit term.
+- **Transliteration Match (`transliteration_match`)**: Connect Devanagari script with Roman IAST transliteration.
+
+### 2. Level 2: Shloka Structure & Sacred Recitation (3–4 Questions)
+- **Anushtubh Cloze Test - Line 1 (`fill_blank`)**: Fill in the missing Sanskrit word from the first quarter/half.
+- **Anushtubh Cloze Test - Line 2 (`fill_blank`)**: Fill in the rhyming or concluding word of the verse.
+- **Duolingo Word Jumble (`word_order`)**: Tap Sanskrit words in their sacred order to reconstruct the shloka.
+
+### 3. Level 3: Context & Meaning (3–4 Questions)
+- **Speaker & Addressee (`speaker_context`)**: Who is speaking? (Dhritarashtra, Sanjaya, Arjuna, Sri Krishna) To whom? What is their emotional state?
+- **Verse Translation Choice (`translation_mcq`)**: Distinguish authentic translations (Swami Sivananda, Gambhirananda) from plausible misconceptions.
+- **True / False Comprehension (`true_false`)**: Verify core situational facts of the dialogue.
+
+### 4. Level 4: Philosophy & Real-Life Dilemmas (4–5 Questions)
+- **Deep Philosophical Insight (`philosophical_insight`)**: Commentary-level understanding (e.g., why Dhritarashtra separated *māmakāḥ* "my sons" from *pāṇḍavāḥ* "Pandu's sons").
+- **Inner Battlefield Allegory (`metaphor`)**: Kurukshetra as the battlefield of the human mind and senses.
+- **Modern Workplace & Ethical Scenarios (`life_scenario`)**: Duolingo story-style scenario where a student or leader applies the shloka's wisdom to a modern moral dilemma.
+- **Actionable Takeaways (`takeaway`)**: The core mental habit or spiritual virtue to cultivate today.
+
+---
+
+## 📂 Project Structure
+
+```
+gita_duolingo/
+├── gita_duolingo.db            # SQLite database file (plug-and-play)
+├── schema.py                   # Relational database schema definition
+├── generator.py                # Core quiz synthesis & RapidAPI parser
+├── batch_runner.py             # Batch generator with rate limiting & caching
+├── api.py                      # FastAPI REST server with auto Swagger docs (/docs)
+├── export_db.py                # Exporter for SQL and JSON bundles
+├── inspect_db.py               # Quick DB verification utility
+├── cache/                      # Local JSON cache for Gita API verses
+├── exports/
+│   ├── gita_duolingo.sql       # Universal SQL dump (PostgreSQL / Supabase / Neon)
+│   ├── chapters.json           # All 18 Gita chapters metadata
+│   ├── verses.json             # Verses with Devanagari, transliteration & translations
+│   ├── questions.json          # All generated quiz questions
+│   └── gita_duolingo_bundle.json # Grouped by verse for offline mobile apps
+└── web/
+    └── index.html              # Modern, interactive Duolingo web interface
+```
+
+---
+
+## 🚀 Quick Start Guide
+
+### 1. View & Play the Duolingo Web App
+Start the local server:
+```bash
+python gita_duolingo/api.py
+```
+Open your browser at:
+- **Interactive Duolingo UI**: `http://127.0.0.1:8000/`
+- **Interactive REST API Docs (Swagger)**: `http://127.0.0.1:8000/docs`
+
+### 2. Generate More Verses & Chapters
+To generate quiz questions for any chapter:
+```bash
+# Generate Chapter 1, verses 1 to 47:
+python gita_duolingo/batch_runner.py --chapter 1 --start 1 --end 47
+
+# Generate Chapter 2 (Transcendental Knowledge), verses 1 to 20:
+python gita_duolingo/batch_runner.py --chapter 2 --start 1 --end 20
+```
+
+### 3. Export to Mobile App or PostgreSQL / Supabase
+Run:
+```bash
+python gita_duolingo/export_db.py
+```
+This writes:
+- `exports/gita_duolingo.sql` -> Paste into Supabase SQL Editor or `psql`
+- `exports/gita_duolingo_bundle.json` -> Bundle directly in Flutter `assets/` or React Native
+
+---
+
+## 🗄️ Database Schema Reference
+
+### `chapters` Table
+| Column | Type | Description |
+|---|---|---|
+| `chapter_number` | INTEGER PRIMARY KEY | 1 to 18 |
+| `name_sanskrit` | TEXT | Sanskrit name (e.g., अर्जुनविषादयोग) |
+| `name_transliterated` | TEXT | IAST transliteration |
+| `name_meaning` | TEXT | English meaning |
+| `verses_count` | INTEGER | Number of verses |
+
+### `verses` Table
+| Column | Type | Description |
+|---|---|---|
+| `verse_key` | TEXT PRIMARY KEY | e.g. "BG1.1" |
+| `chapter_number` | INTEGER | Chapter number |
+| `verse_number` | INTEGER | Verse number |
+| `text_devanagari` | TEXT | Original verse in Devanagari script |
+| `transliteration` | TEXT | Roman transliteration |
+| `translation_en` | TEXT | Preferred English translation |
+| `speaker` | TEXT | Speaker (Dhritarashtra, Arjuna, Krishna, Sanjaya) |
+
+### `questions` Table (Quiz Core)
+| Column | Type | Description |
+|---|---|---|
+| `id` | INTEGER PRIMARY KEY | Auto-incrementing ID |
+| `verse_key` | TEXT | e.g. "BG1.1" |
+| `lesson_level` | INTEGER | 1: Vocab, 2: Structure, 3: Context, 4: Life Application |
+| `question_order` | INTEGER | 1 to 20 |
+| `question_type` | TEXT | `match_pairs`, `mcq_vocab`, `fill_blank`, `word_order`, `life_scenario` |
+| `instruction` | TEXT | UI instruction banner |
+| `prompt` | TEXT | The question prompt |
+| `prompt_sanskrit` | TEXT | Optional Sanskrit highlight snippet |
+| `options_json` | TEXT | JSON array of choices or pair sets |
+| `correct_answer_json` | TEXT | Correct choice, answer string, or matching dictionary |
+| `explanation` | TEXT | Pedagogical and spiritual explanation |
+| `xp_points` | INTEGER | 10 to 20 XP reward |

@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitaLingo — Master the Bhagavad Gita</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #58cc02;
+      --primary-dark: #46a302;
+      --primary-light: #d7ffb8;
+      --secondary: #ff9600;
+      --secondary-dark: #e08400;
+      --accent-saffron: #f59e0b;
+      --accent-blue: #1cb0f6;
+      --accent-blue-dark: #1899d6;
+      --danger: #ff4b4b;
+      --danger-dark: #ea2b2b;
+      --danger-light: #ffdfe0;
+      --bg: #131722;
+      --surface: #1e2433;
+      --surface-card: #283044;
+      --border: #3b455d;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --text-dark: #0f172a;
+      --font-ui: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-fun: 'Fredoka', cursive, sans-serif;
+      --font-sanskrit: 'Noto Serif Devanagari', serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Nav Bar (Duolingo Style) */
+    header {
+      background: var(--surface);
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 0.75rem 1.5rem;
+    }
+
+    .nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-fun);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-family: var(--font-ui);
+    }
+
+    .stats-pill-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+    }
+
+    .stat-streak { color: #f97316; }
+    .stat-gems { color: #38bdf8; }
+    .stat-hearts { color: #f43f5e; }
+    .stat-xp { color: #eab308; }
+
+    /* Layout Main */
+    main {
+      flex: 1;
+      max-width: 840px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1rem 6rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Verse Picker Bar */
+    .selector-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      padding: 1rem 1.25rem;
+      border-radius: 18px;
+      margin-bottom: 2rem;
+    }
+
+    .select-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select {
+      background: var(--surface-card);
+      color: #fff;
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.95rem;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    select:focus {
+      border-color: var(--primary);
+    }
+
+    /* Shloka Card Preview */
+    .shloka-banner {
+      background: linear-gradient(145deg, #1e2433 0%, #283044 100%);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2rem;
+      position: relative;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .shloka-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .shloka-tag {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .shloka-speaker {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .sanskrit-text {
+      font-family: var(--font-sanskrit);
+      font-size: 1.5rem;
+      line-height: 1.8;
+      color: #fef08a;
+      white-space: pre-line;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+
+    .transliteration {
+      font-style: italic;
+      color: #94a3b8;
+      text-align: center;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .translation {
+      border-top: 1px dashed var(--border);
+      padding-top: 0.75rem;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    /* Lesson Level Tabs */
+    .level-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .level-tab {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-bottom-width: 4px;
+      border-radius: 14px;
+      padding: 0.85rem 0.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .level-tab:hover {
+      background: var(--surface-card);
+    }
+
+    .level-tab.active {
+      border-color: var(--primary);
+      background: rgba(88, 204, 2, 0.1);
+    }
+
+    .level-tab .tab-icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .level-tab .tab-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    /* Progress bar */
+    .quiz-progress-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 14px;
+      background: #2b3348;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .question-counter {
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Question Card */
+    .quiz-box {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .quiz-instruction {
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+    }
+
+    .quiz-prompt {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #fff;
+    }
+
+    .prompt-sanskrit-highlight {
+      font-family: var(--font-sanskrit);
+      font-size: 1.6rem;
+      color: #fde047;
+      background: rgba(254, 240, 138, 0.1);
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      border-left: 4px solid #fde047;
+      margin-top: 0.5rem;
+    }
+
+    /* MCQ Grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+
+    .option-btn {
+      background: var(--surface-card);
+      border: 2px solid var(--border);
+      border-bottom: 4px solid var(--border);
+      color: #fff;
+      padding: 1.1rem 1.25rem;
+      border-radius: 16px;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.1s ease;
+    }
+
+    .option-btn:hover {
+      background: #333d56;
+      border-color: #526084;
+    }
+
+    .option-btn:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    .option-btn.selected {
+      border-color: var(--accent-blue);
+      border-bottom-color: var(--accent-blue-dark);
+      background: rgba(28, 176, 246, 0.15);
+      color: #e0f2fe;
+    }
+
+    .option-key-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text-muted);
+    }
+
+    /* Match Pairs View */
+    .pairs-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .pair-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .pair-tile {
+      background: var(--surface-card);
+      border: 2px solid var(--border);
+      border-bottom: 4px solid var(--border);
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+
+    .pair-tile.sanskrit {
+      font-family: var(--font-sanskrit);
+      font-size: 1.15rem;
+      color: #fef08a;
+    }
+
+    .pair-tile.selected {
+      border-color: var(--accent-blue);
+      background: rgba(28, 176, 246, 0.2);
+    }
+
+    .pair-tile.matched {
+      border-color: var(--primary);
+      background: rgba(88, 204, 2, 0.15);
+      color: #86efac;
+      cursor: default;
+      opacity: 0.6;
+    }
+
+    /* Word Order Jumble */
+    .jumble-slots {
+      min-height: 60px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      padding: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .word-chip {
+      background: var(--surface-card);
+      border: 2px solid var(--border);
+      border-bottom: 4px solid var(--border);
+      padding: 0.6rem 1.1rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      font-family: var(--font-sanskrit);
+      cursor: pointer;
+      color: #fef08a;
+      transition: transform 0.1s ease;
+    }
+
+    .word-chip:hover {
+      background: #333d56;
+    }
+
+    .word-chip:active {
+      transform: translateY(2px);
+    }
+
+    /* Duolingo Sticky Footer */
+    footer.bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 2px solid var(--border);
+      padding: 1.25rem 2rem;
+      z-index: 100;
+      transition: background 0.2s ease;
+    }
+
+    .bottom-bar.correct {
+      background: #14532d;
+      border-top-color: #22c55e;
+    }
+
+    .bottom-bar.incorrect {
+      background: #7f1d1d;
+      border-top-color: #ef4444;
+    }
+
+    .footer-content {
+      max-width: 840px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .feedback-message {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .feedback-title {
+      font-family: var(--font-fun);
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .feedback-explanation {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      max-width: 580px;
+      color: #e2e8f0;
+    }
+
+    .btn-action {
+      background: var(--primary);
+      border: none;
+      border-bottom: 4px solid var(--primary-dark);
+      color: #fff;
+      font-family: var(--font-fun);
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 0.85rem 2.25rem;
+      border-radius: 16px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.1s ease;
+      white-space: nowrap;
+    }
+
+    .btn-action:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-action:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    .btn-action:disabled {
+      background: #475569;
+      border-bottom-color: #334155;
+      color: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    /* Modal for Exporting DB */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      max-width: 560px;
+      width: 100%;
+      padding: 2rem;
+    }
+
+    .modal-card h2 {
+      font-family: var(--font-fun);
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+
+    .db-file-box {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: #38bdf8;
+      word-break: break-all;
+    }
+
+    @media (max-width: 640px) {
+      .level-tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .pairs-container {
+        grid-template-columns: 1fr;
+      }
+      .footer-content {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-action {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Nav Bar -->
+  <header>
+    <div class="nav-container">
+      <div class="brand">
+        <span>🕉️ GitaLingo</span>
+        <span class="brand-badge">Duolingo for Gita</span>
+      </div>
+      <div class="stats-pill-group">
+        <div class="stat-pill stat-streak" title="Daily Streak">🔥 <span id="valStreak">3</span></div>
+        <div class="stat-pill stat-gems" title="Spiritual Gems">🪷 <span id="valGems">450</span></div>
+        <div class="stat-pill stat-hearts" title="Hearts / Lives">❤️ <span id="valHearts">5</span></div>
+        <div class="stat-pill stat-xp" title="Total XP">⚡ <span id="valXP">240</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+
+    <!-- Selector Bar -->
+    <div class="selector-bar">
+      <div class="select-group">
+        <label for="chapterSelect">Chapter</label>
+        <select id="chapterSelect" onchange="onChapterChange()">
+          <!-- Populated by JS -->
+        </select>
+      </div>
+      <div class="select-group">
+        <label for="verseSelect">Shloka</label>
+        <select id="verseSelect" onchange="onVerseChange()">
+          <!-- Populated by JS -->
+        </select>
+      </div>
+      <button class="option-btn" style="padding: 0.6rem 1rem; font-size: 0.85rem;" onclick="openExportModal()">
+        💾 Access Database
+      </button>
+    </div>
+
+    <!-- Shloka Banner -->
+    <div class="shloka-banner" id="shlokaBanner">
+      <div class="shloka-header">
+        <span class="shloka-tag" id="verseTag">BG 1.1</span>
+        <span class="shloka-speaker" id="verseSpeaker">Speaker: King Dhritarashtra</span>
+      </div>
+      <div class="sanskrit-text" id="verseSanskrit">धृतराष्ट्र उवाच
+धर्मक्षेत्रे कुरुक्षेत्रे समवेता युयुत्सवः।
+मामकाः पाण्डवाश्चैव किमकुर्वत सञ्जय।।1.1।।</div>
+      <div class="transliteration" id="verseTranslit">dhṛitarāśhtra uvācha
+dharma-kṣhetre kuru-kṣhetre samavetā yuyutsavaḥ
+māmakāḥ pāṇḍavāśhchaiva kimakurvata sañjaya</div>
+      <div class="translation" id="verseTranslation">"Dhritarashtra said: O Sanjaya, what did my people and the Pandavas do, gathered together on the holy field of Kurukshetra, eager for battle?"</div>
+    </div>
+
+    <!-- Duolingo 4-Level Tabs -->
+    <div class="level-tabs">
+      <div class="level-tab active" onclick="switchLevel(1)">
+        <div class="tab-icon">🌱</div>
+        <div class="tab-title">1. Vocab & Roots</div>
+      </div>
+      <div class="level-tab" onclick="switchLevel(2)">
+        <div class="tab-icon">📜</div>
+        <div class="tab-title">2. Shloka Flow</div>
+      </div>
+      <div class="level-tab" onclick="switchLevel(3)">
+        <div class="tab-icon">🎯</div>
+        <div class="tab-title">3. Context & Who</div>
+      </div>
+      <div class="level-tab" onclick="switchLevel(4)">
+        <div class="tab-icon">🧘‍♂️</div>
+        <div class="tab-title">4. Life Dilemma</div>
+      </div>
+    </div>
+
+    <!-- Progress Track -->
+    <div class="quiz-progress-bar-container">
+      <div class="progress-track">
+        <div class="progress-fill" id="quizProgressBar"></div>
+      </div>
+      <div class="question-counter" id="quizCounter">1 / 13</div>
+    </div>
+
+    <!-- Question Box -->
+    <div class="quiz-box" id="quizBox">
+      <div class="quiz-instruction" id="qInstruction">Select the correct meaning</div>
+      <div class="quiz-prompt" id="qPrompt">What does the Sanskrit word mean?</div>
+      <div class="prompt-sanskrit-highlight" id="qSanskrit" style="display: none;"></div>
+
+      <!-- Dynamic Question Interaction Container -->
+      <div id="qInteractive">
+        <!-- Rendered based on type: options-grid, pairs-container, or word-bank -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Sticky Feedback & Action Bottom Bar -->
+  <footer class="bottom-bar" id="bottomBar">
+    <div class="footer-content">
+      <div class="feedback-message" id="feedbackArea" style="display: none;">
+        <div class="feedback-title" id="feedbackTitle">Brilliant! 🎉</div>
+        <div class="feedback-explanation" id="feedbackExplanation">Explanation goes here...</div>
+      </div>
+      <button class="btn-action" id="btnAction" onclick="handleActionButton()" disabled>Check</button>
+    </div>
+  </footer>
+
+  <!-- Modal for DB Export / Access -->
+  <div class="modal-overlay" id="exportModal">
+    <div class="modal-card">
+      <h2>💾 Gita Duolingo Database</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+        The complete quiz dataset is packaged in a high-speed SQLite database with ready-to-use exports.
+      </p>
+
+      <div class="db-file-box">
+        SQLite File: c:\Users\Pratham\VS_Dump\gita_duolingo\gita_duolingo.db<br>
+        JSON Exports: c:\Users\Pratham\VS_Dump\gita_duolingo\exports\
+      </div>
+
+      <p style="font-size: 0.9rem; line-height: 1.6; color: #cbd5e1; margin-bottom: 1.5rem;">
+        ✅ 10–20 questions per shloka across 4 pedagogical levels<br>
+        ✅ Word-by-word Sanskrit root breakdown for Duolingo match pairs<br>
+        ✅ Shloka cloze tests (fill in the blank) & tap-to-order word banks<br>
+        ✅ Real-world modern ethical scenarios & deep philosophical commentaries
+      </p>
+
+      <button class="btn-action" style="width: 100%;" onclick="closeExportModal()">Got it!</button>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let currentChapter = 1;
+    let currentVerseKey = "BG1.1";
+    let currentLevel = 1;
+    let questions = [];
+    let currentQIndex = 0;
+    let selectedAnswer = null;
+    let pairMatches = {}; // for match_pairs
+    let selectedLeftWord = null;
+    let jumbleOrder = []; // for word_order
+    let isAnswerChecked = false;
+    let userStats = { streak: 3, gems: 450, hearts: 5, xp: 240 };
+
+    // Initialize
+    window.addEventListener("DOMContentLoaded", async () => {
+      await loadChapters();
+      await loadVerseData("BG1.1");
+    });
+
+    async function loadChapters() {
+      try {
+        const res = await fetch("/api/chapters");
+        const chapters = await res.json();
+        const sel = document.getElementById("chapterSelect");
+        sel.innerHTML = "";
+        chapters.forEach(ch => {
+          const opt = document.createElement("option");
+          opt.value = ch.chapter_number;
+          opt.textContent = `Ch ${ch.chapter_number}: ${ch.name_transliterated}`;
+          sel.appendChild(opt);
+        });
+        await populateVersesDropdown(1);
+      } catch (err) {
+        console.error("Failed to load chapters", err);
+      }
+    }
+
+    async function populateVersesDropdown(chNum) {
+      try {
+        const res = await fetch(`/api/chapters/${chNum}/verses`);
+        const verses = await res.json();
+        const sel = document.getElementById("verseSelect");
+        sel.innerHTML = "";
+        verses.forEach(v => {
+          const opt = document.createElement("option");
+          opt.value = v.verse_key;
+          opt.textContent = `Verse ${v.verse_number}`;
+          sel.appendChild(opt);
+        });
+      } catch (err) {
+        console.error("Failed to populate verses", err);
+      }
+    }
+
+    async function onChapterChange() {
+      const chNum = parseInt(document.getElementById("chapterSelect").value);
+      currentChapter = chNum;
+      await populateVersesDropdown(chNum);
+      const firstVerseKey = document.getElementById("verseSelect").value;
+      if (firstVerseKey) {
+        await loadVerseData(firstVerseKey);
+      }
+    }
+
+    async function onVerseChange() {
+      const verseKey = document.getElementById("verseSelect").value;
+      await loadVerseData(verseKey);
+    }
+
+    async function loadVerseData(verseKey) {
+      currentVerseKey = verseKey;
+      try {
+        const res = await fetch(`/api/verses/${verseKey}`);
+        const v = await res.json();
+        
+        document.getElementById("verseTag").textContent = v.verse_key;
+        document.getElementById("verseSpeaker").textContent = `Speaker: ${v.speaker}`;
+        document.getElementById("verseSanskrit").textContent = v.text_devanagari;
+        document.getElementById("verseTranslit").textContent = v.transliteration;
+        document.getElementById("verseTranslation").textContent = `"${v.translation_en}"`;
+
+        // Load Quiz
+        await loadQuiz(verseKey);
+      } catch (err) {
+        console.error("Failed loading verse", err);
+      }
+    }
+
+    async function loadQuiz(verseKey) {
+      try {
+        const res = await fetch(`/api/verses/${verseKey}/quiz`);
+        const data = await res.json();
+        questions = data.questions || [];
+        currentQIndex = 0;
+        renderCurrentQuestion();
+      } catch (err) {
+        console.error("Failed loading quiz", err);
+      }
+    }
+
+    function switchLevel(lvl) {
+      currentLevel = lvl;
+      document.querySelectorAll(".level-tab").forEach((t, idx) => {
+        t.classList.toggle("active", idx + 1 === lvl);
+      });
+      // Filter or jump to first question of this level
+      const idx = questions.findIndex(q => q.lesson_level === lvl);
+      if (idx !== -1) {
+        currentQIndex = idx;
+        renderCurrentQuestion();
+      }
+    }
+
+    function renderCurrentQuestion() {
+      isAnswerChecked = false;
+      selectedAnswer = null;
+      pairMatches = {};
+      selectedLeftWord = null;
+      jumbleOrder = [];
+
+      // Reset bottom bar
+      const bottomBar = document.getElementById("bottomBar");
+      bottomBar.className = "bottom-bar";
+      document.getElementById("feedbackArea").style.display = "none";
+      const btnAction = document.getElementById("btnAction");
+      btnAction.disabled = true;
+      btnAction.textContent = "Check";
+
+      if (questions.length === 0) {
+        document.getElementById("qInstruction").textContent = "NO QUESTIONS FOUND";
+        document.getElementById("qPrompt").textContent = "Run generator to build questions for this verse.";
+        document.getElementById("qInteractive").innerHTML = "";
+        return;
+      }
+
+      const q = questions[currentQIndex];
+      // Progress
+      const pct = Math.round(((currentQIndex + 1) / questions.length) * 100);
+      document.getElementById("quizProgressBar").style.width = `${pct}%`;
+      document.getElementById("quizCounter").textContent = `${currentQIndex + 1} / ${questions.length}`;
+
+      // Highlight active tab
+      document.querySelectorAll(".level-tab").forEach((t, idx) => {
+        t.classList.toggle("active", idx + 1 === q.lesson_level);
+      });
+
+      document.getElementById("qInstruction").textContent = q.instruction;
+      document.getElementById("qPrompt").textContent = q.prompt;
+
+      const sanskritBox = document.getElementById("qSanskrit");
+      if (q.prompt_sanskrit) {
+        sanskritBox.style.display = "block";
+        sanskritBox.textContent = q.prompt_sanskrit;
+      } else {
+        sanskritBox.style.display = "none";
+      }
+
+      const interactive = document.getElementById("qInteractive");
+      interactive.innerHTML = "";
+
+      if (q.question_type === "match_pairs") {
+        renderMatchPairs(q, interactive);
+      } else if (q.question_type === "word_order") {
+        renderWordOrder(q, interactive);
+      } else {
+        renderMCQ(q, interactive);
+      }
+    }
+
+    function renderMCQ(q, container) {
+      const grid = document.createElement("div");
+      grid.className = "options-grid";
+      const opts = q.options;
+
+      opts.forEach((optText, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerHTML = `<span class="option-key-badge">${idx + 1}</span> <span>${optText}</span>`;
+        btn.onclick = () => {
+          if (isAnswerChecked) return;
+          grid.querySelectorAll(".option-btn").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          selectedAnswer = optText;
+          document.getElementById("btnAction").disabled = false;
+        };
+        grid.appendChild(btn);
+      });
+      container.appendChild(grid);
+    }
+
+    function renderMatchPairs(q, container) {
+      const pBox = document.createElement("div");
+      pBox.className = "pairs-container";
+      
+      const words = q.options.words;
+      const meanings = q.options.meanings;
+
+      const colLeft = document.createElement("div");
+      colLeft.className = "pair-col";
+      words.forEach(w => {
+        const t = document.createElement("div");
+        t.className = "pair-tile sanskrit";
+        t.textContent = w;
+        t.onclick = () => {
+          if (t.classList.contains("matched")) return;
+          colLeft.querySelectorAll(".pair-tile").forEach(e => e.classList.remove("selected"));
+          t.classList.add("selected");
+          selectedLeftWord = w;
+        };
+        colLeft.appendChild(t);
+      });
+
+      const colRight = document.createElement("div");
+      colRight.className = "pair-col";
+      meanings.forEach(m => {
+        const t = document.createElement("div");
+        t.className = "pair-tile";
+        t.textContent = m;
+        t.onclick = () => {
+          if (t.classList.contains("matched") || !selectedLeftWord) return;
+          pairMatches[selectedLeftWord] = m;
+          // visually mark pair
+          const leftEl = Array.from(colLeft.children).find(e => e.textContent === selectedLeftWord);
+          if (leftEl) {
+            leftEl.classList.remove("selected");
+            leftEl.classList.add("matched");
+          }
+          t.classList.add("matched");
+          selectedLeftWord = null;
+
+          if (Object.keys(pairMatches).length === words.length) {
+            selectedAnswer = pairMatches;
+            document.getElementById("btnAction").disabled = false;
+          }
+        };
+        colRight.appendChild(t);
+      });
+
+      pBox.appendChild(colLeft);
+      pBox.appendChild(colRight);
+      container.appendChild(pBox);
+    }
+
+    function renderWordOrder(q, container) {
+      const box = document.createElement("div");
+      box.style.display = "flex";
+      box.style.flexDirection = "column";
+      box.style.gap = "1rem";
+
+      const slots = document.createElement("div");
+      slots.className = "jumble-slots";
+
+      const bank = document.createElement("div");
+      bank.className = "word-bank";
+
+      q.options.forEach(token => {
+        const chip = document.createElement("div");
+        chip.className = "word-chip";
+        chip.textContent = token;
+        chip.onclick = () => {
+          if (chip.parentElement === bank) {
+            slots.appendChild(chip);
+            jumbleOrder.push(token);
+          } else {
+            bank.appendChild(chip);
+            jumbleOrder = jumbleOrder.filter(t => t !== token);
+          }
+          if (jumbleOrder.length === q.options.length) {
+            selectedAnswer = [...jumbleOrder];
+            document.getElementById("btnAction").disabled = false;
+          } else {
+            document.getElementById("btnAction").disabled = true;
+          }
+        };
+        bank.appendChild(chip);
+      });
+
+      box.appendChild(slots);
+      box.appendChild(bank);
+      container.appendChild(box);
+    }
+
+    async function handleActionButton() {
+      const btn = document.getElementById("btnAction");
+      if (!isAnswerChecked) {
+        // Validate Answer
+        const q = questions[currentQIndex];
+        const res = await fetch("/api/quiz/validate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question_id: q.id, user_answer: selectedAnswer })
+        });
+        const result = await res.json();
+        
+        isAnswerChecked = true;
+        const bottomBar = document.getElementById("bottomBar");
+        const feedbackArea = document.getElementById("feedbackArea");
+        const feedbackTitle = document.getElementById("feedbackTitle");
+        const feedbackExplanation = document.getElementById("feedbackExplanation");
+
+        feedbackArea.style.display = "flex";
+        feedbackExplanation.textContent = result.explanation;
+
+        if (result.is_correct) {
+          bottomBar.className = "bottom-bar correct";
+          feedbackTitle.textContent = `Brilliant! +${result.xp_earned} XP ⚡`;
+          userStats.xp += result.xp_earned;
+          document.getElementById("valXP").textContent = userStats.xp;
+        } else {
+          bottomBar.className = "bottom-bar incorrect";
+          feedbackTitle.textContent = "Take a breath & reflect 🧘";
+          userStats.hearts = Math.max(0, userStats.hearts - 1);
+          document.getElementById("valHearts").textContent = userStats.hearts;
+        }
+
+        btn.textContent = "Continue";
+      } else {
+        // Next Question
+        if (currentQIndex < questions.length - 1) {
+          currentQIndex++;
+          renderCurrentQuestion();
+        } else {
+          alert("🎉 Shloka Lesson Completed! You've mastered this verse.");
+          currentQIndex = 0;
+          renderCurrentQuestion();
+        }
+      }
+    }
+
+    function openExportModal() {
+      document.getElementById("exportModal").classList.add("open");
+    }
+
+    function closeExportModal() {
+      document.getElementById("exportModal").classList.remove("open");
+    }
+  </script>
+</body>
+</html>
