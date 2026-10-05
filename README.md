@@ -65,6 +65,22 @@ gita_duolingo/
 
 ## 🚀 Quick Start Guide
 
+### Thematic learning path for another application
+
+`data/curriculum.json` is a portable, app-ready course organized into 10 thematic sections, from **Arjuna's Grief** and **The Eternal Soul** to **Choice and Surrender**. Each section includes an introduction, chapter and verse references, learning objectives, and three questions with options, correct answers, explanations, and difficulty. The course is authored independently of the verse-by-verse question bank, so it can be imported by another app even while more verse data is being added.
+
+The API serves the same data at:
+
+- `GET /api/curriculum` — complete course and questions
+- `GET /api/sections` — ordered section metadata
+- `GET /api/sections/{section_id}` — one section and its questions
+
+Running `python export_db.py` also writes `exports/curriculum.json` for direct import. Questions use stable string IDs and a consistent `type`, `prompt`, `options`, `correct_answer`, `explanation`, `verse_reference`, and `difficulty` shape.
+
+### Fetching uncached verse data
+
+Set `RAPIDAPI_KEY` in the environment before fetching uncached verses. Do not commit API keys in source files.
+
 ### 1. View & Play the Duolingo Web App
 Start the local server:
 ```bash

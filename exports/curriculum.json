@@ -1,0 +1,688 @@
+{
+  "schema_version": "1.0.0",
+  "course_id": "bhagavad-gita-foundations",
+  "title": "Bhagavad Gita: A Thematic Learning Path",
+  "language": "en",
+  "description": "A lesson-based introduction to the Bhagavad Gita, organized by ideas and supported by chapter and verse references.",
+  "sections": [
+    {
+      "id": "arjunas-grief",
+      "order": 1,
+      "title": "Arjuna's Grief",
+      "subtitle": "A crisis becomes a question",
+      "description": "Meet Arjuna on the battlefield as concern for family, duty, and the consequences of violence overwhelm him. Notice how admitting confusion opens the way to learning.",
+      "chapter_numbers": [
+        1
+      ],
+      "verse_ranges": [
+        {
+          "start": "BG1.1",
+          "end": "BG1.47"
+        }
+      ],
+      "learning_objectives": [
+        "Recognize Arjuna's conflict",
+        "Explain why he asks Krishna for guidance",
+        "Distinguish grief from a considered resolution"
+      ],
+      "questions": [
+        {
+          "id": "arjunas-grief-q1",
+          "type": "multiple_choice",
+          "prompt": "What most directly causes Arjuna to hesitate before the battle?",
+          "options": [
+            "He sees teachers, relatives, and friends among those assembled",
+            "He has forgotten how to use his bow",
+            "He does not know where the battlefield is",
+            "He wants to become king immediately"
+          ],
+          "correct_answer": "He sees teachers, relatives, and friends among those assembled",
+          "explanation": "Arjuna's distress grows as he recognizes loved ones and respected elders on both sides.",
+          "verse_reference": "BG1.26-BG1.30",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "arjunas-grief-q2",
+          "type": "multiple_choice",
+          "prompt": "What does Arjuna do after explaining his doubts to Krishna?",
+          "options": [
+            "He asks Krishna to guide him",
+            "He declares himself the teacher",
+            "He leaves without speaking",
+            "He asks Sanjaya to decide"
+          ],
+          "correct_answer": "He asks Krishna to guide him",
+          "explanation": "His request for instruction marks the shift from argument toward a student seeking counsel.",
+          "verse_reference": "BG2.7",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "arjunas-grief-q3",
+          "type": "true_false",
+          "prompt": "Arjuna's first reaction is a calm, detached analysis of his duty.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "False",
+          "explanation": "The opening chapter depicts a deeply personal emotional crisis; reflective instruction follows.",
+          "verse_reference": "BG1.28-BG1.47",
+          "difficulty": "beginner"
+        }
+      ]
+    },
+    {
+      "id": "eternal-soul",
+      "order": 2,
+      "title": "The Eternal Soul",
+      "subtitle": "What changes, and what does not",
+      "description": "Explore Krishna's teaching that the embodied self is distinct from the changing body, and consider how this view reframes loss and change.",
+      "chapter_numbers": [
+        2
+      ],
+      "verse_ranges": [
+        {
+          "start": "BG2.11",
+          "end": "BG2.30"
+        }
+      ],
+      "learning_objectives": [
+        "Summarize the body and self distinction",
+        "Interpret the clothing metaphor",
+        "Connect impermanence with perspective"
+      ],
+      "questions": [
+        {
+          "id": "eternal-soul-q1",
+          "type": "multiple_choice",
+          "prompt": "In Krishna's teaching, what changes while the self is described as enduring?",
+          "options": [
+            "The body",
+            "The self's existence",
+            "The truth itself",
+            "Nothing changes"
+          ],
+          "correct_answer": "The body",
+          "explanation": "Krishna compares bodily change to changing garments while describing the self as enduring.",
+          "verse_reference": "BG2.13",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "eternal-soul-q2",
+          "type": "multiple_choice",
+          "prompt": "What does the image of changing clothes illustrate?",
+          "options": [
+            "The embodied self moves on from an old body to a new one",
+            "Clothing determines a person's worth",
+            "Everyone should avoid ordinary work",
+            "The body never changes"
+          ],
+          "correct_answer": "The embodied self moves on from an old body to a new one",
+          "explanation": "The clothing image in BG2.22 compares the discarded body to worn garments.",
+          "verse_reference": "BG2.22",
+          "difficulty": "intermediate"
+        },
+        {
+          "id": "eternal-soul-q3",
+          "type": "true_false",
+          "prompt": "Krishna describes the self as something that weapons can destroy.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "False",
+          "explanation": "BG2.23 says the self is not destroyed by weapons, fire, water, or wind.",
+          "verse_reference": "BG2.23",
+          "difficulty": "beginner"
+        }
+      ]
+    },
+    {
+      "id": "action-without-attachment",
+      "order": 3,
+      "title": "Act Without Attachment",
+      "subtitle": "Give your effort; release your grip",
+      "description": "Learn the Gita's influential teaching on action: attend to the work you can do without making its reward the sole measure of your choices.",
+      "chapter_numbers": [
+        2,
+        3
+      ],
+      "verse_ranges": [
+        {
+          "start": "BG2.47",
+          "end": "BG2.50"
+        },
+        {
+          "start": "BG3.19",
+          "end": "BG3.25"
+        }
+      ],
+      "learning_objectives": [
+        "State what is within one's control",
+        "Distinguish nonattachment from inaction",
+        "Apply the teaching to an everyday task"
+      ],
+      "questions": [
+        {
+          "id": "action-without-attachment-q1",
+          "type": "multiple_choice",
+          "prompt": "According to BG2.47, what is within your control?",
+          "options": [
+            "Your action, not a guaranteed result",
+            "Every outcome",
+            "Other people's choices",
+            "Whether effort always succeeds"
+          ],
+          "correct_answer": "Your action, not a guaranteed result",
+          "explanation": "The verse directs attention to action without claiming ownership over its fruits.",
+          "verse_reference": "BG2.47",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "action-without-attachment-q2",
+          "type": "true_false",
+          "prompt": "Nonattachment to results means a person should stop acting altogether.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "False",
+          "explanation": "The teaching calls for responsible action without fixation on reward; it does not praise idleness.",
+          "verse_reference": "BG2.47-BG2.48",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "action-without-attachment-q3",
+          "type": "scenario",
+          "prompt": "A student prepares carefully for an exam but cannot control the questions or final score. Which response best reflects BG2.47?",
+          "options": [
+            "Do the preparation sincerely and accept that the score is not fully controllable",
+            "Refuse to study because results are uncertain",
+            "Study only if a top score is guaranteed",
+            "Blame others before the exam"
+          ],
+          "correct_answer": "Do the preparation sincerely and accept that the score is not fully controllable",
+          "explanation": "The practical focus is sincere effort, while recognizing that outcomes depend on more than one's effort alone.",
+          "verse_reference": "BG2.47",
+          "difficulty": "intermediate"
+        }
+      ]
+    },
+    {
+      "id": "steady-wisdom",
+      "order": 4,
+      "title": "The Steady Mind",
+      "subtitle": "Wisdom in the middle of change",
+      "description": "Meet the sthitaprajna, the person of steady wisdom, and examine the Gita's account of desire, attention, and inner balance.",
+      "chapter_numbers": [
+        2
+      ],
+      "verse_ranges": [
+        {
+          "start": "BG2.54",
+          "end": "BG2.72"
+        }
+      ],
+      "learning_objectives": [
+        "Identify qualities of steady wisdom",
+        "Trace how attachment can grow into distress",
+        "Choose a pause before reacting"
+      ],
+      "questions": [
+        {
+          "id": "steady-wisdom-q1",
+          "type": "multiple_choice",
+          "prompt": "How does Krishna describe a person of steady wisdom when desires arise?",
+          "options": [
+            "They are not ruled by every desire and remain inwardly composed",
+            "They satisfy every desire immediately",
+            "They avoid all relationships",
+            "They never take action"
+          ],
+          "correct_answer": "They are not ruled by every desire and remain inwardly composed",
+          "explanation": "BG2.55 describes one who gives up compulsive desires and is content in the self.",
+          "verse_reference": "BG2.55",
+          "difficulty": "intermediate"
+        },
+        {
+          "id": "steady-wisdom-q2",
+          "type": "multiple_choice",
+          "prompt": "What chain does BG2.62-63 warn can begin with dwelling repeatedly on an object?",
+          "options": [
+            "Attachment, desire, and eventually confusion",
+            "Study, service, and clarity",
+            "Sleep, rest, and peace",
+            "Generosity, courage, and wisdom"
+          ],
+          "correct_answer": "Attachment, desire, and eventually confusion",
+          "explanation": "The verses trace how repeated contemplation can lead through attachment and desire toward anger and loss of discernment.",
+          "verse_reference": "BG2.62-BG2.63",
+          "difficulty": "intermediate"
+        },
+        {
+          "id": "steady-wisdom-q3",
+          "type": "true_false",
+          "prompt": "Equanimity in BG2.56 means never feeling anything.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "False",
+          "explanation": "The teaching concerns steadiness amid pleasure and pain, rather than emotional numbness.",
+          "verse_reference": "BG2.56",
+          "difficulty": "intermediate"
+        }
+      ]
+    },
+    {
+      "id": "duty-and-selfless-service",
+      "order": 5,
+      "title": "Duty and Selfless Service",
+      "subtitle": "Work that serves beyond the self",
+      "description": "See why action is unavoidable and how work performed with care and without selfish attachment can support a wider good.",
+      "chapter_numbers": [
+        3
+      ],
+      "verse_ranges": [
+        {
+          "start": "BG3.1",
+          "end": "BG3.35"
+        }
+      ],
+      "learning_objectives": [
+        "Explain why inaction is not the answer",
+        "Describe action as service",
+        "Reflect on one's responsibilities"
+      ],
+      "questions": [
+        {
+          "id": "duty-and-selfless-service-q1",
+          "type": "multiple_choice",
+          "prompt": "Why does Krishna say that a person cannot remain completely inactive?",
+          "options": [
+            "Everyone is impelled to act by qualities of nature",
+            "Inaction always earns a reward",
+            "Only rulers have duties",
+            "Action is limited to ritual"
+          ],
+          "correct_answer": "Everyone is impelled to act by qualities of nature",
+          "explanation": "BG3.5 notes that no one can remain actionless, even for a moment.",
+          "verse_reference": "BG3.5",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "duty-and-selfless-service-q2",
+          "type": "multiple_choice",
+          "prompt": "What distinguishes action performed as yajna in BG3.9?",
+          "options": [
+            "It is offered in a spirit of service rather than selfish attachment",
+            "It is done only for praise",
+            "It avoids helping others",
+            "It guarantees wealth"
+          ],
+          "correct_answer": "It is offered in a spirit of service rather than selfish attachment",
+          "explanation": "BG3.9 contrasts action tied to sacrifice or service with action that binds through selfish attachment.",
+          "verse_reference": "BG3.9",
+          "difficulty": "intermediate"
+        },
+        {
+          "id": "duty-and-selfless-service-q3",
+          "type": "scenario",
+          "prompt": "A team member quietly handles an important task that helps the whole group. What best reflects selfless service?",
+          "options": [
+            "Do the task responsibly without making recognition the only goal",
+            "Avoid the task unless everyone notices",
+            "Take credit for another person's work",
+            "Ignore the team's needs"
+          ],
+          "correct_answer": "Do the task responsibly without making recognition the only goal",
+          "explanation": "Selfless service values responsible contribution while loosening the demand for personal reward.",
+          "verse_reference": "BG3.19",
+          "difficulty": "beginner"
+        }
+      ]
+    },
+    {
+      "id": "knowledge-and-renewal",
+      "order": 6,
+      "title": "Knowledge and Renewal",
+      "subtitle": "Wisdom transforms action",
+      "description": "Explore the transmission of yoga, Krishna's account of restoring dharma, and the role of knowledge in freeing action from confusion.",
+      "chapter_numbers": [
+        4
+      ],
+      "verse_ranges": [
+        {
+          "start": "BG4.1",
+          "end": "BG4.42"
+        }
+      ],
+      "learning_objectives": [
+        "Recognize the teacher and student lineage",
+        "Summarize the purpose of divine descent",
+        "Connect knowledge with wise action"
+      ],
+      "questions": [
+        {
+          "id": "knowledge-and-renewal-q1",
+          "type": "multiple_choice",
+          "prompt": "Why does Krishna say he appears age after age?",
+          "options": [
+            "To protect the good, restrain harmful forces, and re-establish dharma",
+            "To collect material possessions",
+            "To end all human choices",
+            "To avoid teaching"
+          ],
+          "correct_answer": "To protect the good, restrain harmful forces, and re-establish dharma",
+          "explanation": "BG4.7-8 describes divine manifestation in relation to dharma and the protection of beings.",
+          "verse_reference": "BG4.7-BG4.8",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "knowledge-and-renewal-q2",
+          "type": "multiple_choice",
+          "prompt": "In BG4.34, how is knowledge approached?",
+          "options": [
+            "With humility, inquiry, and service to those who know",
+            "By refusing to ask questions",
+            "By memorizing without reflection",
+            "By demanding immediate status"
+          ],
+          "correct_answer": "With humility, inquiry, and service to those who know",
+          "explanation": "BG4.34 names respectful approach, sincere questions, and service as ways to learn from the wise.",
+          "verse_reference": "BG4.34",
+          "difficulty": "intermediate"
+        },
+        {
+          "id": "knowledge-and-renewal-q3",
+          "type": "true_false",
+          "prompt": "BG4.38 presents knowledge as a powerful purifier over time.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "True",
+          "explanation": "Krishna calls knowledge supremely purifying and says it is found in time by one perfected in yoga.",
+          "verse_reference": "BG4.38",
+          "difficulty": "intermediate"
+        }
+      ]
+    },
+    {
+      "id": "training-the-mind",
+      "order": 7,
+      "title": "Training the Mind",
+      "subtitle": "Practice and patient return",
+      "description": "Learn the Gita's practical response to a restless mind: repeated practice, detachment, and patient redirection.",
+      "chapter_numbers": [
+        6
+      ],
+      "verse_ranges": [
+        {
+          "start": "BG6.5",
+          "end": "BG6.35"
+        }
+      ],
+      "learning_objectives": [
+        "Describe the mind as both support and obstacle",
+        "Name two supports for steadiness",
+        "Practice returning attention without self-judgment"
+      ],
+      "questions": [
+        {
+          "id": "training-the-mind-q1",
+          "type": "multiple_choice",
+          "prompt": "What two supports does Krishna name for mastering the restless mind?",
+          "options": [
+            "Practice and detachment",
+            "Speed and competition",
+            "Silence and isolation only",
+            "Memory and force"
+          ],
+          "correct_answer": "Practice and detachment",
+          "explanation": "BG6.35 acknowledges the mind is difficult to control but says it can be restrained through practice and detachment.",
+          "verse_reference": "BG6.35",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "training-the-mind-q2",
+          "type": "multiple_choice",
+          "prompt": "When attention wanders during meditation, what does BG6.26 advise?",
+          "options": [
+            "Bring it back and place it again on the self",
+            "Give up immediately",
+            "Follow every thought to its end",
+            "Blame yourself"
+          ],
+          "correct_answer": "Bring it back and place it again on the self",
+          "explanation": "The practice is to notice wandering and gently return the mind to the intended focus.",
+          "verse_reference": "BG6.26",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "training-the-mind-q3",
+          "type": "true_false",
+          "prompt": "BG6.5 encourages a person to uplift themselves through the mind.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "True",
+          "explanation": "The verse presents the mind as capable of serving as one's friend or one's obstacle.",
+          "verse_reference": "BG6.5",
+          "difficulty": "intermediate"
+        }
+      ]
+    },
+    {
+      "id": "devotion-in-daily-life",
+      "order": 8,
+      "title": "Devotion in Daily Life",
+      "subtitle": "Offer what you have, with care",
+      "description": "Study devotion as remembrance, offering, and a way of meeting ordinary actions with sincerity and care.",
+      "chapter_numbers": [
+        9,
+        12
+      ],
+      "verse_ranges": [
+        {
+          "start": "BG9.22",
+          "end": "BG9.34"
+        },
+        {
+          "start": "BG12.1",
+          "end": "BG12.20"
+        }
+      ],
+      "learning_objectives": [
+        "Recognize the value of a sincere offering",
+        "Identify qualities of a devoted person",
+        "Connect remembrance with everyday action"
+      ],
+      "questions": [
+        {
+          "id": "devotion-in-daily-life-q1",
+          "type": "multiple_choice",
+          "prompt": "What does BG9.26 say Krishna accepts when offered with devotion?",
+          "options": [
+            "A leaf, flower, fruit, or water",
+            "Only costly gifts",
+            "Only elaborate ceremonies",
+            "Nothing from ordinary people"
+          ],
+          "correct_answer": "A leaf, flower, fruit, or water",
+          "explanation": "The verse emphasizes the loving devotion with which a simple offering is given.",
+          "verse_reference": "BG9.26",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "devotion-in-daily-life-q2",
+          "type": "multiple_choice",
+          "prompt": "How does BG9.27 invite a person to approach daily activity?",
+          "options": [
+            "Offer actions, food, and efforts to the divine",
+            "Keep daily actions separate from values",
+            "Act only when praised",
+            "Avoid all responsibilities"
+          ],
+          "correct_answer": "Offer actions, food, and efforts to the divine",
+          "explanation": "The verse extends offering to ordinary actions, eating, giving, and disciplined effort.",
+          "verse_reference": "BG9.27",
+          "difficulty": "intermediate"
+        },
+        {
+          "id": "devotion-in-daily-life-q3",
+          "type": "multiple_choice",
+          "prompt": "Which quality appears among those dear to Krishna in Chapter 12?",
+          "options": [
+            "Kindness toward all beings",
+            "Pride in defeating others",
+            "Hostility toward every disagreement",
+            "Demand for constant praise"
+          ],
+          "correct_answer": "Kindness toward all beings",
+          "explanation": "Chapter 12 describes the devotee as friendly and compassionate, among other qualities.",
+          "verse_reference": "BG12.13",
+          "difficulty": "beginner"
+        }
+      ]
+    },
+    {
+      "id": "seeing-the-divine",
+      "order": 9,
+      "title": "Seeing the Divine",
+      "subtitle": "The many and the one",
+      "description": "Follow Arjuna's request to see Krishna's universal form and reflect on how the Gita presents the divine presence throughout existence.",
+      "chapter_numbers": [
+        10,
+        11
+      ],
+      "verse_ranges": [
+        {
+          "start": "BG10.8",
+          "end": "BG10.42"
+        },
+        {
+          "start": "BG11.1",
+          "end": "BG11.55"
+        }
+      ],
+      "learning_objectives": [
+        "Understand why Arjuna asks for a vision",
+        "Recognize the universal form as encompassing all existence",
+        "Reflect on humility before the vast"
+      ],
+      "questions": [
+        {
+          "id": "seeing-the-divine-q1",
+          "type": "multiple_choice",
+          "prompt": "Why does Arjuna ask Krishna to reveal the universal form?",
+          "options": [
+            "He wants to directly witness Krishna's cosmic nature",
+            "He wants to end the dialogue",
+            "He wants to test his bow",
+            "He asks for a map of the battlefield"
+          ],
+          "correct_answer": "He wants to directly witness Krishna's cosmic nature",
+          "explanation": "After hearing Krishna's teachings, Arjuna asks to see the divine form directly, if Krishna considers him able.",
+          "verse_reference": "BG11.3-BG11.4",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "seeing-the-divine-q2",
+          "type": "multiple_choice",
+          "prompt": "What does Arjuna's vision of the universal form communicate?",
+          "options": [
+            "The divine form encompasses the many dimensions of the cosmos",
+            "Only the battlefield exists",
+            "The universe is limited to one family",
+            "Arjuna has become king"
+          ],
+          "correct_answer": "The divine form encompasses the many dimensions of the cosmos",
+          "explanation": "Chapter 11 depicts a form containing countless beings and aspects of the universe.",
+          "verse_reference": "BG11.10-BG11.13",
+          "difficulty": "intermediate"
+        },
+        {
+          "id": "seeing-the-divine-q3",
+          "type": "true_false",
+          "prompt": "Arjuna sees the universal form using only ordinary vision.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "False",
+          "explanation": "Krishna grants Arjuna divine vision to behold the form.",
+          "verse_reference": "BG11.8",
+          "difficulty": "beginner"
+        }
+      ]
+    },
+    {
+      "id": "choice-and-surrender",
+      "order": 10,
+      "title": "Choice and Surrender",
+      "subtitle": "Understand, reflect, then choose",
+      "description": "Reach the dialogue's close: Krishna offers instruction, Arjuna reflects, and the learner is invited to act with understanding and resolve.",
+      "chapter_numbers": [
+        18
+      ],
+      "verse_ranges": [
+        {
+          "start": "BG18.63",
+          "end": "BG18.78"
+        }
+      ],
+      "learning_objectives": [
+        "Recognize the place of reflection and choice",
+        "Summarize the dialogue's resolution",
+        "Connect learning with a considered next step"
+      ],
+      "questions": [
+        {
+          "id": "choice-and-surrender-q1",
+          "type": "multiple_choice",
+          "prompt": "After teaching Arjuna, what does Krishna invite him to do in BG18.63?",
+          "options": [
+            "Reflect on the teaching and then act as he chooses",
+            "Obey without understanding",
+            "Forget the entire conversation",
+            "Leave the decision to Sanjaya"
+          ],
+          "correct_answer": "Reflect on the teaching and then act as he chooses",
+          "explanation": "Krishna tells Arjuna to reflect fully on the teaching and then do as he wishes.",
+          "verse_reference": "BG18.63",
+          "difficulty": "beginner"
+        },
+        {
+          "id": "choice-and-surrender-q2",
+          "type": "multiple_choice",
+          "prompt": "What change does Arjuna express near the end of the Gita?",
+          "options": [
+            "His delusion is gone and he will act according to Krishna's word",
+            "He has forgotten Krishna",
+            "He refuses all guidance",
+            "He asks to return to sleep"
+          ],
+          "correct_answer": "His delusion is gone and he will act according to Krishna's word",
+          "explanation": "In BG18.73 Arjuna says his delusion has been destroyed and that he will act with resolve.",
+          "verse_reference": "BG18.73",
+          "difficulty": "intermediate"
+        },
+        {
+          "id": "choice-and-surrender-q3",
+          "type": "true_false",
+          "prompt": "The Gita ends with Sanjaya describing the dialogue and its significance.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "True",
+          "explanation": "Sanjaya closes the text by recalling the dialogue between Krishna and Arjuna.",
+          "verse_reference": "BG18.74-BG18.78",
+          "difficulty": "beginner"
+        }
+      ]
+    }
+  ]
+}

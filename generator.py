@@ -12,7 +12,7 @@ import random
 import requests
 from typing import Dict, List, Any, Optional
 
-RAPIDAPI_KEY = "d7194fc4e2msh6bae7732dec7a1dp16af20jsn2032c08ecbcf"
+RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "")
 RAPIDAPI_HOST = "bhagavad-gita3.p.rapidapi.com"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -47,6 +47,8 @@ def fetch_chapters() -> List[Dict[str, Any]]:
         with open(cache_file, "r", encoding="utf-8") as f:
             return json.load(f)
 
+    if not RAPIDAPI_KEY:
+        raise RuntimeError("Set RAPIDAPI_KEY in the environment to fetch uncached Gita data.")
     url = "https://bhagavad-gita3.p.rapidapi.com/v2/chapters/"
     resp = requests.get(url, headers=HEADERS, timeout=15)
     resp.raise_for_status()
@@ -61,6 +63,8 @@ def fetch_verse(chapter_num: int, verse_num: int) -> Dict[str, Any]:
         with open(cache_file, "r", encoding="utf-8") as f:
             return json.load(f)
 
+    if not RAPIDAPI_KEY:
+        raise RuntimeError("Set RAPIDAPI_KEY in the environment to fetch uncached Gita data.")
     url = f"https://bhagavad-gita3.p.rapidapi.com/v2/chapters/{chapter_num}/verses/{verse_num}/"
     resp = requests.get(url, headers=HEADERS, timeout=15)
     resp.raise_for_status()

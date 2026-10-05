@@ -16,7 +16,11 @@ from pydantic import BaseModel
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "gita_duolingo.db")
 WEB_DIR = os.path.join(BASE_DIR, "web")
+CURRICULUM_PATH = os.path.join(BASE_DIR, "data", "curriculum.json")
 os.makedirs(WEB_DIR, exist_ok=True)
+
+with open(CURRICULUM_PATH, "r", encoding="utf-8") as curriculum_file:
+    CURRICULUM = json.load(curriculum_file)
 
 app = FastAPI(
     title="Gita Duolingo Quiz API",
@@ -59,6 +63,25 @@ def get_chapters():
     rows = conn.execute("SELECT * FROM chapters ORDER BY chapter_number").fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+@app.get("/api/curriculum")
+def get_curriculum():
+    """Return the portable, theme-based course structure and its questions."""
+    return CURRICULUM
+
+@app.get("/api/sections")
+def get_sections():
+    """Return the ordered learning sections without their question payloads."""
+    return [{k: v for k, v in section.items() if k != "questions"}
+            for section in CURRICULUM["sections"]]
+
+@app.get("/api/sections/{section_id}")
+def get_section(section_id: str):
+    """Return one section with its lesson questions for an external client."""
+    section = next((s for s in CURRICULUM["sections"] if s["id"] == section_id), None)
+    if section is None:
+        raise HTTPException(status_code=404, detail="Section not found")
+    return section
 
 @app.get("/api/chapters/{chapter_number}/verses")
 def get_chapter_verses(chapter_number: int):

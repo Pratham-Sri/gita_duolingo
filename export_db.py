@@ -18,6 +18,14 @@ def export_all():
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
 
+    # 0. Thematic course for applications that organize lessons by concept.
+    curriculum_source = os.path.join(BASE_DIR, "data", "curriculum.json")
+    curriculum_export = os.path.join(EXPORTS_DIR, "curriculum.json")
+    with open(curriculum_source, "r", encoding="utf-8") as source, \
+            open(curriculum_export, "w", encoding="utf-8") as target:
+        json.dump(json.load(source), target, ensure_ascii=False, indent=2)
+    print(f"[JSON] Exported thematic curriculum: {curriculum_export}")
+
     # 1. SQL Dump
     sql_path = os.path.join(EXPORTS_DIR, "gita_duolingo.sql")
     with open(sql_path, "w", encoding="utf-8") as f:
