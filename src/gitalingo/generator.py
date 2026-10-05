@@ -15,10 +15,10 @@ from typing import Dict, List, Any, Optional
 RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "")
 RAPIDAPI_HOST = "bhagavad-gita3.p.rapidapi.com"
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 CACHE_DIR = os.path.join(BASE_DIR, "cache", "verses")
 EXPORTS_DIR = os.path.join(BASE_DIR, "exports")
-DB_PATH = os.path.join(BASE_DIR, "gita_duolingo.db")
+DB_PATH = os.path.join(BASE_DIR, "database", "gita_duolingo.db")
 
 os.makedirs(CACHE_DIR, exist_ok=True)
 os.makedirs(EXPORTS_DIR, exist_ok=True)
@@ -39,7 +39,7 @@ def get_db_connection() -> sqlite3.Connection:
     return conn
 
 def init_db():
-    from schema import SCHEMA_SQL
+    from .schema import SCHEMA_SQL
     conn = get_db_connection()
     conn.executescript(SCHEMA_SQL)
     verse_columns = {row[1] for row in conn.execute("PRAGMA table_info(verses)")}

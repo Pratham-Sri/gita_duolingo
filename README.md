@@ -45,22 +45,19 @@ graph TD
 
 ```
 gita_duolingo/
-├── gita_duolingo.db            # SQLite database file (plug-and-play)
-├── schema.py                   # Relational database schema definition
-├── generator.py                # Core quiz synthesis & RapidAPI parser
-├── batch_runner.py             # Batch generator with rate limiting & caching
-├── api.py                      # FastAPI REST server with auto Swagger docs (/docs)
-├── export_db.py                # Exporter for SQL and JSON bundles
-├── inspect_db.py               # Quick DB verification utility
-├── cache/                      # Local JSON cache for Gita API verses
-├── exports/
-│   ├── gita_duolingo.sql       # Universal SQL dump (PostgreSQL / Supabase / Neon)
-│   ├── chapters.json           # All 18 Gita chapters metadata
-│   ├── verses.json             # Verses with Devanagari, transliteration & translations
-│   ├── questions.json          # All generated quiz questions
-│   └── gita_duolingo_bundle.json # Grouped by verse for offline mobile apps
-└── web/
-    └── index.html              # Modern, interactive Duolingo web interface
+├── app/                        # HTTP API and browser client
+│   ├── api.py
+│   └── web/index.html
+├── database/                   # Local SQLite source database
+│   └── gita_duolingo.db
+├── data/                       # Authored curriculum and source overrides
+├── docs/                       # Developer and data-model documentation
+├── exports/                    # Generated JSON, SQL, and Prisma seed data
+├── scripts/                    # Batch, export, import, and maintenance commands
+├── src/gitalingo/              # Reusable Python data-generation package
+├── cache/                      # Local API response cache (not committed)
+├── README.md
+└── requirements.txt
 ```
 
 ---
@@ -77,18 +74,18 @@ The API serves the same data at:
 - `GET /api/sections` — ordered section metadata
 - `GET /api/sections/{section_id}` — one section and its questions
 
-Running `python export_db.py` also writes `exports/curriculum.json` for direct import. Questions use stable string IDs and a consistent `type`, `prompt`, `options`, `correct_answer`, `explanation`, `verse_reference`, and `difficulty` shape.
+Running `python scripts/export_db.py` also writes `exports/curriculum.json` for direct import. Questions use stable string IDs and a consistent `type`, `prompt`, `options`, `correct_answer`, `explanation`, `verse_reference`, and `difficulty` shape.
 
-Verse records also include `meaning_en`, a generated 50-60 word learning explanation in addition to the source translation in `translation_en`. Run `python generate_meanings.py` to regenerate meanings and refresh the exports.
+Verse records also include `meaning_en`, a generated 50-60 word learning explanation in addition to the source translation in `translation_en`. Run `python scripts/generate_meanings.py` to regenerate meanings and refresh the exports.
 
 ### Fetching uncached verse data
 
-Run `python batch_runner.py --all-missing --batch-size 25` to fetch every missing verse in resumable batches. Existing verse JSON files in `cache/verses/` are reused. New verses come from the public [Vedic Scriptures Bhagavad Gita API](https://github.com/vedicscriptures/vedicscriptures.github.io); the English translation used for quiz generation is by Swami Sivananda. The API project identifies itself as MIT licensed and its endpoint is intended for non-monetized app use. Attribution should remain with redistributed data. Set `RAPIDAPI_KEY` only when you choose to use the original RapidAPI provider; never commit API keys.
+Run `python scripts/batch_runner.py --all-missing --batch-size 25` to fetch every missing verse in resumable batches. Existing verse JSON files in `cache/verses/` are reused. New verses come from the public [Vedic Scriptures Bhagavad Gita API](https://github.com/vedicscriptures/vedicscriptures.github.io); the English translation used for quiz generation is by Swami Sivananda. The API project identifies itself as MIT licensed and its endpoint is intended for non-monetized app use. Attribution should remain with redistributed data. Set `RAPIDAPI_KEY` only when you choose to use the original RapidAPI provider; never commit API keys.
 
 ### 1. View & Play the Duolingo Web App
 Start the local server:
 ```bash
-python gita_duolingo/api.py
+python -m app.api
 ```
 Open your browser at:
 - **Interactive Duolingo UI**: `http://127.0.0.1:8000/`
@@ -98,16 +95,16 @@ Open your browser at:
 To generate quiz questions for any chapter:
 ```bash
 # Generate Chapter 1, verses 1 to 47:
-python gita_duolingo/batch_runner.py --chapter 1 --start 1 --end 47
+python scripts/batch_runner.py --chapter 1 --start 1 --end 47
 
 # Generate Chapter 2 (Transcendental Knowledge), verses 1 to 20:
-python gita_duolingo/batch_runner.py --chapter 2 --start 1 --end 20
+python scripts/batch_runner.py --chapter 2 --start 1 --end 20
 ```
 
 ### 3. Export to Mobile App or PostgreSQL / Supabase
 Run:
 ```bash
-python gita_duolingo/export_db.py
+python scripts/export_db.py
 ```
 This writes:
 - `exports/gita_duolingo.sql` -> Paste into Supabase SQL Editor or `psql`
@@ -117,9 +114,9 @@ This writes:
 
 ## 🗄️ Database Schema Reference
 
-For application integration, MongoDB collection mapping, API endpoints, JSON shapes, and answer handling, see [DEVELOPER_SCHEMA.md](DEVELOPER_SCHEMA.md). The SQL DDL is maintained in `schema.py`.
+For application integration, MongoDB collection mapping, API endpoints, JSON shapes, and answer handling, see [docs/DEVELOPER_SCHEMA.md](docs/DEVELOPER_SCHEMA.md). The SQL DDL is maintained in `src/gitalingo/schema.py`.
 
-The Prisma content model seed export is generated with `python export_prisma_seed.py` and written to `exports/prisma_seed_content.json`. See the developer schema guide for the model mapping and the app-owned runtime data that is intentionally excluded.
+The Prisma content model seed export is generated with `python scripts/export_prisma_seed.py` and written to `exports/prisma_seed_content.json`. See the developer schema guide for the model mapping and the app-owned runtime data that is intentionally excluded.
 
 ### `chapters` Table
 | Column | Type | Description |

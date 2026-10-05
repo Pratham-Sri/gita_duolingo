@@ -8,8 +8,8 @@ import os
 import json
 import sqlite3
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "gita_duolingo.db")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "database", "gita_duolingo.db")
 EXPORTS_DIR = os.path.join(BASE_DIR, "exports")
 os.makedirs(EXPORTS_DIR, exist_ok=True)
 

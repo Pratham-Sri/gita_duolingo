@@ -13,9 +13,9 @@ from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "gita_duolingo.db")
-WEB_DIR = os.path.join(BASE_DIR, "web")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "database", "gita_duolingo.db")
+WEB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "web")
 CURRICULUM_PATH = os.path.join(BASE_DIR, "data", "curriculum.json")
 os.makedirs(WEB_DIR, exist_ok=True)
 
@@ -182,4 +182,4 @@ def index():
 if __name__ == "__main__":
     import uvicorn
     print("[API] Starting server on http://127.0.0.1:8000 ...")
-    uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("app.api:app", host="127.0.0.1", port=8000, reload=True)

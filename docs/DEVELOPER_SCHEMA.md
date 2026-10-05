@@ -1,6 +1,6 @@
 # GitaLingo Data Schema for Application Developers
 
-This document describes the data model and the supported ways to load it into a client application. The source of truth is the SQLite database `gita_duolingo.db`; JSON exports and the MongoDB collections are derived from it.
+This document describes the data model and the supported ways to load it into a client application. The source of truth is `database/gita_duolingo.db`; JSON exports and MongoDB collections are derived from it.
 
 ## Corpus at a glance
 
@@ -23,8 +23,8 @@ This document describes the data model and the supported ways to load it into a 
 | `exports/gita_duolingo_bundle.json` | Offline-friendly object keyed by `verse_key`, each with a verse and its questions. |
 | `exports/chapters.json` | Chapter metadata. |
 | `exports/gita_duolingo.sql` | SQL import/export representation. |
-| `gita_duolingo.db` | SQLite database. |
-| `structure_metadata.json` | Counts and per-chapter structural summary for analysis. |
+| `database/gita_duolingo.db` | SQLite database. |
+| `exports/structure_metadata.json` | Counts and per-chapter structural summary for analysis. |
 
 The curriculum and verse-level quiz bank are two different learning experiences. Use `data/curriculum.json` for thematic sections such as “Arjuna's Grief” and “The Eternal Soul.” Use the verse bundle when the app teaches one shloka at a time.
 
@@ -143,7 +143,7 @@ Database name: `gita_duolingo`. Collections:
 The supplied application requirement uses the hierarchy `Scripture → Chapter → Module → Lesson → Quiz → QuizQuestion/QuizOption`, with verse and translation tables attached alongside it. Run:
 
 ```bash
-python export_prisma_seed.py
+python scripts/export_prisma_seed.py
 ```
 
 This creates `exports/prisma_seed_content.json`, with an array for each Prisma content model, deterministic 24-character IDs, relation IDs, and aggregate counts. It contains:
@@ -164,7 +164,7 @@ The requirement attachment is a model specification, not a complete Prisma schem
 
 ## HTTP API
 
-The FastAPI service (`api.py`) exposes:
+The FastAPI service (`app/api.py`) exposes:
 
 | Method / path | Response |
 |---|---|
@@ -187,4 +187,4 @@ Interactive API docs are at `/docs` when the local FastAPI server is running.
 3. Support Unicode Sanskrit (UTF-8) end-to-end and a sensible font fallback.
 4. Decode JSON fields only when loading SQLite directly. In JSON exports, API responses, and MongoDB documents, `options` and `correct_answer` are already decoded.
 5. Keep curriculum section questions separate from verse-level questions; they have distinct IDs and schemas.
-6. Read `schema.py` for the exact SQLite DDL and `upload_to_mongodb.py` for the canonical MongoDB mapping.
+6. Read `src/gitalingo/schema.py` for the exact SQLite DDL and `scripts/upload_to_mongodb.py` for the legacy MongoDB mapping. `scripts/upload_prisma_seed_to_mongodb.py` loads the current Prisma-shaped content database.

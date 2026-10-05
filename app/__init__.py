@@ -1,0 +1,1 @@
+"""GitaLingo HTTP application."""

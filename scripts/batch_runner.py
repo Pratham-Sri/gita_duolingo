@@ -9,7 +9,12 @@ import time
 import json
 import sqlite3
 import argparse
-from generator import (
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT_DIR / "src"))
+
+from gitalingo.generator import (
     init_db, fetch_chapters, fetch_verse,
     generate_questions_for_verse, save_verse_and_questions_to_db,
     export_json_summaries, get_db_connection, DB_PATH

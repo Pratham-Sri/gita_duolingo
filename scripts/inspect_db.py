@@ -1,8 +1,10 @@
 import sys, io
+from pathlib import Path
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 import sqlite3, json
 
-conn = sqlite3.connect('gita_duolingo/gita_duolingo.db')
+ROOT_DIR = Path(__file__).resolve().parents[1]
+conn = sqlite3.connect(ROOT_DIR / 'database' / 'gita_duolingo.db')
 conn.row_factory = sqlite3.Row
 rows = conn.execute("SELECT question_order, lesson_level, question_type, instruction, prompt, correct_answer_json FROM questions WHERE verse_key='BG1.1' ORDER BY question_order").fetchall()
 

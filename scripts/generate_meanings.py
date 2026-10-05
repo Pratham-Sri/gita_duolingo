@@ -4,8 +4,13 @@ import json
 import os
 import re
 import sqlite3
+import sys
+from pathlib import Path
 
-from generator import BASE_DIR, DB_PATH, generate_verse_meaning, init_db
+ROOT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT_DIR / "src"))
+
+from gitalingo.generator import BASE_DIR, DB_PATH, generate_verse_meaning, init_db
 from export_db import export_all
 
 OVERRIDES_PATH = os.path.join(BASE_DIR, "data", "translation_overrides.json")

@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parents[1]
 LOCAL_DRIVER_DIR = BASE_DIR / ".mongo_runtime"
 if LOCAL_DRIVER_DIR.exists():
     sys.path.insert(0, str(LOCAL_DRIVER_DIR))
@@ -55,7 +55,7 @@ def main() -> None:
             "python -m pip install 'pymongo[srv]'"
         ) from exc
 
-    db_path = BASE_DIR / "gita_duolingo.db"
+    db_path = BASE_DIR / "database" / "gita_duolingo.db"
     curriculum_path = BASE_DIR / "data" / "curriculum.json"
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
