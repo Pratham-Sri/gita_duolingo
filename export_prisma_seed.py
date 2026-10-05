@@ -19,7 +19,7 @@ NOW = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00",
 
 def oid(kind: str, key: str) -> str:
     """Return a stable 24-character ID compatible with ObjectId-shaped schemas."""
-    return hashlib.md5(f"gitalingo:{kind}:{key}".encode("utf-8")).hexdigest()
+    return hashlib.sha256(f"gitalingo:{kind}:{key}".encode("utf-8")).hexdigest()[:24]
 
 
 def read_rows(conn, sql, args=()):
@@ -71,7 +71,7 @@ def main():
             "id": chapter_id, "scriptureId": scripture_id, "number": n,
             "slug": f"chapter-{n}", "title": ch["name_transliterated"] or f"Chapter {n}",
             "description": ch.get("summary_en"), "difficulty": "BEGINNER",
-            "status": "PUBLISHED", "order": n,
+            "status": "PUBLISHED", "order": n, "versesCount": ch.get("verses_count"),
             "createdAt": NOW, "updatedAt": NOW,
         })
         chapter_translations.append({
@@ -79,6 +79,17 @@ def main():
             "language": "en", "title": ch["name_meaning"] or f"Chapter {n}",
             "description": ch.get("summary_en"),
         })
+        if ch.get("summary_hi"):
+            chapter_translations.append({
+                "id": oid("chapter_translation", f"{n}:hi"), "chapterId": chapter_id,
+                "language": "hi", "title": ch["name_meaning"] or f"अध्याय {n}",
+                "description": ch["summary_hi"],
+            })
+        if ch.get("name_sanskrit"):
+            chapter_translations.append({
+                "id": oid("chapter_translation", f"{n}:sa"), "chapterId": chapter_id,
+                "language": "sa", "title": ch["name_sanskrit"], "description": None,
+            })
         module_docs.append({
             "id": module_id, "chapterId": chapter_id, "slug": f"chapter-{n}-lessons",
             "title": ch["name_meaning"] or f"Chapter {n}",
@@ -99,12 +110,17 @@ def main():
             "id": vid, "chapterId": chapter_id_by_num[v["chapter_number"]],
             "verseNumber": v["verse_number"], "sanskrit": v["text_devanagari"],
             "transliteration": v["transliteration"], "audioUrl": None,
+            # Additive fields retain source verse metadata not present in the
+            # requirement's base Verse model. They can be added as optional
+            # Prisma fields if the application needs them in typed queries.
+            "speaker": v.get("speaker"),
+            "commentarySummary": v.get("commentary_summary"),
             "createdAt": NOW, "updatedAt": NOW,
         })
         for lang, kind, value, source in (
             ("en", "CONTEMPORARY", v.get("translation_en"), v.get("translation_source")),
             ("en", "PRACTICAL", v.get("meaning_en"), "GitaLingo contextual learning meaning"),
-            ("hi", "LITERAL", v.get("translation_hi"), None),
+            ("hi", "CONTEMPORARY", v.get("translation_hi"), None),
         ):
             if value:
                 verse_translations.append({
@@ -186,6 +202,7 @@ def main():
                         "sourceQuestionId": q["id"], "verseKey": q["verse_key"],
                         "questionType": q["question_type"], "instruction": q["instruction"],
                         "sourceQuestionOrder": q["question_order"],
+                        "difficulty": q["difficulty"],
                         "promptSanskrit": q["prompt_sanskrit"], "hint": q["hint"],
                         "options": raw_options, "correctAnswer": answer,
                     }, ensure_ascii=False),

@@ -150,11 +150,13 @@ This creates `exports/prisma_seed_content.json`, with an array for each Prisma c
 
 - 1 Scripture; 18 chapters; 18 chapter modules; 72 chapter-stage lessons and quizzes.
 - The 10 thematic sections are also represented as modules, with one lesson and quiz per section. Each theme module is anchored to its first chapter because the requirement's `Module` has one `chapterId`; its lesson links to every verse in its cross-chapter ranges through `LessonVerse`.
-- 701 verses, verse translations, and 12,681 word rows. English `translation_en` maps to `VerseTranslation` type `CONTEMPORARY`; `meaning_en` maps to `PRACTICAL`; word glosses map to `VerseWord`.
+- 701 verses, verse translations, and 12,681 word rows. English `translation_en` maps to `VerseTranslation` type `CONTEMPORARY`; `meaning_en` maps to `PRACTICAL`; Hindi verse translations are also `CONTEMPORARY`; word glosses map to `VerseWord`. Chapter names and summaries are retained in English, Hindi, and Sanskrit `ChapterTranslation` rows when present.
 - The 9,119 per-verse questions are grouped into four chapter-stage quizzes. The 30 thematic questions are in the thematic lesson quizzes.
 - Quiz options are separate `QuizOption` rows. Original type, answer, hint, Sanskrit prompt, verse reference, and other question-specific fields are preserved in `QuizQuestion.metadata` where the app schema has no dedicated field.
 
 The supplied model has no dedicated thematic-section model, so themes use `Module`/`Lesson` and their verse links. `thematic_curriculum` is also retained intact in the seed JSON for clients that need its original section shape and objectives.
+
+To avoid dropping source metadata omitted from the base models, the seed also carries `versesCount` on chapters and optional `speaker`/`commentarySummary` on verses. Add these as optional Prisma fields if typed Prisma access is needed; they remain available in the MongoDB documents regardless.
 
 Do not seed `User`, `UserPreferences`, `LessonProgress`, `QuizAttempt`, `QuizAnswer`, `XPTransaction`, `UserStreak`, or `UserAchievement` from this corpus. Those records belong to Firebase-authenticated users and must be created at runtime. `Achievement` definitions are app policy and are likewise not scripture content.
 

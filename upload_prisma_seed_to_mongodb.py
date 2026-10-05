@@ -28,7 +28,7 @@ FIELD_MAPS = {
     "lessons": {"moduleId": "module_id", "estimatedMinutes": "estimated_minutes", "xpReward": "xp_reward", "createdAt": "created_at", "updatedAt": "updated_at"},
     "lessonTranslations": {"lessonId": "lesson_id"},
     "lessonContentBlocks": {"lessonId": "lesson_id"},
-    "verses": {"chapterId": "chapter_id", "verseNumber": "verse_number", "audioUrl": "audio_url", "createdAt": "created_at", "updatedAt": "updated_at"},
+    "verses": {"chapterId": "chapter_id", "verseNumber": "verse_number", "audioUrl": "audio_url", "commentarySummary": "commentary_summary", "createdAt": "created_at", "updatedAt": "updated_at"},
     "verseTranslations": {"verseId": "verse_id", "createdAt": "created_at", "updatedAt": "updated_at"},
     "verseWords": {"verseId": "verse_id", "grammaticalInfo": "grammatical_info"},
     "lessonVerses": {"lessonId": "lesson_id", "verseId": "verse_id"},
@@ -70,6 +70,16 @@ def main():
         client.admin.command("ping")
         db = client[database_name]
         actual_counts = {}
+        collection_names = {
+            "scriptures", "scripture_translations", "chapters", "chapter_translations",
+            "modules", "module_translations", "lessons", "lesson_translations",
+            "lesson_content_blocks", "verses", "verse_translations", "verse_words",
+            "lesson_verses", "quizzes", "quiz_questions", "quiz_options",
+        }
+        # Replace documents from the previous seed version, whose string IDs
+        # were not valid BSON ObjectIds. This database is reserved for this seed.
+        for collection_name in collection_names:
+            db[collection_name].delete_many({"_id": {"$regex": r"^[0-9a-f]{32}$"}})
         for model_name, records in payload["records"].items():
             collection_name = {
                 "scriptureTranslations": "scripture_translations",
@@ -98,6 +108,19 @@ def main():
                 raise RuntimeError(
                     f"{collection_name}: expected at least {len(records)} documents, found {count}"
                 )
+
+        # Clean up obsolete duplicate Hindi rows from earlier seed versions,
+        # only where the same verse now has the canonical CONTEMPORARY row.
+        verse_translation_docs = payload["records"]["verseTranslations"]
+        hindi_verse_ids = [
+            ObjectId(doc["verseId"]) for doc in verse_translation_docs
+            if doc["language"] == "hi" and doc["type"] == "CONTEMPORARY"
+        ]
+        if hindi_verse_ids:
+            db["verse_translations"].delete_many({
+                "language": "hi", "type": "LITERAL", "verse_id": {"$in": hindi_verse_ids},
+            })
+        actual_counts["verse_translations"] = db["verse_translations"].count_documents({})
 
         # Mirror the unique relations and lookup indexes from the provided model.
         index_specs = {
