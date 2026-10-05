@@ -117,6 +117,8 @@ This writes:
 
 ## 🗄️ Database Schema Reference
 
+For application integration, MongoDB collection mapping, API endpoints, JSON shapes, and answer handling, see [DEVELOPER_SCHEMA.md](DEVELOPER_SCHEMA.md). The SQL DDL is maintained in `schema.py`.
+
 ### `chapters` Table
 | Column | Type | Description |
 |---|---|---|
