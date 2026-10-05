@@ -6,6 +6,8 @@ A production-grade, pedagogically structured quiz database and learning engine d
 
 ## 🌟 Why This Architecture?
 
+The database and generated exports cover all 18 chapters and 701 verse entries. This corpus follows the Vedic Scriptures API's numbering, which includes BG 13.1; some editions omit that opening question in Chapter 13 and therefore count 700 verses. New English verse translations are attributed to Swami Sivananda in the verse records. The public source API is intended for non-monetized apps; check the source terms before using the data in a commercial product.
+
 Duolingo works because it breaks language learning into a progressive cognitive ramp rather than random trivia. This system divides each Shloka into **10 to 20 structured questions across 4 distinct learning levels**:
 
 ```mermaid
@@ -79,7 +81,7 @@ Running `python export_db.py` also writes `exports/curriculum.json` for direct i
 
 ### Fetching uncached verse data
 
-Set `RAPIDAPI_KEY` in the environment before fetching uncached verses. Do not commit API keys in source files.
+Run `python batch_runner.py --all-missing --batch-size 25` to fetch every missing verse in resumable batches. Existing verse JSON files in `cache/verses/` are reused. New verses come from the public [Vedic Scriptures Bhagavad Gita API](https://github.com/vedicscriptures/vedicscriptures.github.io); the English translation used for quiz generation is by Swami Sivananda. The API project identifies itself as MIT licensed and its endpoint is intended for non-monetized app use. Attribution should remain with redistributed data. Set `RAPIDAPI_KEY` only when you choose to use the original RapidAPI provider; never commit API keys.
 
 ### 1. View & Play the Duolingo Web App
 Start the local server:

@@ -9,7 +9,7 @@ import re
 import json
 import sqlite3
 import random
-import requests
+from urllib.request import Request, urlopen
 from typing import Dict, List, Any, Optional
 
 RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "")
@@ -28,6 +28,11 @@ HEADERS = {
     "X-RapidAPI-Host": RAPIDAPI_HOST
 }
 
+def fetch_json(url: str, headers: Optional[Dict[str, str]] = None, timeout: int = 30) -> Any:
+    request = Request(url, headers=headers or {})
+    with urlopen(request, timeout=timeout) as response:
+        return json.loads(response.read().decode("utf-8"))
+
 def get_db_connection() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -37,6 +42,9 @@ def init_db():
     from schema import SCHEMA_SQL
     conn = get_db_connection()
     conn.executescript(SCHEMA_SQL)
+    verse_columns = {row[1] for row in conn.execute("PRAGMA table_info(verses)")}
+    if "translation_source" not in verse_columns:
+        conn.execute("ALTER TABLE verses ADD COLUMN translation_source TEXT")
     conn.commit()
     conn.close()
     print("[DB] Initialized database schema at", DB_PATH)
@@ -47,12 +55,21 @@ def fetch_chapters() -> List[Dict[str, Any]]:
         with open(cache_file, "r", encoding="utf-8") as f:
             return json.load(f)
 
-    if not RAPIDAPI_KEY:
-        raise RuntimeError("Set RAPIDAPI_KEY in the environment to fetch uncached Gita data.")
-    url = "https://bhagavad-gita3.p.rapidapi.com/v2/chapters/"
-    resp = requests.get(url, headers=HEADERS, timeout=15)
-    resp.raise_for_status()
-    data = resp.json()
+    if RAPIDAPI_KEY:
+        url = "https://bhagavad-gita3.p.rapidapi.com/v2/chapters/"
+        data = fetch_json(url, headers=HEADERS, timeout=15)
+    else:
+        source_chapters = fetch_json("https://vedicscriptures.github.io/chapters")
+        data = [{
+            "chapter_number": ch.get("chapter_number"),
+            "name": ch.get("name", ""),
+            "name_transliterated": ch.get("transliteration") or ch.get("translation", ""),
+            "name_meaning": (ch.get("meaning") or {}).get("en", ""),
+            "chapter_summary": (ch.get("summary") or {}).get("en", ""),
+            "chapter_summary_hindi": (ch.get("summary") or {}).get("hi", ""),
+            "verses_count": ch.get("verses_count", 0),
+            "slug": str(ch.get("chapter_number", "")),
+        } for ch in source_chapters]
     with open(cache_file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     return data
@@ -63,12 +80,44 @@ def fetch_verse(chapter_num: int, verse_num: int) -> Dict[str, Any]:
         with open(cache_file, "r", encoding="utf-8") as f:
             return json.load(f)
 
-    if not RAPIDAPI_KEY:
-        raise RuntimeError("Set RAPIDAPI_KEY in the environment to fetch uncached Gita data.")
-    url = f"https://bhagavad-gita3.p.rapidapi.com/v2/chapters/{chapter_num}/verses/{verse_num}/"
-    resp = requests.get(url, headers=HEADERS, timeout=15)
-    resp.raise_for_status()
-    data = resp.json()
+    # The public Vedic Scriptures endpoint provides a no-key fallback for the
+    # remaining corpus. Normalize its payload to the RapidAPI shape used below.
+    url = f"https://vedicscriptures.github.io/slok/{chapter_num}/{verse_num}"
+    source = fetch_json(url)
+    siva = source.get("siva", {})
+    purohit = source.get("purohit", {})
+
+    word_meanings = []
+    for segment in re.split(r"[?;]+", siva.get("ec", "")):
+        segment = segment.strip().strip(" .।॥")
+        segment = re.sub(r"^\d+\.\d+\s*", "", segment)
+        parts = segment.split(None, 1)
+        if len(parts) == 2:
+            word_meanings.append(f"{parts[0]}—{parts[1].strip().rstrip('.')}")
+
+    english_translations = []
+    for translation in (siva, purohit):
+        description = translation.get("et", "").strip()
+        if description:
+            english_translations.append({
+                "language": "english",
+                "description": description,
+                "author": translation.get("author", "Unknown")
+            })
+
+    data = {
+        "chapter_number": source.get("chapter"),
+        "verse_number": source.get("verse"),
+        "text": source.get("slok", ""),
+        "transliteration": source.get("transliteration", ""),
+        "word_meanings": "; ".join(word_meanings),
+        "translations": english_translations,
+        "commentaries": [],
+        "source_attribution": "Vedic Scriptures API; English translation by Swami Sivananda",
+    }
+    if not data["chapter_number"] or not data["verse_number"] or not data["text"]:
+        raise ValueError(f"Unexpected verse payload from {url}")
+
     with open(cache_file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     return data
@@ -601,6 +650,10 @@ def save_verse_and_questions_to_db(verse_data: Dict[str, Any], chapter_meta: Dic
     hi_translations = [t["description"].strip() for t in translations if t.get("language") == "hindi"]
     best_en = en_translations[0] if en_translations else ""
     best_hi = hi_translations[0] if hi_translations else ""
+    translation_source = verse_data.get("source_attribution")
+    if not translation_source and translations:
+        translation_source = (translations[0].get("author_name")
+                              or translations[0].get("author"))
     speaker = detect_speaker(text, translit)
 
     # 1. Insert verse
@@ -608,16 +661,18 @@ def save_verse_and_questions_to_db(verse_data: Dict[str, Any], chapter_meta: Dic
         INSERT OR REPLACE INTO verses (
             id, chapter_number, verse_number, verse_key, text_devanagari,
             transliteration, word_meanings_raw, translation_en, translation_hi,
-            speaker, commentary_summary
+            translation_source, speaker, commentary_summary
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         )
     """, (
         verse_data.get("id"), ch_num, v_num, verse_key, text,
-        translit, word_meanings_raw, best_en, best_hi,
+        translit, word_meanings_raw, best_en, best_hi, translation_source,
         speaker, None
     ))
-    verse_id = verse_data.get("id")
+    # Public API payloads do not include SQLite IDs, so retain the row ID
+    # assigned by this database for vocabulary and question foreign keys.
+    verse_id = c.lastrowid
 
     # 2. Insert vocabulary
     c.execute("DELETE FROM vocabulary WHERE verse_key = ?", (verse_key,))
