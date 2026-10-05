@@ -138,6 +138,28 @@ Database name: `gita_duolingo`. Collections:
 | `sections` | section `id` | Section metadata without embedded questions, plus `course_id` and `question_count`. |
 | `curriculum_questions` | question `id` | Thematic question fields plus `course_id` and `section_id`. |
 
+## App Prisma model seed
+
+The supplied application requirement uses the hierarchy `Scripture → Chapter → Module → Lesson → Quiz → QuizQuestion/QuizOption`, with verse and translation tables attached alongside it. Run:
+
+```bash
+python export_prisma_seed.py
+```
+
+This creates `exports/prisma_seed_content.json`, with an array for each Prisma content model, deterministic 24-character IDs, relation IDs, and aggregate counts. It contains:
+
+- 1 Scripture; 18 chapters; 18 chapter modules; 72 chapter-stage lessons and quizzes.
+- The 10 thematic sections are also represented as modules, with one lesson and quiz per section. Each theme module is anchored to its first chapter because the requirement's `Module` has one `chapterId`; its lesson links to every verse in its cross-chapter ranges through `LessonVerse`.
+- 701 verses, verse translations, and 12,681 word rows. English `translation_en` maps to `VerseTranslation` type `CONTEMPORARY`; `meaning_en` maps to `PRACTICAL`; word glosses map to `VerseWord`.
+- The 9,119 per-verse questions are grouped into four chapter-stage quizzes. The 30 thematic questions are in the thematic lesson quizzes.
+- Quiz options are separate `QuizOption` rows. Original type, answer, hint, Sanskrit prompt, verse reference, and other question-specific fields are preserved in `QuizQuestion.metadata` where the app schema has no dedicated field.
+
+The supplied model has no dedicated thematic-section model, so themes use `Module`/`Lesson` and their verse links. `thematic_curriculum` is also retained intact in the seed JSON for clients that need its original section shape and objectives.
+
+Do not seed `User`, `UserPreferences`, `LessonProgress`, `QuizAttempt`, `QuizAnswer`, `XPTransaction`, `UserStreak`, or `UserAchievement` from this corpus. Those records belong to Firebase-authenticated users and must be created at runtime. `Achievement` definitions are app policy and are likewise not scripture content.
+
+The requirement attachment is a model specification, not a complete Prisma schema file: it does not define `generator`/`datasource`, and its `ObjectId` scalar needs to match the app's selected Prisma provider. Configure that in the application repository before running Prisma generate/migrate/seed. The JSON seed uses string IDs compatible with the specified ObjectId-shaped IDs and carries the relation fields expected by the models.
+
 ## HTTP API
 
 The FastAPI service (`api.py`) exposes:
@@ -164,4 +186,3 @@ Interactive API docs are at `/docs` when the local FastAPI server is running.
 4. Decode JSON fields only when loading SQLite directly. In JSON exports, API responses, and MongoDB documents, `options` and `correct_answer` are already decoded.
 5. Keep curriculum section questions separate from verse-level questions; they have distinct IDs and schemas.
 6. Read `schema.py` for the exact SQLite DDL and `upload_to_mongodb.py` for the canonical MongoDB mapping.
-

@@ -119,6 +119,8 @@ This writes:
 
 For application integration, MongoDB collection mapping, API endpoints, JSON shapes, and answer handling, see [DEVELOPER_SCHEMA.md](DEVELOPER_SCHEMA.md). The SQL DDL is maintained in `schema.py`.
 
+The Prisma content model seed export is generated with `python export_prisma_seed.py` and written to `exports/prisma_seed_content.json`. See the developer schema guide for the model mapping and the app-owned runtime data that is intentionally excluded.
+
 ### `chapters` Table
 | Column | Type | Description |
 |---|---|---|
