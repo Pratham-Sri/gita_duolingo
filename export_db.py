@@ -39,7 +39,11 @@ def export_all():
         json.dump(chapters, f, ensure_ascii=False, indent=2)
 
     # 3. Verses JSON
-    verses = [dict(r) for r in c.execute("SELECT * FROM verses ORDER BY chapter_number, verse_number").fetchall()]
+    verses = []
+    for row in c.execute("SELECT * FROM verses ORDER BY chapter_number, verse_number").fetchall():
+        verse = dict(row)
+        verse["meaning"] = verse.get("meaning_en")
+        verses.append(verse)
     with open(os.path.join(EXPORTS_DIR, "verses.json"), "w", encoding="utf-8") as f:
         json.dump(verses, f, ensure_ascii=False, indent=2)
 

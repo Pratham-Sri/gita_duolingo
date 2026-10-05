@@ -45,6 +45,8 @@ def init_db():
     verse_columns = {row[1] for row in conn.execute("PRAGMA table_info(verses)")}
     if "translation_source" not in verse_columns:
         conn.execute("ALTER TABLE verses ADD COLUMN translation_source TEXT")
+    if "meaning_en" not in verse_columns:
+        conn.execute("ALTER TABLE verses ADD COLUMN meaning_en TEXT")
     conn.commit()
     conn.close()
     print("[DB] Initialized database schema at", DB_PATH)
@@ -96,9 +98,12 @@ def fetch_verse(chapter_num: int, verse_num: int) -> Dict[str, Any]:
             word_meanings.append(f"{parts[0]}—{parts[1].strip().rstrip('.')}")
 
     english_translations = []
-    for translation in (siva, purohit):
+    prabhu = source.get("prabhu", {})
+    for translation in (siva, purohit, prabhu):
         description = translation.get("et", "").strip()
-        if description:
+        if description and not any(marker in description.lower() for marker in (
+            "did not comment", "no changes needed", "translation not available"
+        )):
             english_translations.append({
                 "language": "english",
                 "description": description,
@@ -165,6 +170,104 @@ def detect_speaker(text: str, transliteration: str) -> str:
         return "Bhagavan Sri Krishna"
     return "Narrator / Sanjaya"
 
+CHAPTER_MEANING_TOPICS = {
+    1: "Arjuna's grief and moral conflict",
+    2: "the self, duty, and steady wisdom",
+    3: "selfless action and responsibility",
+    4: "knowledge, action, and renewal",
+    5: "renunciation and inner freedom",
+    6: "meditation and training the mind",
+    7: "knowledge of the divine",
+    8: "remembrance and the eternal",
+    9: "devotion and divine presence",
+    10: "the divine in the world",
+    11: "Krishna's universal form",
+    12: "devotion and spiritual qualities",
+    13: "the body, self, and field of experience",
+    14: "the three qualities of nature",
+    15: "the supreme self",
+    16: "divine and harmful qualities",
+    17: "faith and its three forms",
+    18: "duty, renunciation, and liberation",
+}
+
+def generate_verse_meaning(verse_data: Dict[str, Any], chapter_meta: Dict[str, Any]) -> str:
+    """Create a concise, context-aware 50-60 word learning meaning."""
+    ch_num = verse_data.get("chapter_number")
+    verse_key = f"BG{ch_num}.{verse_data.get('verse_number')}"
+    translation = re.sub(r"^\s*(?:BG)?\d+\.\d+\s*", "", verse_data.get("translation_en") or "")
+    translation = re.sub(r"\s+", " ", translation).strip().strip('"')
+    placeholder = not translation or any(marker in translation.lower() for marker in (
+        "did not comment", "no changes needed", "translation not available"
+    ))
+
+    if placeholder:
+        terms = [term for term in parse_word_meanings(verse_data.get("word_meanings_raw", ""))
+                 if term["word"].strip().lower() not in {"swami", "sivananda"}
+                 and not any(marker in term["meaning"].lower() for marker in (
+                     "did not comment", "no changes needed", "not available"
+                 ))][:2]
+        if terms:
+            core = "The Sanskrit terms " + " and ".join(
+                f"{term['word']} ({term['meaning']})" for term in terms
+            ) + " frame the verse's central idea."
+        else:
+            core = f"The verse's Sanskrit wording introduces {CHAPTER_MEANING_TOPICS.get(ch_num, 'the chapter teaching')}."
+    else:
+        translation = re.sub(r"\balities\b", "qualities", translation)
+        translation = translation.replace("acisition", "acquisition").replace("unealled", "unequalled")
+        core = translation.rstrip(" .;:")
+        if not core.endswith((".", "?", "!")):
+            core += "."
+
+    topic = CHAPTER_MEANING_TOPICS.get(ch_num, chapter_meta.get("name_meaning", "the Gita's teaching"))
+    context = (
+        f"Chapter {ch_num} explores {topic}. Read with nearby verses, this line connects "
+        "its immediate message to the dialogue's wider teaching."
+    )
+    max_core_words = 60 - len(context.split())
+    core_words = core.split()
+    if len(core_words) > max_core_words:
+        # Keep a complete thought where possible instead of cutting a sentence
+        # mid-clause to meet the requested word range.
+        complete_sentences = re.split(r"(?<=[.!?])\s+", core)
+        first_sentence = complete_sentences[0].strip()
+        if len(first_sentence.split()) <= max_core_words:
+            core = first_sentence
+        else:
+            clauses = re.split(r"(?<=[,;:])\s+", core)
+            clause_prefixes = [" ".join(clauses[:index + 1]).strip()
+                               for index in range(len(clauses))]
+            complete_clause = next((clause for clause in reversed(clause_prefixes)
+                                    if 8 <= len(clause.split()) <= max_core_words), None)
+            if complete_clause:
+                core = complete_clause.rstrip(" ,;:") + "."
+            else:
+                core = " ".join(core_words[:max_core_words]).rstrip(" ,;:") + "."
+
+    meaning = f"{core} {context}"
+    additions = [
+        "The surrounding exchange helps clarify what the speaker is addressing.",
+        "This context shows why the verse matters within the chapter's teaching.",
+        "Its Sanskrit wording anchors the idea in the text.",
+    ]
+    if len(meaning.split()) < 50:
+        from itertools import combinations
+        valid_additions = []
+        for size in range(1, len(additions) + 1):
+            for group in combinations(additions, size):
+                candidate = meaning + " " + " ".join(group)
+                count = len(candidate.split())
+                if 50 <= count <= 60:
+                    valid_additions.append((count, candidate))
+        if valid_additions:
+            meaning = min(valid_additions, key=lambda item: item[0])[1]
+        else:
+            meaning += " " + " ".join(additions)
+    if not 50 <= len(meaning.split()) <= 60:
+        raise ValueError(f"Meaning for {verse_key} is {len(meaning.split())} words")
+    return meaning
+
 def clean_sanskrit_tokens(text: str) -> List[str]:
     # Extract clean Sanskrit words from text (excluding speaker header and verse numbers)
     lines = [l.strip() for l in text.split("\n") if l.strip()]
@@ -191,7 +294,11 @@ def generate_questions_for_verse(verse_data: Dict[str, Any], chapter_meta: Dict[
     
     # Translations
     translations = verse_data.get("translations", [])
-    en_translations = [t["description"].strip() for t in translations if t.get("language") == "english"]
+    en_translations = [t["description"].strip() for t in translations
+                       if t.get("language") == "english" and t.get("description", "").strip()
+                       and not any(marker in t.get("description", "").lower() for marker in (
+                           "did not comment", "no changes needed", "translation not available"
+                       ))]
     best_en = en_translations[0] if en_translations else "Translation not available"
     # Select alternative translation for comparison if available
     alt_en = en_translations[1] if len(en_translations) > 1 else en_translations[0]
@@ -646,7 +753,11 @@ def save_verse_and_questions_to_db(verse_data: Dict[str, Any], chapter_meta: Dic
     translit = verse_data.get("transliteration", "").strip()
     word_meanings_raw = verse_data.get("word_meanings", "")
     translations = verse_data.get("translations", [])
-    en_translations = [t["description"].strip() for t in translations if t.get("language") == "english"]
+    en_translations = [t["description"].strip() for t in translations
+                       if t.get("language") == "english" and t.get("description", "").strip()
+                       and not any(marker in t.get("description", "").lower() for marker in (
+                           "did not comment", "no changes needed", "translation not available"
+                       ))]
     hi_translations = [t["description"].strip() for t in translations if t.get("language") == "hindi"]
     best_en = en_translations[0] if en_translations else ""
     best_hi = hi_translations[0] if hi_translations else ""
@@ -655,19 +766,29 @@ def save_verse_and_questions_to_db(verse_data: Dict[str, Any], chapter_meta: Dic
         translation_source = (translations[0].get("author_name")
                               or translations[0].get("author"))
     speaker = detect_speaker(text, translit)
+    meaning_en = verse_data.get("meaning_en") or generate_verse_meaning({
+        **verse_data,
+        "chapter_number": ch_num,
+        "verse_number": v_num,
+        "translation_en": best_en,
+        "word_meanings_raw": word_meanings_raw,
+    }, chapter_meta)
+    if not best_en:
+        best_en = meaning_en
+        translation_source = "Generated from Sanskrit word meanings and chapter context"
 
     # 1. Insert verse
     c.execute("""
         INSERT OR REPLACE INTO verses (
             id, chapter_number, verse_number, verse_key, text_devanagari,
             transliteration, word_meanings_raw, translation_en, translation_hi,
-            translation_source, speaker, commentary_summary
+            translation_source, meaning_en, speaker, commentary_summary
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         )
     """, (
         verse_data.get("id"), ch_num, v_num, verse_key, text,
-        translit, word_meanings_raw, best_en, best_hi, translation_source,
+        translit, word_meanings_raw, best_en, best_hi, translation_source, meaning_en,
         speaker, None
     ))
     # Public API payloads do not include SQLite IDs, so retain the row ID

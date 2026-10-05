@@ -67,6 +67,8 @@ def main() -> None:
 
         chapters = rows_as_dicts(conn, "SELECT * FROM chapters ORDER BY chapter_number")
         verses = rows_as_dicts(conn, "SELECT * FROM verses ORDER BY chapter_number, verse_number")
+        for verse in verses:
+            verse["meaning"] = verse.get("meaning_en")
         vocabulary = rows_as_dicts(conn, "SELECT * FROM vocabulary ORDER BY verse_key, id")
         questions = rows_as_dicts(
             conn,

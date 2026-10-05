@@ -79,6 +79,8 @@ The API serves the same data at:
 
 Running `python export_db.py` also writes `exports/curriculum.json` for direct import. Questions use stable string IDs and a consistent `type`, `prompt`, `options`, `correct_answer`, `explanation`, `verse_reference`, and `difficulty` shape.
 
+Verse records also include `meaning_en`, a generated 50-60 word learning explanation in addition to the source translation in `translation_en`. Run `python generate_meanings.py` to regenerate meanings and refresh the exports.
+
 ### Fetching uncached verse data
 
 Run `python batch_runner.py --all-missing --batch-size 25` to fetch every missing verse in resumable batches. Existing verse JSON files in `cache/verses/` are reused. New verses come from the public [Vedic Scriptures Bhagavad Gita API](https://github.com/vedicscriptures/vedicscriptures.github.io); the English translation used for quiz generation is by Swami Sivananda. The API project identifies itself as MIT licensed and its endpoint is intended for non-monetized app use. Attribution should remain with redistributed data. Set `RAPIDAPI_KEY` only when you choose to use the original RapidAPI provider; never commit API keys.

@@ -88,7 +88,8 @@ def get_chapter_verses(chapter_number: int):
     conn = get_db()
     rows = conn.execute("""
         SELECT id, chapter_number, verse_number, verse_key, text_devanagari,
-               transliteration, translation_en, speaker
+               transliteration, translation_en, meaning_en, meaning_en AS meaning,
+               translation_source, speaker
         FROM verses
         WHERE chapter_number = ?
         ORDER BY verse_number
@@ -108,6 +109,7 @@ def get_verse(verse_key: str):
     conn.close()
     
     res = dict(v)
+    res["meaning"] = res.get("meaning_en")
     res["vocabulary"] = [dict(r) for r in vocab]
     return res
 

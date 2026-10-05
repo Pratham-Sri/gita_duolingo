@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS verses (
     translation_en TEXT NOT NULL,
     translation_hi TEXT,
     translation_source TEXT,
+    meaning_en TEXT,
     speaker TEXT NOT NULL,
     commentary_summary TEXT,
     FOREIGN KEY(chapter_number) REFERENCES chapters(chapter_number)
