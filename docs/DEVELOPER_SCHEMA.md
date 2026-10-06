@@ -1,6 +1,6 @@
 # GitaLingo Data Schema for Application Developers
 
-This document describes the data model and the supported ways to load it into a client application. The source of truth is `database/gita_duolingo.db`; JSON exports and MongoDB collections are derived from it.
+This document describes the data model and the supported ways to load it into a client application. `database/gita_duolingo.db` is the source corpus and generation database. The Prisma seed transforms that content into the app hierarchy described below; the active MongoDB database is `gita_duolingo_prisma`.
 
 ## Corpus at a glance
 
@@ -28,7 +28,9 @@ This document describes the data model and the supported ways to load it into a 
 
 The curriculum and verse-level quiz bank are two different learning experiences. Use `data/curriculum.json` for thematic sections such as “Arjuna's Grief” and “The Eternal Soul.” Use the verse bundle when the app teaches one shloka at a time.
 
-## Relational model
+## Source SQLite relational model
+
+The local generation database preserves each verse's source chapter association. The application seed is transformed to the requested lesson-owned verse hierarchy in the Prisma model section below.
 
 ### `chapters`
 
@@ -125,18 +127,25 @@ Each thematic question has `id`, `type`, `prompt`, `options`, `correct_answer`, 
 
 ## MongoDB layout
 
-Database name: `gita_duolingo`. Collections:
+The active app database is `gita_duolingo_prisma`. Its collections follow the `@@map` names from the app model:
 
-| Collection | `_id` | Document shape |
+| Collection | `_id` | Relationship |
 |---|---|---|
-| `chapters` | `chapter_number` | Chapter row fields. |
-| `verses` | `verse_key` | Verse fields plus `meaning` alias. |
-| `vocabulary` | `id` | Vocabulary row fields. |
-| `questions` | `id` | Question fields, with decoded `options` and `correct_answer`. |
-| `lessons` | `id` | Lesson path fields. |
-| `curriculum` | `course_id` | Whole thematic curriculum document. |
-| `sections` | section `id` | Section metadata without embedded questions, plus `course_id` and `question_count`. |
-| `curriculum_questions` | question `id` | Thematic question fields plus `course_id` and `section_id`. |
+| `scriptures` | BSON ObjectId | Root scripture. |
+| `scripture_translations` | BSON ObjectId | Belongs to one scripture. |
+| `chapters` | BSON ObjectId | Belongs to scripture; parent of modules. |
+| `chapter_translations` | BSON ObjectId | Belongs to one chapter. |
+| `modules` | BSON ObjectId | Belongs to one chapter; parent of lessons. |
+| `module_translations` | BSON ObjectId | Belongs to one module. |
+| `lessons` | BSON ObjectId | Belongs to one module; parent of verses and quiz. |
+| `lesson_translations`, `lesson_content_blocks` | BSON ObjectId | Belong to one lesson. |
+| `verses` | BSON ObjectId | Belongs to exactly one lesson through `lesson_id`; no chapter foreign key. `verse_key` retains the source location. |
+| `verse_translations`, `verse_words` | BSON ObjectId | Belong to one verse. |
+| `quizzes` | BSON ObjectId | One quiz per lesson. |
+| `quiz_questions` | BSON ObjectId | Belongs to one quiz. |
+| `quiz_options` | BSON ObjectId | Belongs to one quiz question. |
+
+There is no `lesson_verses` collection in the current model. The earlier `gita_duolingo` database used a different content shape and was removed after migration.
 
 ## App Prisma model seed
 
@@ -146,17 +155,20 @@ The supplied application requirement uses the hierarchy `Scripture → Chapter �
 python scripts/export_prisma_seed.py
 ```
 
-This creates `exports/prisma_seed_content.json`, with an array for each Prisma content model, deterministic 24-character IDs, relation IDs, and aggregate counts. It contains:
+This creates `exports/prisma_seed_content.json`, with an array for each Prisma content model, deterministic 24-character IDs, relation IDs, and aggregate counts. Its hierarchy is `Scripture → Chapter → Module → Lesson → Verse`. Every verse has exactly one `lessonId`; it has no `chapterId`, and the seed does not create a `LessonVerse` join record.
 
-- 1 Scripture; 18 chapters; 18 chapter modules; 72 chapter-stage lessons and quizzes.
-- The 10 thematic sections are also represented as modules, with one lesson and quiz per section. Each theme module is anchored to its first chapter because the requirement's `Module` has one `chapterId`; its lesson links to every verse in its cross-chapter ranges through `LessonVerse`.
-- 701 verses, verse translations, and 12,681 word rows. English `translation_en` maps to `VerseTranslation` type `CONTEMPORARY`; `meaning_en` maps to `PRACTICAL`; Hindi verse translations are also `CONTEMPORARY`; word glosses map to `VerseWord`. Chapter names and summaries are retained in English, Hindi, and Sanskrit `ChapterTranslation` rows when present.
-- The 9,119 per-verse questions are grouped into four chapter-stage quizzes. The 30 thematic questions are in the thematic lesson quizzes.
-- Quiz options are separate `QuizOption` rows. Original type, answer, hint, Sanskrit prompt, verse reference, and other question-specific fields are preserved in `QuizQuestion.metadata` where the app schema has no dedicated field.
+```text
+Scripture 1 ── * Chapter 1 ── * Module 1 ── * Lesson 1 ── * Verse
+                                                           ├── * VerseTranslation
+                                                           └── * VerseWord
+Lesson 1 ── 0..1 Quiz 1 ── * QuizQuestion 1 ── * QuizOption
+```
 
-The supplied model has no dedicated thematic-section model, so themes use `Module`/`Lesson` and their verse links. `thematic_curriculum` is also retained intact in the seed JSON for clients that need its original section shape and objectives.
+The 10 thematic sections become modules under their first listed chapter. Verses in overlapping theme ranges are assigned to the first section; the unassigned verses go into chapter core lessons. Theme lessons that span multiple source chapters are split by chapter to satisfy the model's unique `(lessonId, verseNumber)` constraint. Verse-level questions stay with the lesson that owns their verse, and the original question level is kept in question metadata. Thematic questions are included in the first lesson quiz for each section. All 701 verses, 12,681 word glosses, 9,119 verse questions, and 30 section questions are included.
 
-To avoid dropping source metadata omitted from the base models, the seed also carries `versesCount` on chapters and optional `speaker`/`commentarySummary` on verses. Add these as optional Prisma fields if typed Prisma access is needed; they remain available in the MongoDB documents regardless.
+Translations map to `VerseTranslation`: English `translation_en` is `CONTEMPORARY`; `meaning_en` is `PRACTICAL`; Hindi verse translations are `CONTEMPORARY`. Word glosses map to `VerseWord`. Quiz options are separate `QuizOption` rows; original types, answers, hints, Sanskrit prompts, and verse references remain in question metadata where the model has no dedicated field. Chapter names/summaries are preserved through English, Hindi, and Sanskrit `ChapterTranslation` rows where present.
+
+The seed adds `verseKey`, `speaker`, and `commentarySummary` to Verse documents, and `versesCount` to Chapter documents, to retain source metadata not declared in the pasted base models. Add these as optional Prisma fields for typed access. The full `thematic_curriculum` JSON is retained alongside the model arrays for clients needing the original section payload.
 
 Do not seed `User`, `UserPreferences`, `LessonProgress`, `QuizAttempt`, `QuizAnswer`, `XPTransaction`, `UserStreak`, or `UserAchievement` from this corpus. Those records belong to Firebase-authenticated users and must be created at runtime. `Achievement` definitions are app policy and are likewise not scripture content.
 

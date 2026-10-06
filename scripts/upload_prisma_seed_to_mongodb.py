@@ -21,17 +21,16 @@ ID_FIELDS = {
 FIELD_MAPS = {
     "scriptures": {"coverImage": "cover_image", "totalChapters": "total_chapters", "createdAt": "created_at", "updatedAt": "updated_at"},
     "scriptureTranslations": {"scriptureId": "scripture_id"},
-    "chapters": {"scriptureId": "scripture_id", "createdAt": "created_at", "updatedAt": "updated_at"},
+    "chapters": {"scriptureId": "scripture_id", "versesCount": "verses_count", "createdAt": "created_at", "updatedAt": "updated_at"},
     "chapterTranslations": {"chapterId": "chapter_id"},
     "modules": {"chapterId": "chapter_id", "createdAt": "created_at", "updatedAt": "updated_at"},
     "moduleTranslations": {"moduleId": "module_id"},
     "lessons": {"moduleId": "module_id", "estimatedMinutes": "estimated_minutes", "xpReward": "xp_reward", "createdAt": "created_at", "updatedAt": "updated_at"},
     "lessonTranslations": {"lessonId": "lesson_id"},
     "lessonContentBlocks": {"lessonId": "lesson_id"},
-    "verses": {"chapterId": "chapter_id", "verseNumber": "verse_number", "audioUrl": "audio_url", "commentarySummary": "commentary_summary", "createdAt": "created_at", "updatedAt": "updated_at"},
+    "verses": {"lessonId": "lesson_id", "verseKey": "verse_key", "verseNumber": "verse_number", "audioUrl": "audio_url", "commentarySummary": "commentary_summary", "createdAt": "created_at", "updatedAt": "updated_at"},
     "verseTranslations": {"verseId": "verse_id", "createdAt": "created_at", "updatedAt": "updated_at"},
     "verseWords": {"verseId": "verse_id", "grammaticalInfo": "grammatical_info"},
-    "lessonVerses": {"lessonId": "lesson_id", "verseId": "verse_id"},
     "quizzes": {"lessonId": "lesson_id", "passingScore": "passing_score", "maxAttempts": "max_attempts", "createdAt": "created_at", "updatedAt": "updated_at"},
     "quizQuestions": {"quizId": "quiz_id"},
     "quizOptions": {"questionId": "question_id", "isCorrect": "is_correct"},
@@ -74,12 +73,12 @@ def main():
             "scriptures", "scripture_translations", "chapters", "chapter_translations",
             "modules", "module_translations", "lessons", "lesson_translations",
             "lesson_content_blocks", "verses", "verse_translations", "verse_words",
-            "lesson_verses", "quizzes", "quiz_questions", "quiz_options",
+            "quizzes", "quiz_questions", "quiz_options",
         }
-        # Replace documents from the previous seed version, whose string IDs
-        # were not valid BSON ObjectIds. This database is reserved for this seed.
-        for collection_name in collection_names:
-            db[collection_name].delete_many({"_id": {"$regex": r"^[0-9a-f]{32}$"}})
+        # This DB contains generated scripture content only; rebuild its
+        # collections so obsolete relationship shapes cannot survive a reseed.
+        for collection_name in collection_names | {"lesson_verses"}:
+            db[collection_name].drop()
         for model_name, records in payload["records"].items():
             collection_name = {
                 "scriptureTranslations": "scripture_translations",
@@ -89,7 +88,6 @@ def main():
                 "lessonContentBlocks": "lesson_content_blocks",
                 "verseTranslations": "verse_translations",
                 "verseWords": "verse_words",
-                "lessonVerses": "lesson_verses",
                 "quizQuestions": "quiz_questions",
                 "quizOptions": "quiz_options",
             }.get(model_name, model_name)
@@ -109,19 +107,6 @@ def main():
                     f"{collection_name}: expected at least {len(records)} documents, found {count}"
                 )
 
-        # Clean up obsolete duplicate Hindi rows from earlier seed versions,
-        # only where the same verse now has the canonical CONTEMPORARY row.
-        verse_translation_docs = payload["records"]["verseTranslations"]
-        hindi_verse_ids = [
-            ObjectId(doc["verseId"]) for doc in verse_translation_docs
-            if doc["language"] == "hi" and doc["type"] == "CONTEMPORARY"
-        ]
-        if hindi_verse_ids:
-            db["verse_translations"].delete_many({
-                "language": "hi", "type": "LITERAL", "verse_id": {"$in": hindi_verse_ids},
-            })
-        actual_counts["verse_translations"] = db["verse_translations"].count_documents({})
-
         # Mirror the unique relations and lookup indexes from the provided model.
         index_specs = {
             "scriptures": [([("slug", 1)], {"unique": True})],
@@ -133,10 +118,9 @@ def main():
             "lessons": [([("module_id", 1), ("slug", 1)], {"unique": True}), ([ ("module_id", 1), ("order", 1)], {"unique": True})],
             "lesson_translations": [([("lesson_id", 1), ("language", 1)], {"unique": True})],
             "lesson_content_blocks": [([("lesson_id", 1), ("order", 1)], {"unique": True})],
-            "verses": [([("chapter_id", 1), ("verse_number", 1)], {"unique": True})],
+            "verses": [([("lesson_id", 1), ("verse_number", 1)], {"unique": True}), ([ ("verse_key", 1)], {"unique": True})],
             "verse_translations": [([("verse_id", 1), ("language", 1), ("type", 1)], {"unique": True})],
             "verse_words": [([("verse_id", 1), ("position", 1)], {"unique": True})],
-            "lesson_verses": [([("lesson_id", 1), ("verse_id", 1)], {"unique": True}), ([ ("lesson_id", 1), ("order", 1)], {"unique": True})],
             "quizzes": [([("lesson_id", 1)], {"unique": True})],
             "quiz_questions": [([("quiz_id", 1), ("order", 1)], {"unique": True})],
             "quiz_options": [([("question_id", 1), ("order", 1)], {"unique": True})],
