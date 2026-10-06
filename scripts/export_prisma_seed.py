@@ -45,6 +45,44 @@ def range_keys(section, verse_by_number):
     return keys
 
 
+def partition_module_verses(keys, verse_by_key, max_lessons=4):
+    """Split verse keys into 1–4 nonempty, chapter-homogeneous lesson groups."""
+    by_chapter = defaultdict(list)
+    for key in sorted(keys, key=lambda item: (
+        verse_by_key[item]["chapter_number"], verse_by_key[item]["verse_number"]
+    )):
+        by_chapter[verse_by_key[key]["chapter_number"]].append(key)
+    if len(by_chapter) > max_lessons:
+        raise ValueError(
+            f"A module covers {len(by_chapter)} chapters; cannot keep chapter-local verse numbers "
+            f"unique within the {max_lessons}-lesson limit."
+        )
+
+    parts = {chapter: 1 for chapter in by_chapter}
+    target_parts = min(max_lessons, len(keys))
+    while sum(parts.values()) < target_parts:
+        candidates = [chapter for chapter, chapter_keys in by_chapter.items()
+                      if parts[chapter] < len(chapter_keys)]
+        if not candidates:
+            break
+        chapter = max(candidates, key=lambda item: len(by_chapter[item]) / parts[item])
+        parts[chapter] += 1
+
+    chunks = []
+    for chapter in sorted(by_chapter):
+        chapter_keys = by_chapter[chapter]
+        count = parts[chapter]
+        quotient, remainder = divmod(len(chapter_keys), count)
+        cursor = 0
+        for index in range(count):
+            size = quotient + (1 if index < remainder else 0)
+            chunks.append(chapter_keys[cursor:cursor + size])
+            cursor += size
+    if not 1 <= len(chunks) <= max_lessons or any(not chunk for chunk in chunks):
+        raise ValueError("Module lesson partition must contain 1–4 nonempty lessons")
+    return chunks
+
+
 def main():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -126,9 +164,7 @@ def main():
         for key in chapter_keys:
             lesson_owner.setdefault(key, f"chapter:{number}")
 
-    lesson_id_by_owner = {}
-    lesson_verse_keys = defaultdict(list)
-    lesson_questions = defaultdict(list)
+    lesson_id_by_verse = {}
     lesson_order_by_module = defaultdict(int)
     module_order_by_chapter = defaultdict(lambda: 1)
 
@@ -148,9 +184,8 @@ def main():
         })
         return module_id
 
-    def add_lesson(module_id, owner, slug, title, description, order, objectives=None):
+    def add_lesson(module_id, slug, title, description, order, objectives=None):
         lesson_id = oid("lesson", slug)
-        lesson_id_by_owner[owner] = lesson_id
         records["lessons"].append({
             "id": lesson_id, "moduleId": module_id, "slug": slug,
             "title": title, "description": description, "order": order,
@@ -167,7 +202,7 @@ def main():
             {"id": oid("content_block", f"{slug}:summary"), "lessonId": lesson_id,
              "type": "KEY_TAKEAWAY", "order": 2, "title": "Learning objectives",
              "content": "\n".join(f"• {item}" for item in (objectives or [])),
-             "metadata": json.dumps({"owner": owner}, ensure_ascii=False)},
+             "metadata": None},
         ])
         return lesson_id
 
@@ -181,8 +216,15 @@ def main():
         title = f"Chapter {number}: Core Verses"
         desc = f"Study verses from Chapter {number} that are not assigned to a thematic section."
         module_id = add_module(number, f"chapter-{number}-core", title, desc, "chapter")
-        lesson_id = add_lesson(module_id, owner, f"chapter-{number}-core-verses", title, desc, 1)
-        lesson_verse_keys[lesson_id].extend(keys)
+        chunks = partition_module_verses(keys, verse_by_key)
+        for part_number, chunk in enumerate(chunks, start=1):
+            part_title = title if len(chunks) == 1 else f"{title} — Part {part_number}"
+            lesson_id = add_lesson(
+                module_id, f"chapter-{number}-core-part-{part_number}", part_title,
+                desc, part_number,
+            )
+            for key in chunk:
+                lesson_id_by_verse[key] = lesson_id
 
     # Thematic sections become modules. A section spanning multiple source
     # chapters gets one lesson per chapter to honor @@unique([lessonId, verseNumber]).
@@ -193,21 +235,16 @@ def main():
         module_id = add_module(anchor, f"theme-{section_id}", section["title"], section["description"], "theme")
         owned = [key for key in section_verse_keys[section_id]
                  if lesson_owner.get(key, "").startswith(f"theme:{section_id}:")]
-        by_chapter = defaultdict(list)
-        for key in owned:
-            by_chapter[verse_by_key[key]["chapter_number"]].append(key)
-        if not by_chapter:
-            by_chapter[anchor] = []
-        for lesson_order, number in enumerate(sorted(by_chapter), start=1):
-            owner = f"theme:{section_id}:{number}"
-            keys = sorted(by_chapter[number])
-            suffix = f"-chapter-{number}" if len(by_chapter) > 1 else ""
+        chunks = partition_module_verses(owned, verse_by_key)
+        for lesson_order, chunk in enumerate(chunks, start=1):
+            suffix = f"-part-{lesson_order}" if len(chunks) > 1 else ""
             lesson_id = add_lesson(
-                module_id, owner, f"{section_id}{suffix}",
-                section["subtitle"] if not suffix else f"{section['subtitle']} — Chapter {number}",
+                module_id, f"{section_id}{suffix}",
+                section["subtitle"] if not suffix else f"{section['subtitle']} — Part {lesson_order}",
                 section["description"], lesson_order, section.get("learning_objectives"),
             )
-            lesson_verse_keys[lesson_id].extend(keys)
+            for key in chunk:
+                lesson_id_by_verse[key] = lesson_id
             thematic_first_lesson.setdefault(section_id, lesson_id)
         theme_lesson_id = thematic_first_lesson.get(section_id)
         if theme_lesson_id:
@@ -221,10 +258,6 @@ def main():
                 }, ensure_ascii=False),
             })
 
-    lesson_id_by_verse = {}
-    for owner, lesson_id in lesson_id_by_owner.items():
-        for key in lesson_verse_keys[lesson_id]:
-            lesson_id_by_verse[key] = lesson_id
     if set(lesson_id_by_verse) != set(verse_by_key):
         raise ValueError("Every source verse must belong to exactly one lesson")
 
@@ -336,7 +369,8 @@ def main():
         "notes": [
             "Hierarchy: Scripture -> Chapter -> Module -> Lesson -> Verse.",
             "Every Verse has one lessonId and no chapterId. Theme-owned verses are assigned to the first matching theme; overlapping references remain in question metadata.",
-            "Each theme spanning source chapters is split into one lesson per chapter to satisfy unique lessonId/verseNumber constraints.",
+            "Every module contains at most four lessons, and every lesson has at least one verse.",
+            "Verse groups are split across up to four lessons per module; groups stay chapter-homogeneous to satisfy unique lessonId/verseNumber constraints.",
             "Chapter numbers and source verse keys are retained as verseKey metadata; verseKey is an additive optional field for the supplied Prisma Verse model.",
             "Question level, original question type, answer, options, hints, and references are preserved in QuizQuestion.metadata and QuizOption rows.",
             "User and progress models are runtime application data and are not included in this content seed.",

@@ -155,7 +155,7 @@ The supplied application requirement uses the hierarchy `Scripture → Chapter �
 python scripts/export_prisma_seed.py
 ```
 
-This creates `exports/prisma_seed_content.json`, with an array for each Prisma content model, deterministic 24-character IDs, relation IDs, and aggregate counts. Its hierarchy is `Scripture → Chapter → Module → Lesson → Verse`. Every verse has exactly one `lessonId`; it has no `chapterId`, and the seed does not create a `LessonVerse` join record.
+This creates `exports/prisma_seed_content.json`, with an array for each Prisma content model, deterministic 24-character IDs, relation IDs, and aggregate counts. Its hierarchy is `Scripture → Chapter → Module → Lesson → Verse`. Every verse has exactly one `lessonId`; it has no `chapterId`, and the seed does not create a `LessonVerse` join record. Each module contains no more than four lessons, and each lesson contains one or more verses.
 
 ```text
 Scripture 1 ── * Chapter 1 ── * Module 1 ── * Lesson 1 ── * Verse
@@ -164,7 +164,7 @@ Scripture 1 ── * Chapter 1 ── * Module 1 ── * Lesson 1 ── * Vers
 Lesson 1 ── 0..1 Quiz 1 ── * QuizQuestion 1 ── * QuizOption
 ```
 
-The 10 thematic sections become modules under their first listed chapter. Verses in overlapping theme ranges are assigned to the first section; the unassigned verses go into chapter core lessons. Theme lessons that span multiple source chapters are split by chapter to satisfy the model's unique `(lessonId, verseNumber)` constraint. Verse-level questions stay with the lesson that owns their verse, and the original question level is kept in question metadata. Thematic questions are included in the first lesson quiz for each section. All 701 verses, 12,681 word glosses, 9,119 verse questions, and 30 section questions are included.
+The 10 thematic sections become modules under their first listed chapter. Verses in overlapping theme ranges are assigned to the first section; the unassigned verses go into chapter core lessons. Verse groups are divided into up to four nonempty lessons per module, staying chapter-homogeneous to satisfy the model's unique `(lessonId, verseNumber)` constraint. Verse-level questions stay with the lesson that owns their verse, and the original question level is kept in question metadata. Thematic questions are included in the first lesson quiz for each section. All 701 verses, 12,681 word glosses, 9,119 verse questions, and 30 section questions are included.
 
 Translations map to `VerseTranslation`: English `translation_en` is `CONTEMPORARY`; `meaning_en` is `PRACTICAL`; Hindi verse translations are `CONTEMPORARY`. Word glosses map to `VerseWord`. Quiz options are separate `QuizOption` rows; original types, answers, hints, Sanskrit prompts, and verse references remain in question metadata where the model has no dedicated field. Chapter names/summaries are preserved through English, Hindi, and Sanskrit `ChapterTranslation` rows where present.
 

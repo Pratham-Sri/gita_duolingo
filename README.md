@@ -116,7 +116,7 @@ This writes:
 
 For application integration, MongoDB collection mapping, API endpoints, JSON shapes, and answer handling, see [docs/DEVELOPER_SCHEMA.md](docs/DEVELOPER_SCHEMA.md). The SQL DDL is maintained in `src/gitalingo/schema.py`.
 
-The app-ready Prisma seed follows `Scripture → Chapter → Module → Lesson → Verse`: verses reference one lesson, and no chapter foreign key or verse join table is used in the app database. The local SQLite corpus retains source chapter grouping for content generation.
+The app-ready Prisma seed follows `Scripture → Chapter → Module → Lesson → Verse`: each module has at most four lessons, each lesson contains verses, and each verse references one lesson. No chapter foreign key or verse join table is used in the app database. The local SQLite corpus retains source chapter grouping for content generation.
 
 The Prisma content model seed export is generated with `python scripts/export_prisma_seed.py` and written to `exports/prisma_seed_content.json`. See the developer schema guide for the model mapping and the app-owned runtime data that is intentionally excluded.
 
