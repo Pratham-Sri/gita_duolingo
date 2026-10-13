@@ -21,18 +21,24 @@ ID_FIELDS = {
 FIELD_MAPS = {
     "scriptures": {"coverImage": "cover_image", "totalChapters": "total_chapters", "createdAt": "created_at", "updatedAt": "updated_at"},
     "scriptureTranslations": {"scriptureId": "scripture_id"},
-    "chapters": {"scriptureId": "scripture_id", "versesCount": "verses_count", "createdAt": "created_at", "updatedAt": "updated_at"},
+    "chapters": {"scriptureId": "scripture_id", "createdAt": "created_at", "updatedAt": "updated_at"},
     "chapterTranslations": {"chapterId": "chapter_id"},
     "modules": {"chapterId": "chapter_id", "createdAt": "created_at", "updatedAt": "updated_at"},
     "moduleTranslations": {"moduleId": "module_id"},
     "lessons": {"moduleId": "module_id", "estimatedMinutes": "estimated_minutes", "xpReward": "xp_reward", "createdAt": "created_at", "updatedAt": "updated_at"},
     "lessonTranslations": {"lessonId": "lesson_id"},
     "lessonContentBlocks": {"lessonId": "lesson_id"},
-    "verses": {"lessonId": "lesson_id", "verseKey": "verse_key", "verseNumber": "verse_number", "audioUrl": "audio_url", "commentarySummary": "commentary_summary", "createdAt": "created_at", "updatedAt": "updated_at"},
-    "verseTranslations": {"verseId": "verse_id", "createdAt": "created_at", "updatedAt": "updated_at"},
+    "verses": {"lessonId": "lesson_id", "verseKey": "verse_key", "verseNumber": "verse_number", "audioUrl": "audio_url", "createdAt": "created_at", "updatedAt": "updated_at"},
     "verseWords": {"verseId": "verse_id", "grammaticalInfo": "grammatical_info"},
     "quizzes": {"lessonId": "lesson_id", "passingScore": "passing_score", "maxAttempts": "max_attempts", "createdAt": "created_at", "updatedAt": "updated_at"},
-    "quizQuestions": {"quizId": "quiz_id"},
+    "quizQuestions": {
+        "quizId": "quiz_id", "sourceQuestionId": "source_question_id",
+        "verseKey": "verse_key", "questionType": "question_type",
+        "lessonLevel": "lesson_level", "sourceQuestionOrder": "source_question_order",
+        "promptSanskrit": "prompt_sanskrit", "answerOptions": "answer_options",
+        "matchingLeft": "matching_left", "matchingRight": "matching_right",
+        "correctAnswer": "correct_answer",
+    },
     "quizOptions": {"questionId": "question_id", "isCorrect": "is_correct"},
 }
 
@@ -49,6 +55,21 @@ def prepare_document(source, object_id_type, model_name):
         new_key = field_map.get(key, key)
         if key.endswith("At") and isinstance(value, str):
             value = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if model_name == "verses" and key == "translations":
+            value = [
+                {
+                    field_map_name: (
+                        datetime.fromisoformat(field_value.replace("Z", "+00:00"))
+                        if field_name.endswith("At") and isinstance(field_value, str)
+                        else field_value
+                    )
+                    for field_name, field_value in translation.items()
+                    for field_map_name in ({
+                        "createdAt": "created_at", "updatedAt": "updated_at",
+                    }.get(field_name, field_name),)
+                }
+                for translation in value
+            ]
         mapped[new_key] = value
     mapped["_id"] = mapped.pop("id")
     return mapped
@@ -72,12 +93,12 @@ def main():
         collection_names = {
             "scriptures", "scripture_translations", "chapters", "chapter_translations",
             "modules", "module_translations", "lessons", "lesson_translations",
-            "lesson_content_blocks", "verses", "verse_translations", "verse_words",
+            "lesson_content_blocks", "verses", "verse_words",
             "quizzes", "quiz_questions", "quiz_options",
         }
         # This DB contains generated scripture content only; rebuild its
         # collections so obsolete relationship shapes cannot survive a reseed.
-        for collection_name in collection_names | {"lesson_verses"}:
+        for collection_name in collection_names | {"lesson_verses", "verse_translations"}:
             db[collection_name].drop()
         for model_name, records in payload["records"].items():
             collection_name = {
@@ -86,7 +107,6 @@ def main():
                 "moduleTranslations": "module_translations",
                 "lessonTranslations": "lesson_translations",
                 "lessonContentBlocks": "lesson_content_blocks",
-                "verseTranslations": "verse_translations",
                 "verseWords": "verse_words",
                 "quizQuestions": "quiz_questions",
                 "quizOptions": "quiz_options",
@@ -119,7 +139,6 @@ def main():
             "lesson_translations": [([("lesson_id", 1), ("language", 1)], {"unique": True})],
             "lesson_content_blocks": [([("lesson_id", 1), ("order", 1)], {"unique": True})],
             "verses": [([("lesson_id", 1), ("verse_number", 1)], {"unique": True}), ([ ("verse_key", 1)], {"unique": True})],
-            "verse_translations": [([("verse_id", 1), ("language", 1), ("type", 1)], {"unique": True})],
             "verse_words": [([("verse_id", 1), ("position", 1)], {"unique": True})],
             "quizzes": [([("lesson_id", 1)], {"unique": True})],
             "quiz_questions": [([("quiz_id", 1), ("order", 1)], {"unique": True})],

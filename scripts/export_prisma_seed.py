@@ -121,7 +121,7 @@ def main():
             "id": chapter_id, "scriptureId": scripture_id, "number": number,
             "slug": f"chapter-{number}", "title": chapter["name_transliterated"] or f"Chapter {number}",
             "description": chapter.get("summary_en"), "difficulty": "BEGINNER",
-            "status": "PUBLISHED", "order": number, "versesCount": chapter.get("verses_count"),
+            "status": "PUBLISHED", "order": number,
             "createdAt": NOW, "updatedAt": NOW,
         })
         for language, title, description in (
@@ -270,8 +270,7 @@ def main():
             "id": verse_id, "lessonId": lesson_id_by_verse[key],
             "verseKey": key, "verseNumber": verse["verse_number"],
             "sanskrit": verse["text_devanagari"], "transliteration": verse["transliteration"],
-            "audioUrl": None, "speaker": verse.get("speaker"),
-            "commentarySummary": verse.get("commentary_summary"),
+            "audioUrl": None, "translations": [],
             "createdAt": NOW, "updatedAt": NOW,
         })
         for language, kind, content, source in (
@@ -280,9 +279,8 @@ def main():
             ("hi", "CONTEMPORARY", verse.get("translation_hi"), None),
         ):
             if content:
-                records["verseTranslations"].append({
-                    "id": oid("verse_translation", f"{key}:{language}:{kind}"),
-                    "verseId": verse_id, "language": language, "type": kind,
+                records["verses"][-1]["translations"].append({
+                    "language": language, "type": kind,
                     "content": content, "source": source, "author": None,
                     "createdAt": NOW, "updatedAt": NOW,
                 })
@@ -298,12 +296,26 @@ def main():
             "meaning": word["meaning_en"], "grammaticalInfo": None,
         })
 
-    def add_question(lesson_id, source_id, qtype, prompt, explanation, points, order, metadata, options, answer):
+    def add_question(lesson_id, source_id, qtype, prompt, explanation, points, order,
+                     source_fields, options, answer):
         question_id = oid("quiz_question", str(source_id))
         records["quizQuestions"].append({
             "id": question_id, "quizId": quiz_id_by_lesson[lesson_id], "type": qtype,
             "question": prompt, "explanation": explanation, "points": points,
-            "order": order, "metadata": json.dumps(metadata, ensure_ascii=False),
+            "order": order,
+            "sourceQuestionId": source_fields.get("sourceQuestionId"),
+            "verseKey": source_fields.get("verseKey"),
+            "questionType": source_fields.get("questionType"),
+            "lessonLevel": source_fields.get("lessonLevel"),
+            "instruction": source_fields.get("instruction"),
+            "sourceQuestionOrder": source_fields.get("sourceQuestionOrder"),
+            "difficulty": source_fields.get("difficulty"),
+            "promptSanskrit": source_fields.get("promptSanskrit"),
+            "hint": source_fields.get("hint"),
+            "answerOptions": source_fields.get("answerOptions"),
+            "matchingLeft": source_fields.get("matchingLeft"),
+            "matchingRight": source_fields.get("matchingRight"),
+            "correctAnswer": source_fields.get("correctAnswer"),
         })
         for index, option in enumerate(options if isinstance(options, list) else [], start=1):
             value = option if isinstance(option, str) else json.dumps(option, ensure_ascii=False)
@@ -336,31 +348,47 @@ def main():
         question_order[lesson_id] += 1
         options = json.loads(question["options_json"])
         answer = json.loads(question["correct_answer_json"])
+        matching = question["question_type"] == "match_pairs" and isinstance(options, dict)
+        answer_options = (
+            [item if isinstance(item, str) else json.dumps(item, ensure_ascii=False)
+             for item in options]
+            if isinstance(options, list) else None
+        )
         add_question(
             lesson_id, f"verse-question:{question['id']}",
-            type_map.get(question["question_type"], "MULTIPLE_CHOICE"),
+            type_map.get(question["question_type"], "SINGLE_CHOICE"),
             question["prompt"], question["explanation"], question["xp_points"],
             question_order[lesson_id], {
                 "sourceQuestionId": question["id"], "verseKey": key,
                 "questionType": question["question_type"], "lessonLevel": question["lesson_level"],
                 "instruction": question["instruction"], "sourceQuestionOrder": question["question_order"],
                 "difficulty": question["difficulty"], "promptSanskrit": question["prompt_sanskrit"],
-                "hint": question["hint"], "options": options, "correctAnswer": answer,
-            }, options, answer,
+                "hint": question["hint"], "answerOptions": answer_options,
+                "matchingLeft": options.get("words") if matching else None,
+                "matchingRight": options.get("meanings") if matching else None,
+                "correctAnswer": answer if isinstance(answer, str) else json.dumps(answer, ensure_ascii=False),
+            }, options if isinstance(options, list) else [], answer,
         )
 
     for section in curriculum["sections"]:
         lesson_id = thematic_first_lesson[section["id"]]
         for item in section.get("questions", []):
             question_order[lesson_id] += 1
+            options = item.get("options", [])
+            answer = item.get("correct_answer")
             add_question(
                 lesson_id, f"thematic-question:{item['id']}",
-                "TRUE_FALSE" if item.get("type") == "true_false" else "MULTIPLE_CHOICE",
+                "TRUE_FALSE" if item.get("type") == "true_false" else "SINGLE_CHOICE",
                 item["prompt"], item.get("explanation"), 10, question_order[lesson_id], {
-                    "sourceQuestionId": item["id"], "sourceType": item.get("type"),
-                    "verseReference": item.get("verse_reference"),
-                    "difficulty": item.get("difficulty"),
-                }, item.get("options", []), item.get("correct_answer"),
+                    "sourceQuestionId": None, "verseKey": None,
+                    "questionType": item.get("type"), "lessonLevel": None,
+                    "instruction": None, "sourceQuestionOrder": None,
+                    "difficulty": item.get("difficulty"), "promptSanskrit": None,
+                    "hint": None,
+                    "answerOptions": options if all(isinstance(value, str) for value in options) else None,
+                    "matchingLeft": None, "matchingRight": None,
+                    "correctAnswer": answer if isinstance(answer, str) else json.dumps(answer, ensure_ascii=False),
+                }, options, answer,
             )
 
     result = {
@@ -377,6 +405,9 @@ def main():
         ],
         "records": dict(records), "thematic_curriculum": curriculum,
         "counts": {name: len(rows) for name, rows in records.items()},
+        "embedded_counts": {
+            "verseTranslations": sum(len(verse["translations"]) for verse in records["verses"]),
+        },
     }
     OUT_PATH.parent.mkdir(exist_ok=True)
     OUT_PATH.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
