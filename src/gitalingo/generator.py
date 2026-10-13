@@ -11,6 +11,10 @@ import sqlite3
 import random
 from urllib.request import Request, urlopen
 from typing import Dict, List, Any, Optional
+from .learning_content import (
+    build_fill_blank_options, build_vocab_options, grammatical_info,
+    translation_distractors,
+)
 
 RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "")
 RAPIDAPI_HOST = "bhagavad-gita3.p.rapidapi.com"
@@ -47,6 +51,9 @@ def init_db():
         conn.execute("ALTER TABLE verses ADD COLUMN translation_source TEXT")
     if "meaning_en" not in verse_columns:
         conn.execute("ALTER TABLE verses ADD COLUMN meaning_en TEXT")
+    vocabulary_columns = {row[1] for row in conn.execute("PRAGMA table_info(vocabulary)")}
+    if "grammatical_info" not in vocabulary_columns:
+        conn.execute("ALTER TABLE vocabulary ADD COLUMN grammatical_info TEXT")
     conn.commit()
     conn.close()
     print("[DB] Initialized database schema at", DB_PATH)
@@ -155,7 +162,10 @@ def parse_word_meanings(raw_str: str) -> List[Dict[str, str]]:
         if w and m:
             # clean punctuation
             w_clean = re.sub(r"[,\.।॥\(\)]", "", w).strip()
-            items.append({"word": w_clean, "meaning": m})
+            items.append({
+                "word": w_clean, "meaning": m,
+                "grammatical_info": grammatical_info(w_clean, m),
+            })
     return items
 
 def detect_speaker(text: str, transliteration: str) -> str:
@@ -291,6 +301,27 @@ def generate_questions_for_verse(verse_data: Dict[str, Any], chapter_meta: Dict[
     word_meanings_raw = verse_data.get("word_meanings", "")
     vocab_list = parse_word_meanings(word_meanings_raw)
     speaker = detect_speaker(text, translit)
+    corpus_conn = get_db_connection()
+    corpus_texts = [row[0] for row in corpus_conn.execute("SELECT text_devanagari FROM verses")]
+    vocabulary_rows = [dict(row) for row in corpus_conn.execute(
+        "SELECT verse_key, word_sanskrit, meaning_en, grammatical_info FROM vocabulary"
+    )]
+    translation_rows = [dict(row) for row in corpus_conn.execute(
+        "SELECT verse_number, translation_en FROM verses WHERE chapter_number = ? AND verse_number != ?",
+        (ch_num, v_num),
+    )]
+    corpus_conn.close()
+    corpus_texts.append(text)
+    vocabulary_words = [{
+        "value": row["word_sanskrit"],
+        "grammatical_info": row.get("grammatical_info") or grammatical_info(row["word_sanskrit"], row["meaning_en"]),
+        "verse_key": row["verse_key"],
+    } for row in vocabulary_rows]
+    vocabulary_meanings = [{
+        "value": row["meaning_en"],
+        "grammatical_info": row.get("grammatical_info") or grammatical_info(row["word_sanskrit"], row["meaning_en"]),
+        "verse_key": row["verse_key"],
+    } for row in vocabulary_rows]
     
     # Translations
     translations = verse_data.get("translations", [])
@@ -337,14 +368,11 @@ def generate_questions_for_verse(verse_data: Dict[str, Any], chapter_meta: Dict[
     # Q2: Direct Vocabulary MCQ (Primary Word)
     if len(vocab_list) >= 1:
         target = vocab_list[0]
-        # Distractors
-        distractors = ["a place of worldly pleasure", "surrendering without a fight", "the act of peaceful meditation", "seeking divine wealth"]
-        if len(vocab_list) >= 3:
-            distractors = [v["meaning"] for v in vocab_list[1:4]]
-            while len(distractors) < 3:
-                distractors.append("divine celestial assembly")
-        opts = [target["meaning"]] + distractors[:3]
-        random.shuffle(opts)
+        opts = build_vocab_options(
+            target["meaning"], vocabulary_meanings, target["grammatical_info"],
+            excluded=[item["meaning"] for item in vocab_list] + [target["meaning"]],
+            seed=f"{verse_key}:2", fallbacks=("the field of action", "the highest self", "steadfast wisdom"),
+        )
         questions.append({
             "lesson_level": 1,
             "question_order": 2,
@@ -363,11 +391,11 @@ def generate_questions_for_verse(verse_data: Dict[str, Any], chapter_meta: Dict[
     # Q3: Direct Vocabulary MCQ (Secondary Word)
     if len(vocab_list) >= 2:
         target = vocab_list[1]
-        distractors = ["retreating into solitude", "chanting sacred hymns", "distributing royal charity", "offering sacrifices"]
-        if len(vocab_list) >= 4:
-            distractors = [v["meaning"] for v in vocab_list if v["meaning"] != target["meaning"]][:3]
-        opts = [target["meaning"]] + distractors[:3]
-        random.shuffle(opts)
+        opts = build_vocab_options(
+            target["meaning"], vocabulary_meanings, target["grammatical_info"],
+            excluded=[item["meaning"] for item in vocab_list] + [target["meaning"]],
+            seed=f"{verse_key}:3", fallbacks=("the field of action", "the highest self", "steadfast wisdom"),
+        )
         questions.append({
             "lesson_level": 1,
             "question_order": 3,
@@ -386,13 +414,11 @@ def generate_questions_for_verse(verse_data: Dict[str, Any], chapter_meta: Dict[
     # Q4: Reverse Vocabulary MCQ (Meaning -> Sanskrit)
     if len(vocab_list) >= 3:
         target = vocab_list[2]
-        opts = [target["word"]]
-        for v in vocab_list:
-            if v["word"] != target["word"] and len(opts) < 4:
-                opts.append(v["word"])
-        while len(opts) < 4:
-            opts.append("धर्मः")
-        random.shuffle(opts)
+        opts = build_vocab_options(
+            target["word"], vocabulary_words, target["grammatical_info"],
+            excluded=[item["word"] for item in vocab_list], seed=f"{verse_key}:4",
+            fallbacks=("dharmakṣhetre", "karmayogena", "ātmatattvavit"),
+        )
         questions.append({
             "lesson_level": 1,
             "question_order": 4,
@@ -423,12 +449,7 @@ def generate_questions_for_verse(verse_data: Dict[str, Any], chapter_meta: Dict[
             clean_blank = re.sub(r"[।॥\d\.\:\;\,\?\!]", "", blank_word).strip()
             prompt_line = " ".join([words_in_line[i] if i != blank_idx else "_____" for i in range(len(words_in_line))])
             
-            # create plausible distractors
-            distractors = [w for w in sanskrit_words if w != clean_blank][:3]
-            while len(distractors) < 3:
-                distractors.append("सत्यम्")
-            opts = [clean_blank] + distractors[:3]
-            random.shuffle(opts)
+            opts = build_fill_blank_options(clean_blank, prompt_line, corpus_texts, f"{verse_key}:5")
             
             questions.append({
                 "lesson_level": 2,
@@ -455,11 +476,7 @@ def generate_questions_for_verse(verse_data: Dict[str, Any], chapter_meta: Dict[
             clean_blank = re.sub(r"[।॥\d\.\:\;\,\?\!]", "", blank_word).strip()
             prompt_line2 = " ".join([words_in_line2[i] if i != blank_idx else "_____" for i in range(len(words_in_line2))])
             
-            distractors = [w for w in sanskrit_words if w != clean_blank][:3]
-            while len(distractors) < 3:
-                distractors.append("कुरु")
-            opts = [clean_blank] + distractors[:3]
-            random.shuffle(opts)
+            opts = build_fill_blank_options(clean_blank, prompt_line2, corpus_texts, f"{verse_key}:6")
             
             questions.append({
                 "lesson_level": 2,
@@ -524,11 +541,9 @@ def generate_questions_for_verse(verse_data: Dict[str, Any], chapter_meta: Dict[
 
     # Q9: Translation Matching
     # Create 3 plausible but altered distractors
-    distractor_1 = "The kings gathered to celebrate their victory and distribute royal riches among the priests."
-    distractor_2 = "Arjuna laid down his bow and arrows, requesting Krishna to lead the armies away from battle."
-    distractor_3 = "Sanjaya recounted the ancient lineages of the Kuru dynasty and their celestial origins."
-    trans_opts = [best_en, distractor_1, distractor_2, distractor_3]
-    random.shuffle(trans_opts)
+    trans_opts = translation_distractors(
+        best_en, v_num, translation_rows, seed=f"{verse_key}:9",
+    )
     questions.append({
         "lesson_level": 3,
         "question_order": 9,
@@ -554,7 +569,7 @@ def generate_questions_for_verse(verse_data: Dict[str, Any], chapter_meta: Dict[
         "instruction": "Evaluate the statement as True or False",
         "prompt": f"True or False: \"{tf_statement}\"",
         "prompt_sanskrit": None,
-        "options_json": json.dumps(["True", "False"], ensure_ascii=False),
+        "options_json": json.dumps(random.sample(["True", "False"], 2), ensure_ascii=False),
         "correct_answer_json": json.dumps("True", ensure_ascii=False),
         "explanation": f"True. This shloka directly conveys {speaker}'s focus and psychological state at this point of the epic.",
         "hint": "Reflect on who spoke and the setting.",
@@ -599,9 +614,9 @@ def generate_philosophical_question(ch: int, v: int, text: str, translation: str
     if ch == 1 and v == 1:
         opts = [
             "It exposed his partiality and attachment, viewing his own sons ('māmakāḥ') as distinct from Pandu's sons despite both being his family.",
-            "He was simply abiding by legal terminology of the royal court.",
-            "He had forgotten that the Pandavas were his nephews.",
-            "He wanted to praise the Pandavas for their martial superiority."
+            "It distinguishes the two dynasties for the report, without implying that Dhritarashtra feels more attached to one side.",
+            "It shows that his concern is primarily the relative strength of the armies, rather than the claims of either family.",
+            "It frames the conflict as a dispute over succession, while leaving his personal loyalties outside the question."
         ]
         correct = opts[0]
         explanation = "Commentators like Sri Madhusudana Saraswati and Shankaracharya point out that the word 'māmakāḥ' (my sons) exposes Dhritarashtra's deep attachment (moha) and bias, the very root of conflict."
@@ -609,9 +624,9 @@ def generate_philosophical_question(ch: int, v: int, text: str, translation: str
     elif ch == 1:
         opts = [
             "It reflects the psychological tension between righteous duty (Dharma) and emotional attachment (Moha).",
-            "It is merely a military headcount without spiritual consequence.",
-            "It shows that diplomacy had completely triumphed over warfare.",
-            "It demonstrates that astrological positions determine all human destiny."
+            "It presents Arjuna's hesitation mainly as uncertainty about military strategy, rather than a conflict of values.",
+            "It suggests that concern for family should decide the question of duty before any wider ethical principle is considered.",
+            "It resolves the moral crisis by treating withdrawal from action as the chapter's final teaching."
         ]
         correct = opts[0]
         explanation = "Chapter 1 lays bare the inner conflict of human consciousness before the dawn of higher wisdom."
@@ -619,9 +634,9 @@ def generate_philosophical_question(ch: int, v: int, text: str, translation: str
     elif ch == 2:
         opts = [
             "The distinction between the eternal Soul (Atman) and the perishable physical body.",
-            "That sorrow can be avoided by abandoning all worldly duties.",
-            "That external rituals are the sole means to liberation.",
-            "That one should fight only when guaranteed personal triumph."
+            "That the self changes with the body, while bodily actions alone remain untouched by change.",
+            "That knowledge of the self is complete only after a person abandons every prescribed action.",
+            "That grief proves the soul itself is diminished whenever the body is lost."
         ]
         correct = opts[0]
         explanation = "Chapter 2 delivers the core Sankhya philosophy: the body is transient, but the indwelling consciousness is indestructible and eternal."
@@ -629,14 +644,15 @@ def generate_philosophical_question(ch: int, v: int, text: str, translation: str
     else:
         opts = [
             "Cultivating equanimity, selfless duty (Nishkama Karma), and dedication of all actions to the Supreme.",
-            "Rejecting work and retiring completely from society.",
-            "Pursuing personal ambition while disregarding moral consequences.",
-            "Blaming external circumstances for one's emotional state."
+            "Performing one's duty only when the likely outcome is favorable and one's effort can control it.",
+            "Treating equanimity as indifference to the consequences one's actions have for others.",
+            "Renouncing action itself whenever desire or uncertainty is present."
         ]
         correct = opts[0]
         explanation = "The Gita repeatedly emphasizes performing one's prescribed duties without obsessive craving for the fruits."
         prompt = f"What central spiritual wisdom does BG {ch}.{v} reveal for self-mastery?"
 
+    random.shuffle(opts)
     return {
         "question_type": "philosophical_insight",
         "difficulty": "intermediate",
@@ -655,24 +671,25 @@ def generate_scenario_question(ch: int, v: int, translation: str, chapter_meta: 
         scenario = "Scenario: Rajiv is the CEO of a company. When evaluating two teams for funding, he secretly favors the team led by his own nephew over a far more qualified team. Which trap from verse 1.1 has Rajiv fallen into?"
         opts = [
             "The trap of 'māmakāḥ' (blind nepotism and egoic attachment dividing 'mine' from 'theirs')",
-            "The virtue of Dharmakshetra (fostering meritocracy)",
-            "The detachment of a Sthitaprajna",
-            "The discipline of Karma Yoga"
+            "A conflict between family loyalty and public duty, with loyalty treated as the only reliable guide.",
+            "A preference for impartial rules that leaves personal kinship out of the funding decision.",
+            "A judgment based on each team's ability, without giving either family connection special weight."
         ]
         correct = opts[0]
         explanation = "Dhritarashtra's question symbolizes the ego favoring 'mine' over what is universally righteous and fair."
     else:
         ch_name = chapter_meta.get("name_meaning", "Righteous Action")
-        scenario = f"Scenario: A leader faces severe stress when a critical project faces turmoil. Remembering the teachings of {ch_name}, how should they respond?"
+        scenario = f"Scenario: A leader faces severe stress when a critical project faces turmoil. Remembering the teachings of {ch_name}, which response best reflects the Gita's guidance?"
         opts = [
             "Focus completely on performing their present responsibility with excellence, letting go of anxiety over outcomes.",
-            "Blame subordinates and walk away from the responsibility.",
-            "Become paralyzed by fear of reputational loss.",
-            "Promise unrealistic outcomes to temporarily placate critics."
+            "Keep working, but judge the quality of each decision mainly by whether it secures the desired result.",
+            "Delay a difficult choice until every possible consequence can be predicted with confidence.",
+            "Transfer the decision to someone else so that personal attachment cannot influence the outcome."
         ]
         correct = opts[0]
         explanation = "The Bhagavad Gita teaches that excellence in action comes from inner composure and duty-consciousness rather than anxiety over results."
 
+    random.shuffle(opts)
     return {
         "question_type": "life_scenario",
         "difficulty": "advanced",
@@ -690,9 +707,9 @@ def generate_metaphor_question(ch: int, v: int, text: str, translation: str) -> 
     if ch == 1 and v == 1:
         opts = [
             "Kurukshetra represents the human body and mind, where the battle between virtuous tendencies (Pandavas) and destructive desires (Kauravas) is fought every day.",
-            "It was merely an ordinary piece of real estate with no symbolic significance.",
-            "It signifies a sanctuary where no conflict could ever occur.",
-            "It symbolizes political elections in ancient kingdoms."
+            "It represents a conflict between duties, while the armies themselves carry no symbolic relation to inner qualities.",
+            "It frames the struggle as a political succession dispute whose meaning does not extend to an individual's mind.",
+            "It depicts a sacred place where spiritual discipline removes conflict rather than clarifying how to face it."
         ]
         correct = opts[0]
         explanation = "Great sages (Paramahamsa Yogananda, Sri Aurobindo, Eknath Easwaran) explain that Kurukshetra is the Kshetra (field) of our own consciousness where righteousness and ego clash."
@@ -700,14 +717,15 @@ def generate_metaphor_question(ch: int, v: int, text: str, translation: str) -> 
     else:
         opts = [
             "The perpetual inner transformation from ignorance (Avidya) to illuminating self-realization.",
-            "A passive acceptance of sorrow without any inner effort.",
-            "A ritualistic sacrifice to attain temporary heavenly pleasures.",
-            "A method to achieve material domination over others."
+            "A struggle between duties in which the opposing sides have no relation to inner qualities or states of mind.",
+            "A symbolic account of social order whose meaning is exhausted by the roles of rulers and warriors.",
+            "An allegory in which spiritual progress comes from avoiding the conflict rather than examining its causes."
         ]
         correct = opts[0]
         explanation = "Every verse in the Gita serves as a beacon guiding the soul beyond egoic limitations towards inner liberation."
         prompt = f"What symbolic inner meaning is encapsulated within BG {ch}.{v}?"
 
+    random.shuffle(opts)
     return {
         "question_type": "philosophical_insight",
         "difficulty": "advanced",
@@ -724,13 +742,14 @@ def generate_metaphor_question(ch: int, v: int, text: str, translation: str) -> 
 def generate_takeaway_question(ch: int, v: int, translation: str) -> Dict[str, Any]:
     opts = [
         "True wisdom begins by acknowledging one's attachments and aligning every action with universal righteousness (Dharma).",
-        "One should always prioritize personal wealth and familial comfort over ethical duty.",
-        "Inaction is superior to action in all circumstances.",
-        "One should suppress emotions rather than understanding their root causes."
+        "Ethical duty should be set aside when a personal relationship makes the decision emotionally difficult.",
+        "Action is spiritually sound only when the expected result is favorable and the means are certain to succeed.",
+        "Detachment means suppressing concern about how one's choices affect other people."
     ]
     correct = opts[0]
+    random.shuffle(opts)
     return {
-        "question_type": "true_false",
+        "question_type": "takeaway",
         "difficulty": "beginner",
         "instruction": "Select the core life lesson",
         "prompt": f"What is the ultimate life lesson to remember from BG {ch}.{v}?",
@@ -800,9 +819,13 @@ def save_verse_and_questions_to_db(verse_data: Dict[str, Any], chapter_meta: Dic
     vocab_items = parse_word_meanings(word_meanings_raw)
     for v in vocab_items:
         c.execute("""
-            INSERT INTO vocabulary (verse_id, verse_key, word_sanskrit, word_transliteration, meaning_en)
-            VALUES (?, ?, ?, ?, ?)
-        """, (verse_id, verse_key, v["word"], None, v["meaning"]))
+            INSERT INTO vocabulary (
+                verse_id, verse_key, word_sanskrit, word_transliteration, meaning_en, grammatical_info
+            ) VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            verse_id, verse_key, v["word"], None, v["meaning"],
+            v.get("grammatical_info") or grammatical_info(v["word"], v["meaning"]),
+        ))
 
     # 3. Insert questions
     c.execute("DELETE FROM questions WHERE verse_key = ?", (verse_key,))

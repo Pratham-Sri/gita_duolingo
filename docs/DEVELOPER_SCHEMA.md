@@ -80,6 +80,7 @@ One row per Sanskrit term/gloss attached to a verse.
 | `word_sanskrit` | string | Sanskrit token. |
 | `word_transliteration` | string/null | Transliteration where available. |
 | `meaning_en` | string | English gloss. |
+| `grammatical_info` | string | Broad part-of-speech tag (for example, noun, pronoun, verb, adjective, or indeclinable), stored on the word row itself. No additional grammar reference record is used. These tags are inferred from the available gloss and lexical cues, not a full inflectional parse; a Sanskrit form can admit multiple analyses depending on context. For detailed review, use the [Sanskrit Heritage Reader](https://sanskrit.uohyd.ac.in/SKT/index.en.html). |
 
 ### `questions`
 
@@ -140,7 +141,7 @@ The active app database is `gita_duolingo_prisma`. Its collections follow the `@
 | `lessons` | BSON ObjectId | Belongs to one module; parent of verses and quiz. |
 | `lesson_translations`, `lesson_content_blocks` | BSON ObjectId | Belong to one lesson. |
 | `verses` | BSON ObjectId | Belongs to exactly one lesson through `lesson_id`; no chapter foreign key. `verse_key` retains the source location. Its `translations` array embeds `VerseTranslation` values. |
-| `verse_words` | BSON ObjectId | Belongs to one verse. |
+| `verse_words` | BSON ObjectId | Belongs to one verse; `grammatical_info` stores the word's broad part of speech directly on the word record. |
 | `quizzes` | BSON ObjectId | One quiz per lesson. |
 | `quiz_questions` | BSON ObjectId | Belongs to one quiz. |
 | `quiz_options` | BSON ObjectId | Belongs to one quiz question. |
@@ -155,7 +156,9 @@ The supplied application requirement uses the hierarchy `Scripture → Chapter �
 python scripts/export_prisma_seed.py
 ```
 
-This creates `exports/prisma_seed_content.json`, with an array for each Prisma content model, deterministic 24-character IDs, relation IDs, and aggregate counts. Its hierarchy is `Scripture → Chapter → Module → Lesson → Verse`. Every verse has exactly one `lessonId`; it has no `chapterId`, and the seed does not create a `LessonVerse` join record. Each module contains no more than four lessons, and each lesson contains one or more verses. Verse translations are nested in each Verse record, matching the requirement's embedded `VerseTranslation` type.
+This creates `exports/prisma_seed_content.json`, with an array for each Prisma content model, deterministic 24-character IDs, relation IDs, and aggregate counts. Its hierarchy is `Scripture → Chapter → Module → Lesson → Verse`. Every verse has exactly one `lessonId`; it has no `chapterId`, and the seed does not create a `LessonVerse` join record. Each module contains at most eight lessons, each lesson has one to six verses, and each verse belongs to one lesson. Verse translations are nested in each Verse record, matching the requirement's embedded `VerseTranslation` type.
+
+Run `python scripts/refine_learning_content.py` to backfill the source vocabulary tags and refresh existing quiz distractors before exporting. The script stores part of speech directly on each existing vocabulary row and does not create a grammar-reference collection or ID.
 
 ```text
 Scripture 1 ── * Chapter 1 ── * Module 1 ── * Lesson 1 ── * Verse
@@ -164,9 +167,9 @@ Scripture 1 ── * Chapter 1 ── * Module 1 ── * Lesson 1 ── * Vers
 Lesson 1 ── 0..1 Quiz 1 ── * QuizQuestion 1 ── * QuizOption
 ```
 
-The 10 thematic sections become modules under their first listed chapter. Verses in overlapping theme ranges are assigned to the first section; the unassigned verses go into chapter core lessons. Verse groups are divided into up to four nonempty lessons per module, staying chapter-homogeneous to satisfy the model's unique `(lessonId, verseNumber)` constraint. Verse-level questions stay with the lesson that owns their verse, and the original question level is kept in question metadata. Thematic questions are included in the first lesson quiz for each section. All 701 verses, 12,681 word glosses, 9,119 verse questions, and 30 section questions are included.
+The 10 thematic sections become modules under their first listed chapter. Verses in overlapping theme ranges are assigned to the first section; the unassigned verses go into chapter core lessons. Lessons contain no more than six verses and remain chapter-homogeneous to satisfy the model's unique `(lessonId, verseNumber)` constraint. Sections requiring more than eight lessons are split across additional modules. Verse-level questions stay with the lesson that owns their verse; source question types, lesson levels, prompts, hints, choices, and correct answers are mapped to dedicated `QuizQuestion` fields. Fill-in questions provide four Sanskrit choices. Thematic questions are included in the first lesson quiz for each section. All 701 verses, 12,681 word glosses, 9,119 verse questions, and 30 section questions are included.
 
-Translations are embedded in the Verse `translations` array: English `translation_en` is `CONTEMPORARY`; `meaning_en` is `PRACTICAL`; Hindi verse translations are `CONTEMPORARY`. These items have no IDs or verse foreign keys because they are embedded values. Word glosses map to `VerseWord`. Quiz source details map to the dedicated `QuizQuestion` fields (`sourceQuestionId`, `verseKey`, `questionType`, `lessonLevel`, `instruction`, `sourceQuestionOrder`, `difficulty`, `promptSanskrit`, `hint`, `answerOptions`, `matchingLeft`, `matchingRight`, and `correctAnswer`); `QuizOption` records hold display options and correctness flags. The seed does not add an undeclared `metadata` field to quiz-question documents. Original thematic question references and full section payload remain available in the `thematic_curriculum` sidecar. Chapter names/summaries are preserved through English, Hindi, and Sanskrit `ChapterTranslation` rows where present.
+Translations are embedded in the Verse `translations` array: English `translation_en` is `CONTEMPORARY`; `meaning_en` is `PRACTICAL`; Hindi verse translations are `CONTEMPORARY`. These items have no IDs or verse foreign keys because they are embedded values. Word glosses map to `VerseWord`; `grammaticalInfo` is populated with a broad part-of-speech label on the existing word record, with no additional grammar reference ID. Quiz source details map to the dedicated `QuizQuestion` fields (`sourceQuestionId`, `verseKey`, `questionType`, `lessonLevel`, `instruction`, `sourceQuestionOrder`, `difficulty`, `promptSanskrit`, `hint`, `answerOptions`, `matchingLeft`, `matchingRight`, and `correctAnswer`); `QuizOption` records hold display options and correctness flags. Fill-in questions have four distinct Sanskrit choices; distractors are selected to resemble the target's form. Other multiple-choice distractors use similar word classes or nearby verse translations and options are shuffled. The seed does not add an undeclared `metadata` field to quiz-question documents. Original thematic question references and full section payload remain available in the `thematic_curriculum` sidecar. Chapter names/summaries are preserved through English, Hindi, and Sanskrit `ChapterTranslation` rows where present.
 
 The content seed follows the fields declared in the supplied models. Source-only `speaker`, `commentary_summary`, and chapter verse-count metadata remain in the SQLite corpus and its exports; they are not added to Prisma Verse or Chapter documents. The full `thematic_curriculum` JSON is retained alongside the model arrays for clients needing the original section payload.
 

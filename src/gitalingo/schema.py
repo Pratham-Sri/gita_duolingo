@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS vocabulary (
     word_sanskrit TEXT NOT NULL,
     word_transliteration TEXT,
     meaning_en TEXT NOT NULL,
+    grammatical_info TEXT,
     FOREIGN KEY(verse_id) REFERENCES verses(id)
 );
 
@@ -70,7 +71,7 @@ CREATE TABLE IF NOT EXISTS questions (
     question_order INTEGER NOT NULL,
     
     -- Question Types:
-    -- 'match_pairs', 'mcq_vocab', 'mcq_reverse_vocab', 'fill_blank', 
+    -- 'match_pairs', 'mcq_vocab', 'mcq_reverse_vocab', 'fill_blank', 'takeaway',
     -- 'word_order', 'speaker_context', 'translation_mcq', 
     -- 'philosophical_insight', 'life_scenario', 'true_false'
     question_type TEXT NOT NULL,

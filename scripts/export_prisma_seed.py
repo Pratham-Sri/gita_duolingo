@@ -4,11 +4,15 @@ import hashlib
 import json
 import re
 import sqlite3
+import sys
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+from gitalingo.learning_content import grammatical_info
+
 DB_PATH = ROOT / "database" / "gita_duolingo.db"
 OUT_PATH = ROOT / "exports" / "prisma_seed_content.json"
 NOW = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
@@ -45,42 +49,28 @@ def range_keys(section, verse_by_number):
     return keys
 
 
-def partition_module_verses(keys, verse_by_key, max_lessons=4):
-    """Split verse keys into 1–4 nonempty, chapter-homogeneous lesson groups."""
+def partition_module_verses(keys, verse_by_key, max_verses=6):
+    """Split verse keys into nonempty, chapter-homogeneous groups of at most six."""
     by_chapter = defaultdict(list)
     for key in sorted(keys, key=lambda item: (
         verse_by_key[item]["chapter_number"], verse_by_key[item]["verse_number"]
     )):
         by_chapter[verse_by_key[key]["chapter_number"]].append(key)
-    if len(by_chapter) > max_lessons:
-        raise ValueError(
-            f"A module covers {len(by_chapter)} chapters; cannot keep chapter-local verse numbers "
-            f"unique within the {max_lessons}-lesson limit."
-        )
-
-    parts = {chapter: 1 for chapter in by_chapter}
-    target_parts = min(max_lessons, len(keys))
-    while sum(parts.values()) < target_parts:
-        candidates = [chapter for chapter, chapter_keys in by_chapter.items()
-                      if parts[chapter] < len(chapter_keys)]
-        if not candidates:
-            break
-        chapter = max(candidates, key=lambda item: len(by_chapter[item]) / parts[item])
-        parts[chapter] += 1
-
     chunks = []
     for chapter in sorted(by_chapter):
         chapter_keys = by_chapter[chapter]
-        count = parts[chapter]
-        quotient, remainder = divmod(len(chapter_keys), count)
-        cursor = 0
-        for index in range(count):
-            size = quotient + (1 if index < remainder else 0)
-            chunks.append(chapter_keys[cursor:cursor + size])
-            cursor += size
-    if not 1 <= len(chunks) <= max_lessons or any(not chunk for chunk in chunks):
-        raise ValueError("Module lesson partition must contain 1–4 nonempty lessons")
+        chunks.extend(
+            chapter_keys[start:start + max_verses]
+            for start in range(0, len(chapter_keys), max_verses)
+        )
+    if not chunks or any(not chunk or len(chunk) > max_verses for chunk in chunks):
+        raise ValueError("Every lesson must contain between one and six verses")
     return chunks
+
+
+def group_lesson_chunks(chunks, max_lessons=8):
+    """Create additional modules when needed, keeping at most eight lessons each."""
+    return [chunks[start:start + max_lessons] for start in range(0, len(chunks), max_lessons)]
 
 
 def main():
@@ -215,37 +205,47 @@ def main():
             continue
         title = f"Chapter {number}: Core Verses"
         desc = f"Study verses from Chapter {number} that are not assigned to a thematic section."
-        module_id = add_module(number, f"chapter-{number}-core", title, desc, "chapter")
         chunks = partition_module_verses(keys, verse_by_key)
-        for part_number, chunk in enumerate(chunks, start=1):
-            part_title = title if len(chunks) == 1 else f"{title} — Part {part_number}"
-            lesson_id = add_lesson(
-                module_id, f"chapter-{number}-core-part-{part_number}", part_title,
-                desc, part_number,
-            )
-            for key in chunk:
-                lesson_id_by_verse[key] = lesson_id
+        module_groups = group_lesson_chunks(chunks)
+        for module_part, lesson_chunks in enumerate(module_groups, start=1):
+            module_slug = f"chapter-{number}-core" if module_part == 1 else f"chapter-{number}-core-part-{module_part}"
+            module_title = title if len(module_groups) == 1 else f"{title} — Module {module_part}"
+            module_id = add_module(number, module_slug, module_title, desc, "chapter")
+            for local_order, chunk in enumerate(lesson_chunks, start=1):
+                part_number = (module_part - 1) * 8 + local_order
+                part_title = title if len(chunks) == 1 else f"{title} — Lesson {part_number}"
+                lesson_id = add_lesson(
+                    module_id, f"chapter-{number}-core-part-{part_number}", part_title,
+                    desc, local_order,
+                )
+                for key in chunk:
+                    lesson_id_by_verse[key] = lesson_id
 
-    # Thematic sections become modules. A section spanning multiple source
-    # chapters gets one lesson per chapter to honor @@unique([lessonId, verseNumber]).
+    # Thematic sections become modules. Lessons stay chapter-homogeneous to
+    # honor @@unique([lessonId, verseNumber]); larger sections split into modules.
     thematic_first_lesson = {}
     for section in curriculum["sections"]:
         section_id = section["id"]
         anchor = (section.get("chapter_numbers") or [1])[0]
-        module_id = add_module(anchor, f"theme-{section_id}", section["title"], section["description"], "theme")
         owned = [key for key in section_verse_keys[section_id]
                  if lesson_owner.get(key, "").startswith(f"theme:{section_id}:")]
         chunks = partition_module_verses(owned, verse_by_key)
-        for lesson_order, chunk in enumerate(chunks, start=1):
-            suffix = f"-part-{lesson_order}" if len(chunks) > 1 else ""
-            lesson_id = add_lesson(
-                module_id, f"{section_id}{suffix}",
-                section["subtitle"] if not suffix else f"{section['subtitle']} — Part {lesson_order}",
-                section["description"], lesson_order, section.get("learning_objectives"),
-            )
-            for key in chunk:
-                lesson_id_by_verse[key] = lesson_id
-            thematic_first_lesson.setdefault(section_id, lesson_id)
+        module_groups = group_lesson_chunks(chunks)
+        for module_part, lesson_chunks in enumerate(module_groups, start=1):
+            module_slug = f"theme-{section_id}" if module_part == 1 else f"theme-{section_id}-part-{module_part}"
+            module_title = section["title"] if len(module_groups) == 1 else f"{section['title']} — Module {module_part}"
+            module_id = add_module(anchor, module_slug, module_title, section["description"], "theme")
+            for local_order, chunk in enumerate(lesson_chunks, start=1):
+                lesson_number = (module_part - 1) * 8 + local_order
+                suffix = f"-part-{lesson_number}" if len(chunks) > 1 else ""
+                lesson_title = section["subtitle"] if not suffix else f"{section['subtitle']} — Lesson {lesson_number}"
+                lesson_id = add_lesson(
+                    module_id, f"{section_id}{suffix}", lesson_title,
+                    section["description"], local_order, section.get("learning_objectives"),
+                )
+                for key in chunk:
+                    lesson_id_by_verse[key] = lesson_id
+                thematic_first_lesson.setdefault(section_id, lesson_id)
         theme_lesson_id = thematic_first_lesson.get(section_id)
         if theme_lesson_id:
             records["lessonContentBlocks"].append({
@@ -293,7 +293,10 @@ def main():
             "id": oid("verse_word", f"{key}:{word['id']}"),
             "verseId": verse_id_by_key[key], "position": word_positions[key],
             "sanskrit": word["word_sanskrit"], "transliteration": word.get("word_transliteration"),
-            "meaning": word["meaning_en"], "grammaticalInfo": None,
+            "meaning": word["meaning_en"],
+            "grammaticalInfo": word.get("grammatical_info") or grammatical_info(
+                word["word_sanskrit"], word["meaning_en"],
+            ),
         })
 
     def add_question(lesson_id, source_id, qtype, prompt, explanation, points, order,
@@ -397,8 +400,8 @@ def main():
         "notes": [
             "Hierarchy: Scripture -> Chapter -> Module -> Lesson -> Verse.",
             "Every Verse has one lessonId and no chapterId. Theme-owned verses are assigned to the first matching theme; overlapping references remain in question metadata.",
-            "Every module contains at most four lessons, and every lesson has at least one verse.",
-            "Verse groups are split across up to four lessons per module; groups stay chapter-homogeneous to satisfy unique lessonId/verseNumber constraints.",
+            "Every module contains at most eight lessons, and every lesson has one to six verses.",
+            "Lessons are chapter-homogeneous to satisfy unique lessonId/verseNumber constraints; larger sections are split across additional modules.",
             "Chapter numbers and source verse keys are retained as verseKey metadata; verseKey is an additive optional field for the supplied Prisma Verse model.",
             "Question level, original question type, answer, options, hints, and references are preserved in QuizQuestion.metadata and QuizOption rows.",
             "User and progress models are runtime application data and are not included in this content seed.",
