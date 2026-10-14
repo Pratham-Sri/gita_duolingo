@@ -25,10 +25,10 @@ from gitalingo.learning_content import (  # noqa: E402
 )
 
 
-def update_question(conn, question_id, question_type, options):
+def update_question(conn, question_id, question_type, options, answer):
     conn.execute(
-        "UPDATE questions SET question_type = ?, options_json = ? WHERE id = ?",
-        (question_type, json.dumps(options, ensure_ascii=False), question_id),
+        "UPDATE questions SET question_type = ?, options_json = ?, correct_answer_json = ? WHERE id = ?",
+        (question_type, json.dumps(options, ensure_ascii=False), json.dumps(answer, ensure_ascii=False), question_id),
     )
 
 
@@ -41,7 +41,7 @@ def main():
     verse_by_key = {row["verse_key"]: row for row in verses}
     corpus_texts = [row["text_devanagari"] for row in verses]
     vocab = [dict(row) for row in conn.execute(
-        "SELECT id, verse_key, word_sanskrit, meaning_en FROM vocabulary"
+        "SELECT id, verse_key, word_sanskrit, word_transliteration, meaning_en FROM vocabulary"
     )]
     for word in vocab:
         word["grammatical_info"] = grammatical_info(word["word_sanskrit"], word["meaning_en"])
@@ -83,7 +83,7 @@ def main():
         elif q_type == "mcq_vocab":
             target_token = question.get("prompt_sanskrit") or ""
             target = next((item for item in by_verse.get(key, [])
-                           if item["word_sanskrit"] == target_token), None)
+                           if target_token in {item["word_sanskrit"], item["word_transliteration"]}), None)
             if target:
                 options = build_vocab_options(
                     answer, meanings, target["grammatical_info"],
@@ -98,11 +98,12 @@ def main():
             target = next((item for item in by_verse.get(key, [])
                            if item["meaning_en"] == target_meaning), None)
             if target:
+                answer = target["word_sanskrit"]
                 options = build_vocab_options(
                     answer, words, target["grammatical_info"],
                     excluded=[item["word_sanskrit"] for item in by_verse.get(key, [])],
                     seed=f"{key}:{order}",
-                    fallbacks=("dharmakṣhetre", "karmayogena", "ātmatattvavit"),
+                    fallbacks=("धर्मक्षेत्रे", "कर्मयोगेन", "आत्मतत्त्ववित्"),
                 )
                 changed["vocabulary_mcq"] += 1
         elif q_type == "translation_mcq":
@@ -166,7 +167,7 @@ def main():
                     options[-1] = answer
             options.sort(key=str.casefold)
             random.Random(f"{key}:{order}").shuffle(options)
-            update_question(conn, question["id"], q_type, options)
+            update_question(conn, question["id"], q_type, options, answer)
 
     conn.commit()
     conn.close()

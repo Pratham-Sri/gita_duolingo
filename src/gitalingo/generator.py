@@ -15,6 +15,7 @@ from .learning_content import (
     build_fill_blank_options, build_vocab_options, grammatical_info,
     translation_distractors,
 )
+from .transliteration import DEVANAGARI_RE, normalize_sanskrit_word
 
 RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "")
 RAPIDAPI_HOST = "bhagavad-gita3.p.rapidapi.com"
@@ -162,9 +163,12 @@ def parse_word_meanings(raw_str: str) -> List[Dict[str, str]]:
         if w and m:
             # clean punctuation
             w_clean = re.sub(r"[,\.।॥\(\)]", "", w).strip()
+            sanskrit, transliteration = normalize_sanskrit_word(w_clean)
+            if not DEVANAGARI_RE.search(sanskrit):
+                continue
             items.append({
-                "word": w_clean, "meaning": m,
-                "grammatical_info": grammatical_info(w_clean, m),
+                "word": sanskrit, "transliteration": transliteration,
+                "meaning": m, "grammatical_info": grammatical_info(w_clean, m),
             })
     return items
 
@@ -417,7 +421,7 @@ def generate_questions_for_verse(verse_data: Dict[str, Any], chapter_meta: Dict[
         opts = build_vocab_options(
             target["word"], vocabulary_words, target["grammatical_info"],
             excluded=[item["word"] for item in vocab_list], seed=f"{verse_key}:4",
-            fallbacks=("dharmakṣhetre", "karmayogena", "ātmatattvavit"),
+            fallbacks=("धर्मक्षेत्रे", "कर्मयोगेन", "आत्मतत्त्ववित्"),
         )
         questions.append({
             "lesson_level": 1,
@@ -823,7 +827,7 @@ def save_verse_and_questions_to_db(verse_data: Dict[str, Any], chapter_meta: Dic
                 verse_id, verse_key, word_sanskrit, word_transliteration, meaning_en, grammatical_info
             ) VALUES (?, ?, ?, ?, ?, ?)
         """, (
-            verse_id, verse_key, v["word"], None, v["meaning"],
+                verse_id, verse_key, v["word"], v.get("transliteration"), v["meaning"],
             v.get("grammatical_info") or grammatical_info(v["word"], v["meaning"]),
         ))
 

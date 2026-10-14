@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS vocabulary (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     verse_id INTEGER NOT NULL,
     verse_key TEXT NOT NULL,
-    word_sanskrit TEXT NOT NULL,
-    word_transliteration TEXT,
-    meaning_en TEXT NOT NULL,
+    word_sanskrit TEXT NOT NULL, -- Sanskrit token in Devanagari
+    word_transliteration TEXT,   -- Roman Sanskrit pronunciation, not an English translation
+    meaning_en TEXT NOT NULL,    -- English gloss / translation
     grammatical_info TEXT,
     FOREIGN KEY(verse_id) REFERENCES verses(id)
 );

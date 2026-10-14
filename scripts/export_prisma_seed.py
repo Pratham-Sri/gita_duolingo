@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from gitalingo.learning_content import grammatical_info
+from gitalingo.transliteration import normalize_sanskrit_word
 
 DB_PATH = ROOT / "database" / "gita_duolingo.db"
 OUT_PATH = ROOT / "exports" / "prisma_seed_content.json"
@@ -289,10 +290,12 @@ def main():
     for word in words:
         key = word["verse_key"]
         word_positions[key] += 1
+        sanskrit, transliteration = normalize_sanskrit_word(word["word_sanskrit"])
         records["verseWords"].append({
             "id": oid("verse_word", f"{key}:{word['id']}"),
             "verseId": verse_id_by_key[key], "position": word_positions[key],
-            "sanskrit": word["word_sanskrit"], "transliteration": word.get("word_transliteration"),
+            "sanskrit": sanskrit,
+            "transliteration": word.get("word_transliteration") or transliteration,
             "meaning": word["meaning_en"],
             "grammaticalInfo": word.get("grammatical_info") or grammatical_info(
                 word["word_sanskrit"], word["meaning_en"],

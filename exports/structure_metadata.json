@@ -3,7 +3,7 @@
   "chapter_count": 18,
   "verse_count": 701,
   "question_count": 9119,
-  "vocabulary_count": 12681,
+  "vocabulary_count": 12637,
   "lesson_path_count": 2804,
   "chapters": [
     {
@@ -1333,7 +1333,7 @@
   "mongo_collections": {
     "chapters": 18,
     "verses": 701,
-    "vocabulary": 12681,
+    "vocabulary": 12637,
     "questions": 9119,
     "lessons": 2804,
     "curriculum": 1,
