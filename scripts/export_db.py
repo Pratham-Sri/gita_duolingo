@@ -10,6 +10,9 @@ import sqlite3
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "database", "gita_duolingo.db")
+QUESTION_TABLE = os.environ.get("GITALINGO_QUESTION_TABLE", "questions")
+if QUESTION_TABLE not in {"questions", "curated_questions_v2"}:
+    raise ValueError("GITALINGO_QUESTION_TABLE must be 'questions' or 'curated_questions_v2'")
 EXPORTS_DIR = os.path.join(BASE_DIR, "exports")
 os.makedirs(EXPORTS_DIR, exist_ok=True)
 
@@ -48,7 +51,7 @@ def export_all():
         json.dump(verses, f, ensure_ascii=False, indent=2)
 
     # 4. Questions JSON
-    questions_raw = [dict(r) for r in c.execute("SELECT * FROM questions ORDER BY chapter_number, verse_number, question_order").fetchall()]
+    questions_raw = [dict(r) for r in c.execute(f"SELECT * FROM {QUESTION_TABLE} ORDER BY chapter_number, verse_number, lesson_level, question_order").fetchall()]
     questions = []
     for q in questions_raw:
         q_clean = dict(q)

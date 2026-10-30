@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import os
 import re
 import sqlite3
 import sys
@@ -16,6 +17,9 @@ from gitalingo.transliteration import normalize_sanskrit_word
 
 DB_PATH = ROOT / "database" / "gita_duolingo.db"
 OUT_PATH = ROOT / "exports" / "prisma_seed_content.json"
+QUESTION_TABLE = os.environ.get("GITALINGO_QUESTION_TABLE", "questions")
+if QUESTION_TABLE not in {"questions", "curated_questions_v2"}:
+    raise ValueError("GITALINGO_QUESTION_TABLE must be 'questions' or 'curated_questions_v2'")
 NOW = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
@@ -82,7 +86,7 @@ def main():
     words = read_rows(conn, "SELECT * FROM vocabulary ORDER BY verse_key, id")
     questions = read_rows(
         conn,
-        "SELECT * FROM questions ORDER BY chapter_number, verse_number, lesson_level, question_order",
+        f"SELECT * FROM {QUESTION_TABLE} ORDER BY chapter_number, verse_number, lesson_level, question_order",
     )
     curriculum = json.loads((ROOT / "data" / "curriculum.json").read_text(encoding="utf-8"))
     conn.close()
@@ -355,17 +359,18 @@ def main():
         options = json.loads(question["options_json"])
         answer = json.loads(question["correct_answer_json"])
         matching = question["question_type"] == "match_pairs" and isinstance(options, dict)
+        source_question_key = question.get("question_key") or f"legacy:{question['id']}"
         answer_options = (
             [item if isinstance(item, str) else json.dumps(item, ensure_ascii=False)
              for item in options]
             if isinstance(options, list) else None
         )
         add_question(
-            lesson_id, f"verse-question:{question['id']}",
+            lesson_id, f"verse-question:{source_question_key}",
             type_map.get(question["question_type"], "SINGLE_CHOICE"),
             question["prompt"], question["explanation"], question["xp_points"],
             question_order[lesson_id], {
-                "sourceQuestionId": question["id"], "verseKey": key,
+                "sourceQuestionId": source_question_key, "verseKey": key,
                 "questionType": question["question_type"], "lessonLevel": question["lesson_level"],
                 "instruction": question["instruction"], "sourceQuestionOrder": question["question_order"],
                 "difficulty": question["difficulty"], "promptSanskrit": question["prompt_sanskrit"],

@@ -104,7 +104,57 @@ Verse-linked quiz items. `lesson_level` gives the learning stage; `question_orde
 | `hint` | string/null | Optional hint. |
 | `xp_points` | integer | XP reward for a correct answer. |
 
-Known verse-level `question_type` values include `match_pairs`, `mcq_vocab`, `mcq_reverse_vocab`, `transliteration_match`, `fill_blank`, `word_order`, `speaker_context`, `translation_mcq`, `true_false`, `philosophical_insight`, `life_scenario`, `metaphor`, and `takeaway`. Build renderers with a fallback because new types may be added.
+### Interchangeable legacy and current banks
+
+`questions` is the legacy bank. `curated_questions_v2` is the selectable current
+bank. Both tables use the same ordered columns and SQLite types, including the
+original app fields above; the v2 metadata columns are additive. Legacy records
+receive `legacy` review-state defaults and can leave editorial fields null. The
+builder verifies the full column definitions match before committing the new bank.
+
+| Added field | Type | Meaning |
+|---|---|---|
+| `question_key` | string/null | Stable string key. Legacy rows use `legacy:<id>`; curated rows use keys such as `BG2.47.meaning.01`. |
+| `skill`, `concept` | string/null | Learning skill and curriculum concept. |
+| `prerequisite_concept`, `prerequisite_verse` | string/null | Concept-based learning dependency and its milestone verse. |
+| `source`, `source_question` | string/null | Data provenance and source/candidate stem. |
+| `correct_position` | string/null | Correct option position A–D when options are a four-choice list. |
+| `sanskrit`, `transliteration`, `base_translation` | string/null | Normalized verse display, Roman transliteration, and attributed reference translation. |
+| `status`, `editor_notes` | string/null | Review state and editorial guidance. Current authored rows are `editorial-review-required`; carried-over rows are `legacy-fallback`. |
+| `difficulty_status` | string/null | `provisional` for curated estimates; `legacy` for the original bank. |
+
+`python scripts/build_question_bank_v2.py` adds these columns to an existing
+legacy table without removing or renaming its original columns, then rebuilds
+`curated_questions_v2` with the same schema. It puts the five curated question
+types on each of the 122 selected core verses and carries the legacy questions
+for other verses into the current table with `status='legacy-fallback'`. That
+keeps questions available for every source verse, including each verse in a
+six-verse lesson, while making the content's review state explicit. The
+review CSV and JSON contain the 610 curated records; the SQLite current table
+also contains fallback rows for full-corpus coverage.
+
+Both tables use integer row IDs for app compatibility. Use `question_key` for
+stable interchange and joins; do not assume integer IDs are shared between
+the two tables. To switch banks in a query, select `questions` or
+`curated_questions_v2` as the source table; their columns and decoded answer
+shape are the same. Legacy renderers should retain their fallback handling for
+the newer types `meaning`, `context`, `inference`, `application`, and
+`vocabulary`.
+
+The API and both export scripts use `questions` by default. To switch the
+application or export process to the current bank, set the allowlisted
+environment variable before starting it:
+
+```powershell
+$env:GITALINGO_QUESTION_TABLE = "curated_questions_v2"
+python -m app.api
+```
+
+Set it to `questions` to return to the legacy bank. The same setting is read by
+`scripts/export_db.py` and `scripts/export_prisma_seed.py`, so a bank switch does
+not require changing field mappings or the database structure.
+
+Known verse-level `question_type` values include `match_pairs`, `mcq_vocab`, `mcq_reverse_vocab`, `transliteration_match`, `fill_blank`, `word_order`, `speaker_context`, `translation_mcq`, `true_false`, `philosophical_insight`, `life_scenario`, `metaphor`, `takeaway`, `meaning`, `context`, `inference`, `application`, and `vocabulary`. Build renderers with a fallback because new types may be added.
 
 For ordinary choice questions, `options` is an array of strings and `correct_answer` is a string. For `word_order`, the answer is an ordered value; for `match_pairs`, it is a mapping/object. Do not assume every answer is a string.
 

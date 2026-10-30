@@ -73,7 +73,8 @@ CREATE TABLE IF NOT EXISTS questions (
     -- Question Types:
     -- 'match_pairs', 'mcq_vocab', 'mcq_reverse_vocab', 'fill_blank', 'takeaway',
     -- 'word_order', 'speaker_context', 'translation_mcq', 
-    -- 'philosophical_insight', 'life_scenario', 'true_false'
+    -- 'philosophical_insight', 'life_scenario', 'true_false',
+    -- 'meaning', 'context', 'inference', 'application', 'vocabulary'
     question_type TEXT NOT NULL,
     difficulty TEXT NOT NULL CHECK(difficulty IN ('beginner', 'intermediate', 'advanced')),
     
@@ -87,6 +88,22 @@ CREATE TABLE IF NOT EXISTS questions (
     explanation TEXT NOT NULL,        -- Rich explanation with spiritual insight
     hint TEXT,                        -- Optional clue for learners
     xp_points INTEGER NOT NULL DEFAULT 10,
+
+    -- Optional interchange metadata shared by legacy and curated banks.
+    question_key TEXT UNIQUE,
+    skill TEXT,
+    concept TEXT,
+    prerequisite_concept TEXT,
+    prerequisite_verse TEXT,
+    source TEXT,
+    source_question TEXT,
+    correct_position TEXT,
+    sanskrit TEXT,
+    transliteration TEXT,
+    base_translation TEXT,
+    status TEXT NOT NULL DEFAULT 'legacy',
+    editor_notes TEXT,
+    difficulty_status TEXT NOT NULL DEFAULT 'legacy',
     
     FOREIGN KEY(verse_id) REFERENCES verses(id)
 );
@@ -94,6 +111,7 @@ CREATE TABLE IF NOT EXISTS questions (
 CREATE INDEX IF NOT EXISTS idx_questions_verse ON questions(verse_key);
 CREATE INDEX IF NOT EXISTS idx_questions_type ON questions(question_type);
 CREATE INDEX IF NOT EXISTS idx_questions_level ON questions(lesson_level);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_questions_question_key ON questions(question_key);
 
 -- 5. Duolingo Lesson Paths (Skill Tree structure)
 CREATE TABLE IF NOT EXISTS lessons (

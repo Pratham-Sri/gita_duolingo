@@ -1,0 +1,93 @@
+{
+  "questions": 9119,
+  "verses_with_questions": 701,
+  "per_verse_question_count_distribution": {
+    "10": 5,
+    "12": 19,
+    "13": 637,
+    "14": 40
+  },
+  "distinct_stems": 14,
+  "answer_position_counts": {
+    "0": 2042,
+    "1": 2418,
+    "2": 2357,
+    "3": 2314
+  },
+  "question_order_gap_verses": 661,
+  "issues": {
+    "answer_is_translation_fragment": 9117,
+    "answer_option_high_overlap": 9134,
+    "answer_dangling_ending": 141,
+    "answer_length_outside_20pct": 875,
+    "embedded_newlines": 132,
+    "near_duplicate_option_pairs": 31,
+    "duplicate_options": 12,
+    "encoding_artifacts": 150,
+    "reused_stems": 9105
+  },
+  "examples": {
+    "answer_is_translation_fragment": [
+      "BG1.1",
+      "BG1.10",
+      "BG1.11",
+      "BG1.12",
+      "BG1.13",
+      "BG1.14",
+      "BG1.15",
+      "BG1.16",
+      "BG1.17",
+      "BG1.18",
+      "BG1.19",
+      "BG1.2"
+    ],
+    "answer_dangling_ending": [
+      "BG1.1",
+      "BG1.30",
+      "BG1.31",
+      "BG1.32",
+      "BG1.35",
+      "BG1.36",
+      "BG1.37",
+      "BG1.39",
+      "BG1.46",
+      "BG10.17",
+      "BG10.28",
+      "BG11.43"
+    ],
+    "embedded_newlines": [
+      "BG10.12",
+      "BG10.17",
+      "BG10.19",
+      "BG10.32",
+      "BG10.33",
+      "BG10.38",
+      "BG10.6",
+      "BG11.17",
+      "BG11.26",
+      "BG11.30",
+      "BG11.31",
+      "BG11.37"
+    ],
+    "duplicate_options": [
+      "BG11.31",
+      "BG12.18",
+      "BG13.33",
+      "BG18.77"
+    ],
+    "encoding_artifacts": [
+      "BG13.12",
+      "BG13.23",
+      "BG13.29",
+      "BG13.3",
+      "BG17.11",
+      "BG17.16",
+      "BG17.23",
+      "BG17.25",
+      "BG17.26",
+      "BG17.28",
+      "BG2.19",
+      "BG2.20"
+    ]
+  }
+}

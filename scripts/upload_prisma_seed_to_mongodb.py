@@ -3,6 +3,7 @@
 import json
 import os
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -86,6 +87,10 @@ def main():
     payload = json.loads(SEED_PATH.read_text(encoding="utf-8"))
     database_name = os.environ.get("MONGODB_PRISMA_DATABASE", "gita_duolingo_prisma")
     client = MongoClient(uri, serverSelectionTimeoutMS=20000)
+    operations_per_second = max(1, int(os.environ.get("MONGODB_MAX_OPERATIONS_PER_SECOND", "100")))
+    batch_size = min(100, operations_per_second)
+    window_started = time.monotonic()
+    window_operations = 0
     try:
         client.admin.command("ping")
         db = client[database_name]
@@ -113,13 +118,24 @@ def main():
             }.get(model_name, model_name)
             collection = db[collection_name]
             prepared = [prepare_document(record, ObjectId, model_name) for record in records]
-            for start in range(0, len(prepared), 500):
-                batch = prepared[start:start + 500]
+            for start in range(0, len(prepared), batch_size):
+                batch = prepared[start:start + batch_size]
                 if batch:
+                    # Pace writes globally across collections, not just within
+                    # each collection, so a free-tier cap is respected end to end.
+                    if window_operations and window_operations + len(batch) > operations_per_second:
+                        time.sleep(max(0, 1.0 - (time.monotonic() - window_started)))
+                        window_started = time.monotonic()
+                        window_operations = 0
                     collection.bulk_write(
                         [ReplaceOne({"_id": doc["_id"]}, doc, upsert=True) for doc in batch],
                         ordered=False,
                     )
+                    window_operations += len(batch)
+                    if window_operations >= operations_per_second:
+                        time.sleep(max(0, 1.0 - (time.monotonic() - window_started)))
+                        window_started = time.monotonic()
+                        window_operations = 0
             count = collection.count_documents({})
             actual_counts[collection_name] = count
             if count < len(records):

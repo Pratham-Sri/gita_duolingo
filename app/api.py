@@ -15,6 +15,9 @@ from pydantic import BaseModel
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "database", "gita_duolingo.db")
+QUESTION_TABLE = os.environ.get("GITALINGO_QUESTION_TABLE", "questions")
+if QUESTION_TABLE not in {"questions", "curated_questions_v2"}:
+    raise ValueError("GITALINGO_QUESTION_TABLE must be 'questions' or 'curated_questions_v2'")
 WEB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "web")
 CURRICULUM_PATH = os.path.join(BASE_DIR, "data", "curriculum.json")
 os.makedirs(WEB_DIR, exist_ok=True)
@@ -47,7 +50,7 @@ def get_stats():
     c = conn.cursor()
     ch_count = c.execute("SELECT count(*) as c FROM chapters").fetchone()["c"]
     v_count = c.execute("SELECT count(*) as c FROM verses").fetchone()["c"]
-    q_count = c.execute("SELECT count(*) as c FROM questions").fetchone()["c"]
+    q_count = c.execute(f"SELECT count(*) as c FROM {QUESTION_TABLE}").fetchone()["c"]
     vocab_count = c.execute("SELECT count(*) as c FROM vocabulary").fetchone()["c"]
     conn.close()
     return {
@@ -116,7 +119,7 @@ def get_verse(verse_key: str):
 @app.get("/api/verses/{verse_key}/quiz")
 def get_verse_quiz(verse_key: str, level: Optional[int] = None):
     conn = get_db()
-    query = "SELECT * FROM questions WHERE verse_key = ?"
+    query = f"SELECT * FROM {QUESTION_TABLE} WHERE verse_key = ?"
     params = [verse_key]
     if level is not None:
         query += " AND lesson_level = ?"
@@ -148,7 +151,7 @@ class QuizAnswerSubmission(BaseModel):
 @app.post("/api/quiz/validate")
 def validate_answer(sub: QuizAnswerSubmission):
     conn = get_db()
-    q = conn.execute("SELECT * FROM questions WHERE id = ?", (sub.question_id,)).fetchone()
+    q = conn.execute(f"SELECT * FROM {QUESTION_TABLE} WHERE id = ?", (sub.question_id,)).fetchone()
     conn.close()
     if not q:
         raise HTTPException(status_code=404, detail="Question not found")
