@@ -82,6 +82,7 @@ def main():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     chapters = read_rows(conn, "SELECT * FROM chapters ORDER BY chapter_number")
+    chapter_by_num = {chapter["chapter_number"]: chapter for chapter in chapters}
     verses = read_rows(conn, "SELECT * FROM verses ORDER BY chapter_number, verse_number")
     words = read_rows(conn, "SELECT * FROM vocabulary ORDER BY verse_key, id")
     questions = read_rows(
@@ -208,17 +209,25 @@ def main():
         keys = sorted(k for k, value in lesson_owner.items() if value == owner)
         if not keys:
             continue
-        title = f"Chapter {number}: Core Verses"
-        desc = f"Study verses from Chapter {number} that are not assigned to a thematic section."
+        chapter_title = chapter_by_num[number]["name_meaning"]
+        desc = f"Study the remaining verses in Chapter {number}: {chapter_title}."
         chunks = partition_module_verses(keys, verse_by_key)
         module_groups = group_lesson_chunks(chunks)
         for module_part, lesson_chunks in enumerate(module_groups, start=1):
             module_slug = f"chapter-{number}-core" if module_part == 1 else f"chapter-{number}-core-part-{module_part}"
-            module_title = title if len(module_groups) == 1 else f"{title} — Module {module_part}"
+            first_verse = lesson_chunks[0][0].split(".")[1]
+            last_verse = lesson_chunks[-1][-1].split(".")[1]
+            verse_span = first_verse if first_verse == last_verse else f"{first_verse}–{last_verse}"
+            module_title = f"Chapter {number}: {chapter_title} — Verses {verse_span}"
+            if len(module_groups) > 1:
+                module_title += f" (Part {module_part})"
             module_id = add_module(number, module_slug, module_title, desc, "chapter")
             for local_order, chunk in enumerate(lesson_chunks, start=1):
                 part_number = (module_part - 1) * 8 + local_order
-                part_title = title if len(chunks) == 1 else f"{title} — Lesson {part_number}"
+                lesson_first = chunk[0].split(".")[1]
+                lesson_last = chunk[-1].split(".")[1]
+                lesson_span = lesson_first if lesson_first == lesson_last else f"{lesson_first}–{lesson_last}"
+                part_title = f"Chapter {number}: Verses {lesson_span}"
                 lesson_id = add_lesson(
                     module_id, f"chapter-{number}-core-part-{part_number}", part_title,
                     desc, local_order,
