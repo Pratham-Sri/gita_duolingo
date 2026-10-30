@@ -122,7 +122,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does कार्पण्यदोषोपहतस्वभावः (kārpaṇyadoṣopahatasvabhāvaḥ) mean?",
+      "prompt": "In this verse, what does कार्पण्यदोषोपहतस्वभावः (kārpaṇyadoṣopahatasvabhāvaḥ) mean? (verse reference: “2.7 My heart is overpowered by the taint of pity; my mind is confused as to duty.” — BG2.7)",
       "options": [
         "mind is controlled and the Yogi is liberated",
         "(thou) oughtest.Commentary Lord Krishna here",
@@ -257,7 +257,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does अशोच्यान् (aśocyān) mean?",
+      "prompt": "In this verse, what does अशोच्यान् (aśocyān) mean? (verse reference: “2.11 The Blessed Lord said Thou hast grieved for those that should not be grieved for, yet thou speakest words of wisdom.” — BG2.11)",
       "options": [
         "one whose mind is deluded by egosim",
         "those who should not be grieved for",
@@ -338,7 +338,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "What is the significance of Krishna saying 'Nor is it a fact that hereafter we shall all cease to be' in this verse?",
+      "prompt": "What is the significance of Krishna saying 'Nor is it a fact that hereafter we shall all cease to be' in this verse? (verse reference: “2.12 Nor at any time indeed was I not, nor thou, nor these rulers of men, nor verily shall we ever cease to be hereafter.” — BG2.12)",
       "options": [
         "This emphasizes the eternal nature of the soul or self, which transcends physical birth and death.",
         "This statement implies that the soul or true self is eternal and does not perish after death.",
@@ -392,7 +392,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does भविष्यामः (bhaviṣyāmaḥ) mean?",
+      "prompt": "In this verse, what does भविष्यामः (bhaviṣyāmaḥ) mean? (verse reference: “2.12 Nor at any time indeed was I not, nor thou, nor these rulers of men, nor verily shall we ever cease to be hereafter.” — BG2.12)",
       "options": [
         "shall be",
         "disciple",
@@ -527,7 +527,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does तत्र (tatra) mean?",
+      "prompt": "In this verse, what does तत्र (tatra) mean? (verse reference: “2.13 Just as in this body the embodied (soul) passes into childhood, youth and old age, so also does it pass into another body; the firm man does…” — BG2.13)",
       "options": [
         "old age",
         "thereat",
@@ -662,7 +662,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does शीतोष्णसुखदुःखदाः (śītoṣṇasukhaduḥkhadāḥ) mean?",
+      "prompt": "In this verse, what does शीतोष्णसुखदुःखदाः (śītoṣṇasukhaduḥkhadāḥ) mean? (verse reference: “2.14 The contacts of the senses with the objects, O son of Kunti, which cause heat and cold, pleasure and pain, have a beginning and an end; they…” — BG2.14)",
       "options": [
         "Bheem, the voracious eater",
         "dominion over three worlds",
@@ -797,7 +797,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does वेत्ति (vetti) mean?",
+      "prompt": "In this verse, what does वेत्ति (vetti) mean? (verse reference: “2.19 He who takes the Self to be the slayer and he who thinks It is slain, neither of them ï1knowsï1.” — BG2.19)",
       "options": [
         "slays",
         "those",
@@ -932,7 +932,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does हन्यमाने (hanyamāne) mean?",
+      "prompt": "In this verse, what does हन्यमाने (hanyamāne) mean? (verse reference: “2.20 It is not born, nor does It ever die; after having been, It again ceases not to be; unborn, eternal, changeless and ancient, It is not killed…” — BG2.20)",
       "options": [
         "being killed",
         "Dhrishtaketu",
@@ -1013,7 +1013,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "What is the significance of comparing bodies to garments in this verse?",
+      "prompt": "What is the significance of comparing bodies to garments in this verse? (verse reference: “2.22 Just as a man casts off worn-out clothes and puts on new ones, so also the embodied Self casts off worn-out bodies and enters others which…” — BG2.22)",
       "options": [
         "The analogy of changing clothes offers a profound insight into the nature of existence, suggesting that life and death are merely transitions for the soul.",
         "Krishna uses the metaphor of worn-out garments to simplify a complex spiritual concept, making it relatable and easy to understand.",
@@ -1067,7 +1067,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does गृह्णाति (gṛhṇāti) mean?",
+      "prompt": "In this verse, what does गृह्णाति (gṛhṇāti) mean? (verse reference: “2.22 Just as a man casts off worn-out clothes and puts on new ones, so also the embodied Self casts off worn-out bodies and enters others which…” — BG2.22)",
       "options": [
         "words",
         "takes",
@@ -1202,7 +1202,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does छिन्दन्ति (chindanti) mean?",
+      "prompt": "In this verse, what does छिन्दन्ति (chindanti) mean? (verse reference: “2.23 Weapons cut It not, fire burns It not, water wets It not, wind dries It not.” — BG2.23)",
       "options": [
         "not",
         "but",
@@ -1337,7 +1337,7 @@
       "prerequisite_concept": "",
       "prerequisite_verse": "",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does शोचितुम् (śocitum) mean?",
+      "prompt": "In this verse, what does शोचितुम् (śocitum) mean? (verse reference: “2.27 For certain is death for the born, and certain is birth for the dead; therefore, over the inevitable thou shouldst not grieve.” — BG2.27)",
       "options": [
         "certainly",
         "Kuntibhoj",
@@ -1472,7 +1472,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does विकम्पितुम् (vikampitum) mean?",
+      "prompt": "In this verse, what does विकम्पितुम् (vikampitum) mean? (verse reference: “2.31 Further, having regard to thy duty, shouldst not waver, for there is nothing higher for a Kshatriya than a righteous war.” — BG2.31)",
       "options": [
         "disciple",
         "Yuyudhan",
@@ -1607,7 +1607,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does युज्यस्व (yujyasva) mean?",
+      "prompt": "In this verse, what does युज्यस्व (yujyasva) mean? (verse reference: “2.38 Having made pleasure and pain, gain and loss, victory and defeat the same, engage thou in battle for the sake of battle; thus thou shalt not…” — BG2.38)",
       "options": [
         "Sanjay said",
         "engage thou",
@@ -1742,7 +1742,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does स्वल्पम् (svalpam) mean?",
+      "prompt": "In this verse, what does स्वल्पम् (svalpam) mean? (verse reference: “2.40 In this there is no loss of effort, nor is there any harm (production of contrary results or transgression).” — BG2.40)",
       "options": [
         "did they do",
         "intelligent",
@@ -1877,7 +1877,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does कर्मणि (karmaṇi) mean?",
+      "prompt": "In this verse, what does कर्मणि (karmaṇi) mean? (verse reference: “2.47 Thy right is to work only, but never with its fruits; let not the fruits of action be thy motive, nor let thy attachment be to inaction.” — BG2.47)",
       "options": [
         "my sons",
         "in work",
@@ -2012,7 +2012,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does सिद्ध्यसिद्ध्योः (siddhyasiddhyoḥ) mean?",
+      "prompt": "In this verse, what does सिद्ध्यसिद्ध्योः (siddhyasiddhyoḥ) mean? (verse reference: “2.48 Perform action, O Arjuna, being steadfast in Yoga, abandoning attachment and balanced in success and failure.” — BG2.48)",
       "options": [
         "in success and failure",
         "unworthy (unaryanlike)",
@@ -2147,7 +2147,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does सुकृतदुष्कृते (sukṛtaduṣkṛte) mean?",
+      "prompt": "In this verse, what does सुकृतदुष्कृते (sukṛtaduṣkṛte) mean? (verse reference: “2.50 Endowed with wisdom (evenness of mind), one casts off in this life both good and evil deeds; therefore, devote thyself to Yoga; Yoga is skill…” — BG2.50)",
       "options": [
         "good and evil deeds",
         "in military prowess",
@@ -2282,7 +2282,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does स्थितप्रज्ञस्य (sthitaprajñasya) mean?",
+      "prompt": "In this verse, what does स्थितप्रज्ञस्य (sthitaprajñasya) mean? (verse reference: “2.54 Arjuna said What, O Krishna, is the description of him who has steady wisdom, and is merged in the superconscious state?” — BG2.54)",
       "options": [
         "standing of bodily hair on end",
         "production of contrary results",
@@ -2417,7 +2417,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रजहाति (prajahāti) mean?",
+      "prompt": "In this verse, what does प्रजहाति (prajahāti) mean? (verse reference: “2.55 The Blessed Lord said When a man completely casts off, O Arjuna, all the desires of the mind and is satisfied in the Self by the Self, then…” — BG2.55)",
       "options": [
         "satisfied",
         "certainly",
@@ -2525,7 +2525,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "How can one practically move toward the state of mind described as 'steady' or 'stale of mind' in this verse?",
+      "prompt": "How can one practically move toward the state of mind described as 'steady' or 'stale of mind' in this verse? (verse reference: “2.56 He whose mind is not shaken by adversity, who does not hanker after pleasures, and is free from attachment, fear and anger, is called a sage…” — BG2.56)",
       "options": [
         "This illustrates the ideal state of mind where external circumstances do not shake one's inner peace, and the mind remains balanced regardless of pain or loss.",
         "One can move toward this steady state by practicing self-awareness, detachment from the outcomes of actions, and regularly reflecting on the impermanence of pleasure and pain.",
@@ -2552,7 +2552,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does वीतरागभयक्रोधः (vītarāgabhayakrodhaḥ) mean?",
+      "prompt": "In this verse, what does वीतरागभयक्रोधः (vītarāgabhayakrodhaḥ) mean? (verse reference: “2.56 He whose mind is not shaken by adversity, who does not hanker after pleasures, and is free from attachment, fear and anger, is called a sage…” — BG2.56)",
       "options": [
         "free from attachment",
         "of the sons of Pandu",
@@ -2687,7 +2687,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does विनिवर्तन्ते (vinivartante) mean?",
+      "prompt": "In this verse, what does विनिवर्तन्ते (vinivartante) mean? (verse reference: “2.59 The objects of the senses turn away from the abstinent man leaving the longing (behind); but his longing also turns away on seeing the Supreme.” — BG2.59)",
       "options": [
         "abstinent",
         "Kuntibhoj",
@@ -2795,7 +2795,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "How does attachment (sanga) to sense-objects develop according to this verse?",
+      "prompt": "How does attachment (sanga) to sense-objects develop according to this verse? (verse reference: “2.62 When a man thinks of the objects, attachment for them arises; from attachment desire is born; from desire anger arises.” — BG2.62)",
       "options": [
         "The more one allows the mind to focus on these objects, the stronger the attachment becomes.",
         "This is a chain reaction that begins with contemplation and ends with emotional disturbance.",
@@ -2822,7 +2822,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does सङ्गात् (saṅgāt) mean?",
+      "prompt": "In this verse, what does सङ्गात् (saṅgāt) mean? (verse reference: “2.62 When a man thinks of the objects, attachment for them arises; from attachment desire is born; from desire anger arises.” — BG2.62)",
       "options": [
         "from attachment",
         "having gathered",
@@ -2957,7 +2957,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does स्मृतिविभ्रमः (smṛtivibhramaḥ) mean?",
+      "prompt": "In this verse, what does स्मृतिविभ्रमः (smṛtivibhramaḥ) mean? (verse reference: “2.63 From anger comes delusion; from delusion loss of memory; from loss of memory the destruction of discrimination; from the destruction of…” — BG2.63)",
       "options": [
         "King Duryodhan",
         "at Kurukshetra",
@@ -3011,7 +3011,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "Why does freedom from 'rāga' (attachment) and 'dveṣa' (aversion) lead to inner peace according to this verse?",
+      "prompt": "Why does freedom from 'rāga' (attachment) and 'dveṣa' (aversion) lead to inner peace according to this verse? (verse reference: “2.64 But the self-controlled man, moving among the objects with the senses under restraint and free from attraction and repulsion, attains to peace.” — BG2.64)",
       "options": [
         "This detachment allows for a calm and steady mind even amidst engaging with the world.",
         "Freedom from attachment and aversion prevents the mind from being tossed about by emotional highs and lows.",
@@ -3065,7 +3065,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "How can one practically cultivate self-control over the senses as advised in this verse?",
+      "prompt": "How can one practically cultivate self-control over the senses as advised in this verse? (verse reference: “2.64 But the self-controlled man, moving among the objects with the senses under restraint and free from attraction and repulsion, attains to peace.” — BG2.64)",
       "options": [
         "Without these dualities pulling the mind in different directions, a person maintains inner balance, which naturally gives rise to serenity and mental clarity.",
         "It is the clarity and tranquility that arises when the mind is not disturbed by desires or aversions, allowing one to experience true happiness and composure from within.",
@@ -3092,7 +3092,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does विधेयात्मा (vidheyātmā) mean?",
+      "prompt": "In this verse, what does विधेयात्मा (vidheyātmā) mean? (verse reference: “2.64 But the self-controlled man, moving among the objects with the senses under restraint and free from attraction and repulsion, attains to peace.” — BG2.64)",
       "options": [
         "principal generals",
         "the selfcontrolled",
@@ -3227,7 +3227,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does भावना (bhāvanā) mean?",
+      "prompt": "In this verse, what does भावना (bhāvanā) mean? (verse reference: “2.66 There is no knowledge of the Self to the unsteady and to the unsteady no meditation is possible, and to the unmeditative there can be no…” — BG2.66)",
       "options": [
         "courageous",
         "meditation",
@@ -3335,7 +3335,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "How does the metaphor of the ocean help explain the nature of a wise person in this verse?",
+      "prompt": "How does the metaphor of the ocean help explain the nature of a wise person in this verse? (verse reference: “2.70 He attains peace into whom all desires enter as waters enter the ocean which, filled from all sides, remains unmoved; but not the man who is…” — BG2.70)",
       "options": [
         "Krishna uses this comparison to highlight the vastness and stability of a self-controlled person.",
         "The ocean, despite being filled by countless rivers, does not overflow or lose its calmness.",
@@ -3362,7 +3362,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does आपूर्यमाणम् (āpūryamāṇam) mean?",
+      "prompt": "In this verse, what does आपूर्यमाणम् (āpūryamāṇam) mean? (verse reference: “2.70 He attains peace into whom all desires enter as waters enter the ocean which, filled from all sides, remains unmoved; but not the man who is…” — BG2.70)",
       "options": [
         "drums and kettledrums",
         "to Grandsire Bheeshma",
@@ -3443,7 +3443,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "How does freedom from attachment and egoism contribute to inner peace according to this verse?",
+      "prompt": "How does freedom from attachment and egoism contribute to inner peace according to this verse? (verse reference: “2.71 That man attains peace who, abandoning all desires, moves about without longing, without the sense of mine and without egoism.” — BG2.71)",
       "options": [
         "By giving up all desires, a person ceases to be pulled in many directions, allowing the mind to settle and become serene.",
         "Meditation and selfless service are also practical steps to gradually loosen the grip of ego and longing, allowing peace to blossom within.",
@@ -3470,7 +3470,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "How can a person practically move towards the state described in this verse, free from attachment and desire?",
+      "prompt": "How can a person practically move towards the state described in this verse, free from attachment and desire? (verse reference: “2.71 That man attains peace who, abandoning all desires, moves about without longing, without the sense of mine and without egoism.” — BG2.71)",
       "options": [
         "A person can practice self-awareness, regularly observing and letting go of desires as they arise.",
         "Overcoming this thirst is important because it prevents restlessness and dissatisfaction.",
@@ -3497,7 +3497,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does निःस्पृहः (niḥspṛhaḥ) mean?",
+      "prompt": "In this verse, what does निःस्पृहः (niḥspṛhaḥ) mean? (verse reference: “2.71 That man attains peace who, abandoning all desires, moves about without longing, without the sense of mine and without egoism.” — BG2.71)",
       "options": [
         "respected teacher",
         "free from longing",
@@ -3632,7 +3632,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does ब्रह्मनिर्वाणम् (brahmanirvāṇam) mean?",
+      "prompt": "In this verse, what does ब्रह्मनिर्वाणम् (brahmanirvāṇam) mean? (verse reference: “2.72 This is the Brahmic seat (eternal state), O son of Pritha.” — BG2.72)",
       "options": [
         "victorious in battle",
         "of the sons of Pandu",
@@ -3767,7 +3767,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does कश्चित् (kaścit) mean?",
+      "prompt": "In this verse, what does कश्चित् (kaścit) mean? (verse reference: “3.5 Verily none can ever remain for even a moment without performing action; for everyone is made to act helplessly indeed by the alities born of…” — BG3.5)",
       "options": [
         "Sanjay",
         "anyone",
@@ -3902,7 +3902,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does शरीरयात्रा (śarīrayātrā) mean?",
+      "prompt": "In this verse, what does शरीरयात्रा (śarīrayātrā) mean? (verse reference: “3.8 Do thou perform (thy) bounden duty, for action is superior to inaction and even the maintenance of the body would not be possible for thee by…” — BG3.8)",
       "options": [
         "maintenance of the body",
         "of Dhritarashtra’s sons",
@@ -4037,7 +4037,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does यज्ञार्थात् (yajñārthāt) mean?",
+      "prompt": "In this verse, what does यज्ञार्थात् (yajñārthāt) mean? (verse reference: “3.9 The world is bound by actions other than those performed for the sake of sacrifice; do thou, therefore, O son of Kunti (Arjuna), perform…” — BG3.9)",
       "options": [
         "the five sons of Draupadi",
         "for the sake of sacrifice",
@@ -4172,7 +4172,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does पूरुषः (pūruṣaḥ) mean?",
+      "prompt": "In this verse, what does पूरुषः (pūruṣaḥ) mean? (verse reference: “3.19 Therefore without attachment, do thou always perform action which should be done; for by performing action without attachment man reaches the…” — BG3.19)",
       "options": [
         "worship.Commentary Ananya Yoga Unswerving Yoga exclusive",
         "has,discrimination and burning aspiration for liberation",
@@ -4307,7 +4307,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does कुरुते (kurute) mean?",
+      "prompt": "In this verse, what does कुरुते (kurute) mean? (verse reference: “3.21 Whatsoever a great man does, that the other men also do; whatever he sets up as the standard, that the world (mankind) follows.” — BG3.21)",
       "options": [
         "that",
         "then",
@@ -4442,7 +4442,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does अहङ्कारविमूढात्मा (ahaṅkāravimūḍhātmā) mean?",
+      "prompt": "In this verse, what does अहङ्कारविमूढात्मा (ahaṅkāravimūḍhātmā) mean? (verse reference: “3.27 All actions are wrought in all cases by the alities of Nature only.” — BG3.27)",
       "options": [
         "those who should not be grieved for",
         "one whose mind is deluded by egosim",
@@ -4577,7 +4577,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does संन्यस्य (saṁnyasya) mean?",
+      "prompt": "In this verse, what does संन्यस्य (saṁnyasya) mean? (verse reference: “3.30 Renouncing all actions in Me, with the mind centred in the Self, free from hope and egoism, and from (mental) fever, do thou fight.” — BG3.30)",
       "options": [
         "Yudhamanyu",
         "approached",
@@ -4712,7 +4712,7 @@
       "prerequisite_concept": "duty",
       "prerequisite_verse": "BG2.31",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does स्वनुष्ठितात् (svanuṣṭhitāt) mean?",
+      "prompt": "In this verse, what does स्वनुष्ठितात् (svanuṣṭhitāt) mean? (verse reference: “3.35 Better is one's own duty, though devoid of merit than the duty of another well discharged.” — BG3.35)",
       "options": [
         "than well discharged",
         "of the sons of Pandu",
@@ -4847,7 +4847,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does भूतानाम् (bhūtānām) mean?",
+      "prompt": "In this verse, what does भूतानाम् (bhūtānām) mean? (verse reference: “4.6 Though I am unborn, of imperishable nature, and though I am the Lord of all beings, yet, governing My own Nature, I am born by My own Maya.” — BG4.6)",
       "options": [
         "certainly",
         "Uttamauja",
@@ -4982,7 +4982,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does अभ्युत्थानम् (abhyutthānam) mean?",
+      "prompt": "In this verse, what does अभ्युत्थानम् (abhyutthānam) mean? (verse reference: “4.7 Whenever there is decline of righteousness, O Arjuna, and rise of unrighteousness, then I manifest Myself.” — BG4.7)",
       "options": [
         "what",
         "this",
@@ -5117,7 +5117,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does धर्मसंस्थापनार्थाय (dharmasaṁsthāpanārthāya) mean?",
+      "prompt": "In this verse, what does धर्मसंस्थापनार्थाय (dharmasaṁsthāpanārthāya) mean? (verse reference: “4.8 For the protection of the good, for the destruction of the wicked and for the establishment of righteousness, I am born in every age.” — BG4.8)",
       "options": [
         "for the establishment of righteousness",
         "equipped with various kinds of weapons",
@@ -5252,7 +5252,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रपद्यन्ते (prapadyante) mean?",
+      "prompt": "In this verse, what does प्रपद्यन्ते (prapadyante) mean? (verse reference: “4.11 In whatever way men approach Me even so do I reward them; My path do men tread in all ways, O Arjuna.” — BG4.11)",
       "options": [
         "O Partha",
         "the king",
@@ -5387,7 +5387,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does गुणकर्मविभागशः (guṇakarmavibhāgaśaḥ) mean?",
+      "prompt": "In this verse, what does गुणकर्मविभागशः (guṇakarmavibhāgaśaḥ) mean? (verse reference: “4.13 The fourfold caste has been created by Me according to the differentiation of Guna and Karma; though I am the author thereof know Me as…” — BG4.13)",
       "options": [
         "the sixth discourse entitledThe Yoga of Meditation",
         "is tainted.Commentary He who is harmonised by Yoga",
@@ -5522,7 +5522,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does बुद्धिमान् (buddhimān) mean?",
+      "prompt": "In this verse, what does बुद्धिमान् (buddhimān) mean? (verse reference: “4.18 He who seeth inaction in action and action in inaction, he is wise among men; he is a Yogi and performer of all actions.” — BG4.18)",
       "options": [
         "Yogi",
         "wise",
@@ -5657,7 +5657,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does ब्रह्माग्नौ (brahmāgnau) mean?",
+      "prompt": "In this verse, what does ब्रह्माग्नौ (brahmāgnau) mean? (verse reference: “4.24 Brahman is the oblation; Brahman is the melted butter (ghee); by Brahman is the oblation poured into the fire of Brahman; Brahman verily…” — BG4.24)",
       "options": [
         "in respective position",
         "in the fire of Brahman",
@@ -5792,7 +5792,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does उपदेक्ष्यन्ति (upadekṣyanti) mean?",
+      "prompt": "In this verse, what does उपदेक्ष्यन्ति (upadekṣyanti) mean? (verse reference: “4.34 Know That by long prostration, by estion and by service; the wise who have realised the Truth will instruct thee in (that) knowledge.” — BG4.34)",
       "options": [
         "will instruct",
         "in the middle",
@@ -5927,7 +5927,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does योगसंसिद्धः (yogasaṁsiddhaḥ) mean?",
+      "prompt": "In this verse, what does योगसंसिद्धः (yogasaṁsiddhaḥ) mean? (verse reference: “4.38 Verily, there is no purifier in this world like knowledge.” — BG4.38)",
       "options": [
         "perfected in Yoga",
         "the sons of Pandu",
@@ -6062,7 +6062,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does तत्त्ववित् (tattvavit) mean?",
+      "prompt": "In this verse, what does तत्त्ववित् (tattvavit) mean? (verse reference: “5.8 \"I do nothing at all,\" thus would the harmonised knower of Truth think seeing, hearing, touching, smelling, eating, going, sleeping, breathing.” — BG5.8)",
       "options": [
         "the Monkey Bannered",
         "the son of Subhadra",
@@ -6197,7 +6197,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does पद्मपत्रम् (padmapatram) mean?",
+      "prompt": "In this verse, what does पद्मपत्रम् (padmapatram) mean? (verse reference: “5.10 He who does actions, offering them to Brahman, and abandoning attachment, is not tainted by sin, just as a lotus-leaf is not tainted by water.” — BG5.10)",
       "options": [
         "Kuntibhoj",
         "Uttamauja",
@@ -6332,7 +6332,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does नैष्ठिकीम् (naiṣṭhikīm) mean?",
+      "prompt": "In this verse, what does नैष्ठिकीम् (naiṣṭhikīm) mean? (verse reference: “5.12 The united one (the well poised or the harmonised) having abandoned the fruit of action attains to the eternal peace: the non-united only…” — BG5.12)",
       "options": [
         "words",
         "final",
@@ -6467,7 +6467,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does सर्वकर्माणि (sarvakarmāṇi) mean?",
+      "prompt": "In this verse, what does सर्वकर्माणि (sarvakarmāṇi) mean? (verse reference: “5.13 Mentally renouncing all actions and self-controlled, the embodied one rests happily in the nine-gated city, neither acting nor causing others…” — BG5.13)",
       "options": [
         "all actions",
         "by the mind",
@@ -6602,7 +6602,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does ब्राह्मणे (brāhmaṇe) mean?",
+      "prompt": "In this verse, what does ब्राह्मणे (brāhmaṇe) mean? (verse reference: “5.18 Sages look with an eal eye on a Brahmana endowed with learning and humility, on a cow, on an elephant, and even on a dog and an outcaste.” — BG5.18)",
       "options": [
         "in the middle",
         "on a Brahmana",
@@ -6737,7 +6737,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does आद्यन्तवन्तः (ādyantavantaḥ) mean?",
+      "prompt": "In this verse, what does आद्यन्तवन्तः (ādyantavantaḥ) mean? (verse reference: “5.22 The enjoyments that are born of contacts are only generators of pain, for they have a beginning and an end, O Arjuna; the wise man does not…” — BG5.22)",
       "options": [
         "Arjun, the son of Pritha",
         "O Partha (son of Pritha)",
@@ -6764,7 +6764,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "What does it mean to 'lift oneself by one’s own efforts' as stated in this verse?",
+      "prompt": "What does it mean to 'lift oneself by one’s own efforts' as stated in this verse? (verse reference: “6.5 One should raise oneself by one's Self alone; let not one lower oneself; for the Self alone is the friend of oneself, and the Self alone is…” — BG6.5)",
       "options": [
         "The verse warns against degrading oneself, as it leads to a decline in one’s mental and spiritual state.",
         "By allowing negative thoughts, habits, or laziness to take over, a person harms their own potential.",
@@ -6872,7 +6872,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does न (na) mean?",
+      "prompt": "In this verse, what does न (na) mean? (verse reference: “6.5 One should raise oneself by one's Self alone; let not one lower oneself; for the Self alone is the friend of oneself, and the Self alone is…” — BG6.5)",
       "options": [
         "but",
         "not",
@@ -6980,7 +6980,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "How can someone practically become a friend to their own self, as described in this verse?",
+      "prompt": "How can someone practically become a friend to their own self, as described in this verse? (verse reference: “6.6 The Self is the friend of the self of him by whom the self has been conered by the Self, but to the unconered self, this Self stands in the…” — BG6.6)",
       "options": [
         "The verse describes that the self, when it has conquered the mind, senses, and body, acts as a true companion.",
         "To become a friend to oneself, a person should practice self-discipline, mindfulness, and self-reflection.",
@@ -7007,7 +7007,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does शत्रुत्वे (śatrutve) mean?",
+      "prompt": "In this verse, what does शत्रुत्वे (śatrutve) mean? (verse reference: “6.6 The Self is the friend of the self of him by whom the self has been conered by the Self, but to the unconered self, this Self stands in the…” — BG6.6)",
       "options": [
         "O Partha (son of Pritha)",
         "Arjun, the son of Pritha",
@@ -7142,7 +7142,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does तु (tu) mean?",
+      "prompt": "In this verse, what does तु (tu) mean? (verse reference: “6.16 Verily Yoga is not possible for him who eats too much, nor for him who does not eat at all, nor for him who sleeps too much, nor for him who…” — BG6.16)",
       "options": [
         "Sanjay",
         "mighty",
@@ -7277,7 +7277,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does भवति (bhavati) mean?",
+      "prompt": "In this verse, what does भवति (bhavati) mean? (verse reference: “6.17 Yoga becomes the destroyer of pain for him who is moderate in eating and recreation (such as walking, etc.), who is moderate in exertion in…” — BG6.17)",
       "options": [
         "becomes",
         "by your",
@@ -7412,7 +7412,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does निश्चरति (niścarati) mean?",
+      "prompt": "In this verse, what does निश्चरति (niścarati) mean? (verse reference: “6.26 From whatever cause the restless and unsteady mind wanders away, from that let him restrain it and bring it under the control of the Self alone.” — BG6.26)",
       "options": [
         "Dhrishtaketu",
         "great bowmen",
@@ -7547,7 +7547,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does योगयुक्तात्मा (yogayuktātmā) mean?",
+      "prompt": "In this verse, what does योगयुक्तात्मा (yogayuktātmā) mean? (verse reference: “6.29 With the mind harmonised by Yoga he sees the Self abiding in all beings and all beings in the Self; he sees the same everywhere.” — BG6.29)",
       "options": [
         "I have heard from the learned",
         "skilled in the art of warfare",
@@ -7682,7 +7682,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रणश्यामि (praṇaśyāmi) mean?",
+      "prompt": "In this verse, what does प्रणश्यामि (praṇaśyāmi) mean? (verse reference: “6.30 He who sees Me everywhere and sees everything in Me, he never becomes separated from Me, nor do I become separated from him.” — BG6.30)",
       "options": [
         "Sanjay",
         "behold",
@@ -7817,7 +7817,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does वैराग्येण (vairāgyeṇa) mean?",
+      "prompt": "In this verse, what does वैराग्येण (vairāgyeṇa) mean? (verse reference: “6.35 The Blessed Lord said Undoubtedly, O mighty-armed Arjuna, the mind is difficult to control and restless; but by practice and by dispassion it…” — BG6.35)",
       "options": [
         "King of Kashi",
         "in the middle",
@@ -7952,7 +7952,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does श्रद्धावान् (śraddhāvān) mean?",
+      "prompt": "In this verse, what does श्रद्धावान् (śraddhāvān) mean? (verse reference: “6.47 And among all the Yogis he who, full of faith and with his inner self merged in Me, worships Me is deemed by Me to be the most devout.” — BG6.47)",
       "options": [
         "the land of dharma",
         "endowed with faith",
@@ -8087,7 +8087,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does सर्वम् (sarvam) mean?",
+      "prompt": "In this verse, what does सर्वम् (sarvam) mean? (verse reference: “7.7 There is nothing whatsoever higher than Me, O Arjuna.” — BG7.7)",
       "options": [
         "all",
         "but",
@@ -8222,7 +8222,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रपद्यन्ते (prapadyante) mean?",
+      "prompt": "In this verse, what does प्रपद्यन्ते (prapadyante) mean? (verse reference: “7.14 Verily, this divine illusion of Mine, made up of the (three) alities (of Nature) is difficult to cross over; those who take refuge in Me…” — BG7.14)",
       "options": [
         "take refuge",
         "did they do",
@@ -8357,7 +8357,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does भजन्ते (bhajante) mean?",
+      "prompt": "In this verse, what does भजन्ते (bhajante) mean? (verse reference: “7.16 Four kinds of virtuous men worship Me, O Arjuna, and they are the distressed, the seekr of knowledge, the seekr of wealth and the wise, O…” — BG7.16)",
       "options": [
         "worship",
         "my sons",
@@ -8492,7 +8492,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रपद्यते (prapadyate) mean?",
+      "prompt": "In this verse, what does प्रपद्यते (prapadyate) mean? (verse reference: “7.19 At the end of many births the wise man comes to Me, realising that all this is Vaasudeva (the innermost Self); such a great soul (Mahatma) is…” — BG7.19)",
       "options": [
         "Yudhamanyu",
         "approaches",
@@ -8627,7 +8627,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does स्मरन् (smaran) mean?",
+      "prompt": "In this verse, what does स्मरन् (smaran) mean? (verse reference: “8.5 And whosoever, leaving the body, goes forth remembering Me alone, at the time of death, he attains My Being: there is no doubt about this.” — BG8.5)",
       "options": [
         "remembering",
         "did they do",
@@ -8762,7 +8762,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does कलेवरम् (kalevaram) mean?",
+      "prompt": "In this verse, what does कलेवरम् (kalevaram) mean? (verse reference: “8.6 Whosoever at the end leaves the body, thinking of any being, to that being only does he go, O son of Kunti (Arjuna), because of his constant…” — BG8.6)",
       "options": [
         "the king",
         "disciple",
@@ -8897,7 +8897,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does तस्मात् (tasmāt) mean?",
+      "prompt": "In this verse, what does तस्मात् (tasmāt) mean? (verse reference: “8.7 Therefore at all times remember Me only and fight.” — BG8.7)",
       "options": [
         "Kuntibhoj",
         "certainly",
@@ -9032,7 +9032,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does नित्ययुक्तस्य (nityayuktasya) mean?",
+      "prompt": "In this verse, what does नित्ययुक्तस्य (nityayuktasya) mean? (verse reference: “8.14 I am easily attainable by that ever-steadfast Yogi who constantly and daily remembers Me (for a long time), not thinking of anything else…” — BG8.14)",
       "options": [
         "by compassion",
         "King of Kashi",
@@ -9167,7 +9167,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does पुनर्जन्म (punarjanma) mean?",
+      "prompt": "In this verse, what does पुनर्जन्म (punarjanma) mean? (verse reference: “8.15 Having attained Me these great souls do not again take birth (here) which is the place of pain and is non-eternal: they have reached the…” — BG8.15)",
       "options": [
         "words",
         "spoke",
@@ -9221,7 +9221,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "Why is devotion without selfish desire important according to this verse?",
+      "prompt": "Why is devotion without selfish desire important according to this verse? (verse reference: “9.22 For those men who worship Me alone, thinking of no other, for those ever-united, I secure what is not already possessed and preserve what…” — BG9.22)",
       "options": [
         "'Yoga' refers to the acquisition of what they need, while 'kshema' refers to the preservation of what they have.",
         "Devotion without selfish desire is important because it reflects a pure and unconditional love for the divine.",
@@ -9302,7 +9302,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does पर्युपासते (paryupāsate) mean?",
+      "prompt": "In this verse, what does पर्युपासते (paryupāsate) mean? (verse reference: “9.22 For those men who worship Me alone, thinking of no other, for those ever-united, I secure what is not already possessed and preserve what…” — BG9.22)",
       "options": [
         "by your",
         "worship",
@@ -9437,7 +9437,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does भक्त्युपहृतम् (bhaktyupahṛtam) mean?",
+      "prompt": "In this verse, what does भक्त्युपहृतम् (bhaktyupahṛtam) mean? (verse reference: “9.26 Whoever offers Me with devotion a leaf, a flower, a fruit or a little water that, so offered devotedly by the pure-minded, I accept.” — BG9.26)",
       "options": [
         "to Grandsire Bheeshma",
         "offered with devotion",
@@ -9572,7 +9572,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does कुरुष्व (kuruṣva) mean?",
+      "prompt": "In this verse, what does कुरुष्व (kuruṣva) mean? (verse reference: “9.27 Whatever thou doest, whatever thou eatest, whatever thou offerest in sacrifice, whatever thou givest, whatever thou practisest as austerity,…” — BG9.27)",
       "options": [
         "do",
         "my",
@@ -9707,7 +9707,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does सर्वभूतेषु (sarvabhūteṣu) mean?",
+      "prompt": "In this verse, what does सर्वभूतेषु (sarvabhūteṣu) mean? (verse reference: “9.29 The same am I to all beings; to Me there is none hateful or dear; but those who worship Me with devotion are in Me and I am also in them.” — BG9.29)",
       "options": [
         "in the middle",
         "with devotion",
@@ -9842,7 +9842,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does मन्तव्यः (mantavyaḥ) mean?",
+      "prompt": "In this verse, what does मन्तव्यः (mantavyaḥ) mean? (verse reference: “9.30 Even if the most sinful worships Me, with devotion to none else, he too should indeed by regarded as righteous for he has rightly resolved.” — BG9.30)",
       "options": [
         "should be regarded",
         "the land of dharma",
@@ -9977,7 +9977,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does व्यपाश्रित्य (vyapāśritya) mean?",
+      "prompt": "In this verse, what does व्यपाश्रित्य (vyapāśritya) mean? (verse reference: “9.32 For, taking refuge in Me, they also who, O Arjuna, may be of a sinful birth women, Vaisyas as well as Sudras attain the Supreme Goal.” — BG9.32)",
       "options": [
         "best of Brahmnis",
         "the mighty-armed",
@@ -10004,7 +10004,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "What does 'madbhakto' signify in this verse?",
+      "prompt": "What does 'madbhakto' signify in this verse? (verse reference: “9.34 Fix thy mind on Me; by devoted to Me; sacrifice unto Me; bow down to Me; having thus united thy whole self to Me, taking Me as the supreme…” — BG9.34)",
       "options": [
         "'Madbhakto' signifies being a devotee of Krishna.",
         "The speaker in this verse is Lord Krishna, and the message is directed to Arjuna.",
@@ -10112,7 +10112,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does नमस्कुरु (namaskuru) mean?",
+      "prompt": "In this verse, what does नमस्कुरु (namaskuru) mean? (verse reference: “9.34 Fix thy mind on Me; by devoted to Me; sacrifice unto Me; bow down to Me; having thus united thy whole self to Me, taking Me as the supreme…” — BG9.34)",
       "options": [
         "disciple",
         "the king",
@@ -10247,7 +10247,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does भावसमन्विताः (bhāvasamanvitāḥ) mean?",
+      "prompt": "In this verse, what does भावसमन्विताः (bhāvasamanvitāḥ) mean? (verse reference: “10.8 I am the source of all; from Me everything evolves; understanding thus, the wise, endowed with meditation, worship Me.” — BG10.8)",
       "options": [
         "absence of fickleness.Commentary Ahimsa Noninjury in thought",
         "endowed with meditation. Commentary Waves originate in water",
@@ -10382,7 +10382,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does सर्वभूताशयस्थितः (sarvabhūtāśayasthitaḥ) mean?",
+      "prompt": "In this verse, what does सर्वभूताशयस्थितः (sarvabhūtāśayasthitaḥ) mean? (verse reference: “10.20 I am the Self, O Gudakesa, seated in the hearts of all beings; I am the beginning, the middle and also the end of all beings.” — BG10.20)",
       "options": [
         "seated in the hearts of all beings",
         "away from the objects of the world",
@@ -10517,7 +10517,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does विभूतिमत् (vibhūtimat) mean?",
+      "prompt": "In this verse, what does विभूतिमत् (vibhūtimat) mean? (verse reference: “10.41 Whatever being there is glorious, prosperous or powerful, that know thou to be a manifestation of a part of My splendour.” — BG10.41)",
       "options": [
         "the king",
         "glorious",
@@ -10652,7 +10652,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does कृत्स्नम् (kṛtsnam) mean?",
+      "prompt": "In this verse, what does कृत्स्नम् (kṛtsnam) mean? (verse reference: “10.42 But, of what avail to thee is the knowledge of all these details, O Arjuna?” — BG10.42)",
       "options": [
         "and",
         "all",
@@ -10787,7 +10787,7 @@
       "prerequisite_concept": "divine_manifestations",
       "prerequisite_verse": "BG10.8",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रत्यनीकेषु (pratyanīkeṣu) mean?",
+      "prompt": "In this verse, what does प्रत्यनीकेषु (pratyanīkeṣu) mean? (verse reference: “11.32 The Blessed Lord said I am the full-grown world-destroying Time, now engaged in destroying the worlds.” — BG11.32)",
       "options": [
         "respected teacher",
         "the sons of Pandu",
@@ -10922,7 +10922,7 @@
       "prerequisite_concept": "divine_manifestations",
       "prerequisite_verse": "BG10.8",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does भुङ्क्ष्व (bhuṅkṣva) mean?",
+      "prompt": "In this verse, what does भुङ्क्ष्व (bhuṅkṣva) mean? (verse reference: “11.33 Therefore, stand up and obtain fame.” — BG11.33)",
       "options": [
         "Virat",
         "spoke",
@@ -11057,7 +11057,7 @@
       "prerequisite_concept": "divine_manifestations",
       "prerequisite_verse": "BG10.8",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does विश्वस्य (viśvasya) mean?",
+      "prompt": "In this verse, what does विश्वस्य (viśvasya) mean? (verse reference: “11.38 Thou art the primal God, the ancient Purusha, the supreme refuge of this universe, the knower, the knowable and the supreme Abode.” — BG11.38)",
       "options": [
         "intelligent",
         "Sanjay said",
@@ -11192,7 +11192,7 @@
       "prerequisite_concept": "divine_manifestations",
       "prerequisite_verse": "BG10.8",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रमादात् (pramādāt) mean?",
+      "prompt": "In this verse, what does प्रमादात् (pramādāt) mean? (verse reference: “11.41 Whatever I have presumptuously said from carelessness or love, addressing Thee as O Krishna!” — BG11.41)",
       "options": [
         "desiring to fight",
         "from carelessness",
@@ -11327,7 +11327,7 @@
       "prerequisite_concept": "divine_manifestations",
       "prerequisite_verse": "BG10.8",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रणिधाय (praṇidhāya) mean?",
+      "prompt": "In this verse, what does प्रणिधाय (praṇidhāya) mean? (verse reference: “11.44 Therefore, bowing down, prostrating my body, I crave Thy forgiveness, O adorable Lord.” — BG11.44)",
       "options": [
         "Sanjay said",
         "intelligent",
@@ -11462,7 +11462,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does संन्यस्य (saṁnyasya) mean?",
+      "prompt": "In this verse, what does संन्यस्य (saṁnyasya) mean? (verse reference: “12.6 But to those who worship Me, renouncing all actions in Me, regarding Me as the supreme gaol, meditating on Me with single-minded Yoga.” — BG12.6)",
       "options": [
         "courageous",
         "approached",
@@ -11597,7 +11597,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does मृत्युसंसारसागरात् (mṛtyusaṁsārasāgarāt) mean?",
+      "prompt": "In this verse, what does मृत्युसंसारसागरात् (mṛtyusaṁsārasāgarāt) mean? (verse reference: “12.7 To those whose minds are set on Me, O Arjuna, verily I become ere long the saviour out of the ocean of Samsara.” — BG12.7)",
       "options": [
         "exuberant with various specifi actions",
         "out of the ocean of the mortal Samsara",
@@ -11705,7 +11705,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "How can someone practically cultivate 'karuna' (compassion) in daily life as encouraged in this verse?",
+      "prompt": "How can someone practically cultivate 'karuna' (compassion) in daily life as encouraged in this verse? (verse reference: “12.13 He who hates no creature, who is friendly and compassionate to all, who is free from attachment and egoism, balanced in pleasure and pain,…” — BG12.13)",
       "options": [
         "To cultivate compassion, one can start by genuinely wishing well for others and being attentive to their needs and struggles.",
         "Being free of possessiveness means not being attached to people, objects, or achievements as if they are exclusively one's own.",
@@ -11732,7 +11732,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does निरहङ्कारः (nirahaṅkāraḥ) mean?",
+      "prompt": "In this verse, what does निरहङ्कारः (nirahaṅkāraḥ) mean? (verse reference: “12.13 He who hates no creature, who is friendly and compassionate to all, who is free from attachment and egoism, balanced in pleasure and pain,…” — BG12.13)",
       "options": [
         "at Kurukshetra",
         "Dhrishtadyumna",
@@ -11867,7 +11867,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does दृढनिश्चयः (dṛḍhaniścayaḥ) mean?",
+      "prompt": "In this verse, what does दृढनिश्चयः (dṛḍhaniścayaḥ) mean? (verse reference: “12.14 Ever content, steady in meditation, self-controlled, possessed of firm conviction, with the mind and intellect dedicated to Me, he, My…” — BG12.14)",
       "options": [
         "perplexed by what hast heard",
         "those who have come to fight",
@@ -12002,7 +12002,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रियः (priyaḥ) mean?",
+      "prompt": "In this verse, what does प्रियः (priyaḥ) mean? (verse reference: “12.15 He by whom the world is not agitated and who cannot be agitated by the world, and who is freed from joy, anger, fear and anxiety he is dear…” — BG12.15)",
       "options": [
         "Bheem, the voracious eater",
         "dominion over three worlds",
@@ -12137,7 +12137,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does शुभाशुभपरित्यागी (śubhāśubhaparityāgī) mean?",
+      "prompt": "In this verse, what does शुभाशुभपरित्यागी (śubhāśubhaparityāgī) mean? (verse reference: “12.17 He who neither rejoices, nor hates, nor grieves, nor desires, renouncing good and evil, and who is full of devotion, is dear to Me.” — BG12.17)",
       "options": [
         "renouncing good and evil",
         "Arjun, the son of Pritha",
@@ -12272,7 +12272,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does समः (samaḥ) mean?",
+      "prompt": "In this verse, what does समः (samaḥ) mean? (verse reference: “One who is equal to friends and enemies, who is equipoised in honor and dishonor, heat and cold, happiness and distress, who is free from…” — BG12.18)",
       "options": [
         "Dhrishtaketu",
         "equal-minded",
@@ -12407,7 +12407,7 @@
       "prerequisite_concept": "knowledge_and_devotion",
       "prerequisite_verse": "BG7.7",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does धर्म्यामृतम् (dharmyāmṛtam) mean?",
+      "prompt": "In this verse, what does धर्म्यामृतम् (dharmyāmṛtam) mean? (verse reference: “12.20 They verily who follow this immortal Dharma (law or doctrine) as described above, endowed with faith, regarding Me as their supreme goal,…” — BG12.20)",
       "options": [
         "immortal Dharma (Law)",
         "drums and kettledrums",
@@ -12542,7 +12542,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does क्षेत्रम् (kṣetram) mean?",
+      "prompt": "In this verse, what does क्षेत्रम् (kṣetram) mean? (verse reference: “13.2 The Blessed Lord said This body, O Arjuna, is called the field; he who knows it is called the knower of the field, by those who know of them.” — BG13.2)",
       "options": [
         "Kuntibhoj",
         "certainly",
@@ -12677,7 +12677,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does स्थावरजङ्गमम् (sthāvarajaṅgamam) mean?",
+      "prompt": "In this verse, what does स्थावरजङ्गमम् (sthāvarajaṅgamam) mean? (verse reference: “13.27 Wherever a being is born, whether unmoving or moving, know thou, O best of the Bharatas (Arjuna), that it is from the union between the…” — BG13.27)",
       "options": [
         "the foolish (thedullwitted)",
         "Arjun, the winner of wealth",
@@ -12812,7 +12812,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does परमेश्वरम् (parameśvaram) mean?",
+      "prompt": "In this verse, what does परमेश्वरम् (parameśvaram) mean? (verse reference: “13.28 He sees, who sees the Supreme Lord, existing eally in all beings, the unperishing within the perishing.” — BG13.28)",
       "options": [
         "best of Brahmnis",
         "the Pandava army",
@@ -12947,7 +12947,7 @@
       "prerequisite_concept": "field_and_knower",
       "prerequisite_verse": "BG13.2",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does निबध्नन्ति (nibadhnanti) mean?",
+      "prompt": "In this verse, what does निबध्नन्ति (nibadhnanti) mean? (verse reference: “14.5 Purity, passion and inertia these alities, O Arjuna, born of Nature, bind fast in the body, the embodied, the indestructible.” — BG14.5)",
       "options": [
         "what",
         "bind",
@@ -13082,7 +13082,7 @@
       "prerequisite_concept": "field_and_knower",
       "prerequisite_verse": "BG13.2",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does निर्मलत्वात् (nirmalatvāt) mean?",
+      "prompt": "In this verse, what does निर्मलत्वात् (nirmalatvāt) mean? (verse reference: “14.6 Of these, Sattva, which from its stainlessness is luminous and healthy, binds by attachment to happiness and by attachment to knowledge, O…” — BG14.6)",
       "options": [
         "in respective position",
         "unworthy (unaryanlike)",
@@ -13217,7 +13217,7 @@
       "prerequisite_concept": "field_and_knower",
       "prerequisite_verse": "BG13.2",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does गुणेभ्यः (guṇebhyaḥ) mean?",
+      "prompt": "In this verse, what does गुणेभ्यः (guṇebhyaḥ) mean? (verse reference: “14.19 When the seer beholds no agent other than the Gunas and knows That which is higher than they, he attains to My Being.” — BG14.19)",
       "options": [
         "than the Gunas",
         "King Duryodhan",
@@ -13352,7 +13352,7 @@
       "prerequisite_concept": "field_and_knower",
       "prerequisite_verse": "BG13.2",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does ब्रह्मभूयाय (brahmabhūyāya) mean?",
+      "prompt": "In this verse, what does ब्रह्मभूयाय (brahmabhūyāya) mean? (verse reference: “14.26 And he who serves Me with unswerving devotion, he, crossing beyond the alities, is fit for becoming Brahman.” — BG14.26)",
       "options": [
         "of the sons of Pandu",
         "for becoming Brahman",
@@ -13487,7 +13487,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does ऊर्ध्वमूलम् (ūrdhvamūlam) mean?",
+      "prompt": "In this verse, what does ऊर्ध्वमूलम् (ūrdhvamūlam) mean? (verse reference: “15.1 The Blessed Lord said They (the wise) speak of the indestructible peepul tree having its root above and branches below, whose leaves are the…” — BG15.1)",
       "options": [
         "on observing",
         "Dhrishtaketu",
@@ -13622,7 +13622,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रकृतिस्थानि (prakṛtisthāni) mean?",
+      "prompt": "In this verse, what does प्रकृतिस्थानि (prakṛtisthāni) mean? (verse reference: “15.7 An eternal portion of Myself having become a living soul in the world of life, draws to (itself) the (five) senses with the mind for the…” — BG15.7)",
       "options": [
         "the son of Subhadra",
         "abiding in Prakriti",
@@ -13757,7 +13757,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does ज्ञानम् (jñānam) mean?",
+      "prompt": "In this verse, what does ज्ञानम् (jñānam) mean? (verse reference: “15.15 And I am seated in the hearts of all; from Me are memory and knowledge, as well as their absence.” — BG15.15)",
       "options": [
         "Uttamauja",
         "Kuntibhoj",
@@ -13892,7 +13892,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does सर्वाणि (sarvāṇi) mean?",
+      "prompt": "In this verse, what does सर्वाणि (sarvāṇi) mean? (verse reference: “15.16 Two Purushas there are in this world, the perishable and the imperishable.” — BG15.16)",
       "options": [
         "and",
         "who",
@@ -14027,7 +14027,7 @@
       "prerequisite_concept": "self_and_body",
       "prerequisite_verse": "BG2.13",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does यस्मात् (yasmāt) mean?",
+      "prompt": "In this verse, what does यस्मात् (yasmāt) mean? (verse reference: “15.18 As I transcend the perishable and am even higher than the imperishable, I am declared to be the highest Purusha in the world and in the Vedas.” — BG15.18)",
       "options": [
         "my",
         "us",
@@ -14162,7 +14162,7 @@
       "prerequisite_concept": "three_gunas",
       "prerequisite_verse": "BG14.5",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does ज्ञानयोगव्यवस्थितिः (jñānayogavyavasthitiḥ) mean?",
+      "prompt": "In this verse, what does ज्ञानयोगव्यवस्थितिः (jñānayogavyavasthitiḥ) mean? (verse reference: “16.1 The Blessed Lord said Fearlessness, purity of heart, steadfastness in knowledge and Yoga, almsgiving, control of the senses, sacrifice, study…” — BG16.1)",
       "options": [
         "with a mind in confusion about duty",
         "sons of Dhritarashtra.No commentary",
@@ -14189,7 +14189,7 @@
       "prerequisite_concept": "three_gunas",
       "prerequisite_verse": "BG14.5",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "What does the mention of 'disclaiming doership in respect of actions' imply in this verse?",
+      "prompt": "What does the mention of 'disclaiming doership in respect of actions' imply in this verse? (verse reference: “16.2 Harmlessness, truth, absence of anger, renunciation, peacefulness, absence of crookedness, compassion towards beings, non-covetousness,…” — BG16.2)",
       "options": [
         "Quietude or composure of mind is significant as it denotes a state of inner peace and stability, essential for spiritual growth and maintaining harmony in life.",
         "This implies that one should perform actions without attachment to the results, recognizing that they are not the ultimate doer, thus fostering humility and reducing ego.",
@@ -14243,7 +14243,7 @@
       "prerequisite_concept": "three_gunas",
       "prerequisite_verse": "BG14.5",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "What is the significance of 'quietude or composure of mind' in this verse?",
+      "prompt": "What is the significance of 'quietude or composure of mind' in this verse? (verse reference: “16.2 Harmlessness, truth, absence of anger, renunciation, peacefulness, absence of crookedness, compassion towards beings, non-covetousness,…” — BG16.2)",
       "options": [
         "Quietude or composure of mind is significant as it denotes a state of inner peace and stability, essential for spiritual growth and maintaining harmony in life.",
         "This implies that one should perform actions without attachment to the results, recognizing that they are not the ultimate doer, thus fostering humility and reducing ego.",
@@ -14297,7 +14297,7 @@
       "prerequisite_concept": "three_gunas",
       "prerequisite_verse": "BG14.5",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does अहिंसा (ahiṁsā) mean?",
+      "prompt": "In this verse, what does अहिंसा (ahiṁsā) mean? (verse reference: “16.2 Harmlessness, truth, absence of anger, renunciation, peacefulness, absence of crookedness, compassion towards beings, non-covetousness,…” — BG16.2)",
       "options": [
         "on observing",
         "harmlessness",
@@ -14432,7 +14432,7 @@
       "prerequisite_concept": "three_gunas",
       "prerequisite_verse": "BG14.5",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does त्यजेत् (tyajet) mean?",
+      "prompt": "In this verse, what does त्यजेत् (tyajet) mean? (verse reference: “16.21 Triple is the gate of this hell, destructive of the self lust, anger and greed; therefore one should abandon these three.” — BG16.21)",
       "options": [
         "O scorcher of the foes.No commentary",
         "(one) should abandon.Commentary Lust",
@@ -14567,7 +14567,7 @@
       "prerequisite_concept": "ethical_qualities",
       "prerequisite_verse": "BG16.1",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does सत्त्वानुरूपा (sattvānurūpā) mean?",
+      "prompt": "In this verse, what does सत्त्वानुरूपा (sattvānurūpā) mean? (verse reference: “17.3 The faith of each is in accordance with his nature, O Arjuna.” — BG17.3)",
       "options": [
         "son of Drupad, Dhrishtadyumna",
         "in accordance with his nature",
@@ -14702,7 +14702,7 @@
       "prerequisite_concept": "ethical_qualities",
       "prerequisite_verse": "BG16.1",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does ब्रह्मचर्यम् (brahmacaryam) mean?",
+      "prompt": "In this verse, what does ब्रह्मचर्यम् (brahmacaryam) mean? (verse reference: “17.14 Worship of the gods, the twice-born, the teachers and the wise, purity, straightforwardness, celibacy and non-injury are called the…” — BG17.14)",
       "options": [
         "Yuyudhan",
         "disciple",
@@ -14837,7 +14837,7 @@
       "prerequisite_concept": "ethical_qualities",
       "prerequisite_verse": "BG16.1",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does दातव्यम् (dātavyam) mean?",
+      "prompt": "In this verse, what does दातव्यम् (dātavyam) mean? (verse reference: “17.20 That gift which is given to one who does nothing in return, knowing it to be a duty to give in a fit place and time to a worthy person, that…” — BG17.20)",
       "options": [
         "the sons of Pandu",
         "ought to be given",
@@ -14972,7 +14972,7 @@
       "prerequisite_concept": "ethical_qualities",
       "prerequisite_verse": "BG16.1",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does त्रिविधः (trividhaḥ) mean?",
+      "prompt": "In this verse, what does त्रिविधः (trividhaḥ) mean? (verse reference: “17.23 \"Om Tat Sat\": This has been declared to be the triple designation of Brahman.” — BG17.23)",
       "options": [
         "threefold",
         "Uttamauja",
@@ -15107,7 +15107,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does न (na) mean?",
+      "prompt": "In this verse, what does न (na) mean? (verse reference: “5.10 He who does actions, offering them to Brahman, and abandoning attachment, is not tainted by sin, just as a lotus-leaf is not tainted by water.” — BG18.45)",
       "options": [
         "but",
         "all",
@@ -15134,7 +15134,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "What does 'worshipping Him through his own natural duties' imply in this verse?",
+      "prompt": "What does 'worshipping Him through his own natural duties' imply in this verse? (verse reference: “18.46 He from Whom all the beings have evolved and by Whom all this is pervaded worshipping Him with his own duty, man attains perfection.” — BG18.46)",
       "options": [
         "It highlights the idea that all actions and duties are inherently connected to the divine, and by recognizing this connection, individuals can find meaning and purpose in their lives.",
         "By performing these duties with devotion and seeing them as service to the divine, one can achieve spiritual fulfillment and the highest state of perfection.",
@@ -15161,7 +15161,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "Why is it significant that the universe is described as pervaded by the Supreme Being in this verse?",
+      "prompt": "Why is it significant that the universe is described as pervaded by the Supreme Being in this verse? (verse reference: “18.46 He from Whom all the beings have evolved and by Whom all this is pervaded worshipping Him with his own duty, man attains perfection.” — BG18.46)",
       "options": [
         "The description of the universe as pervaded by the Supreme Being underscores the omnipresence and omnipotence of the divine.",
         "The entity referred to in the verse is the Supreme Being or God, who is the source from whom all creation has emerged and who pervades the entire universe.",
@@ -15215,7 +15215,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "JDhruv14/Bhagavad-Gita-QA candidate; verify before use",
-      "prompt": "How does performing one's natural duties relate to attaining perfection according to this verse?",
+      "prompt": "How does performing one's natural duties relate to attaining perfection according to this verse? (verse reference: “18.46 He from Whom all the beings have evolved and by Whom all this is pervaded worshipping Him with his own duty, man attains perfection.” — BG18.46)",
       "options": [
         "The description of the universe as pervaded by the Supreme Being underscores the omnipresence and omnipotence of the divine.",
         "The path described for attaining the highest perfection involves worshipping the Supreme Being through one's natural duties.",
@@ -15242,7 +15242,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does स्वकर्मणा (svakarmaṇā) mean?",
+      "prompt": "In this verse, what does स्वकर्मणा (svakarmaṇā) mean? (verse reference: “18.46 He from Whom all the beings have evolved and by Whom all this is pervaded worshipping Him with his own duty, man attains perfection.” — BG18.46)",
       "options": [
         "desiring to fight",
         "the sons of Pandu",
@@ -15377,7 +15377,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does स्वनुष्ठितात् (svanuṣṭhitāt) mean?",
+      "prompt": "In this verse, what does स्वनुष्ठितात् (svanuṣṭhitāt) mean? (verse reference: “18.47 Better is one's own duty (though) destitute of merits, than the duty of another well performed.” — BG18.47)",
       "options": [
         "by Grandsire Bheeshma",
         "drums and kettledrums",
@@ -15512,7 +15512,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रसन्नात्मा (prasannātmā) mean?",
+      "prompt": "In this verse, what does प्रसन्नात्मा (prasannātmā) mean? (verse reference: “18.54 Becoming Brahman, serene in the Self, he neither grieves nor desires, the same to all beings, he obtains supreme devotion to Me.” — BG18.54)",
       "options": [
         "on observing",
         "(he) grieves",
@@ -15647,7 +15647,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does तत्त्वतः (tattvataḥ) mean?",
+      "prompt": "In this verse, what does तत्त्वतः (tattvataḥ) mean? (verse reference: “18.55 By devotion he knows Me in truth, what and who I am; then having known Me in truth, he forthwith enters into the Supreme.” — BG18.55)",
       "options": [
         "disciple",
         "in truth",
@@ -15782,7 +15782,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does सर्वकर्माणि (sarvakarmāṇi) mean?",
+      "prompt": "In this verse, what does सर्वकर्माणि (sarvakarmāṇi) mean? (verse reference: “18.57 Mentally renouncing all actions in Me, having Me as the highest goal, resorting to the Yoga of discrimination do thou ever fix thy mind on Me.” — BG18.57)",
       "options": [
         "Sanjay said",
         "intelligent",
@@ -15917,7 +15917,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does यन्त्रारूढानि (yantrārūḍhāni) mean?",
+      "prompt": "In this verse, what does यन्त्रारूढानि (yantrārūḍhāni) mean? (verse reference: “18.61 The Lord dwells in the hearts of all beings, O Arjuna, causing all beings, by His illusive power, to revolve as if mounted on a machine.” — BG18.61)",
       "options": [
         "mounted on a machine",
         "victorious in battle",
@@ -16052,7 +16052,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does ज्ञानम् (jñānam) mean?",
+      "prompt": "In this verse, what does ज्ञानम् (jñānam) mean? (verse reference: “18.63 Thus has wisdom, more secret than secrecy itself, been declared unto thee by Me; having reflected over it fully, then act as thou wishest.” — BG18.63)",
       "options": [
         "behold",
         "mighty",
@@ -16187,7 +16187,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does प्रतिजाने (pratijāne) mean?",
+      "prompt": "In this verse, what does प्रतिजाने (pratijāne) mean? (verse reference: “18.65 Fix thy mind on Me, by devoted to Me, sacrifice to Me, bow down to Me.” — BG18.65)",
       "options": [
         "intelligent",
         "did they do",
@@ -16322,7 +16322,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does मोक्षयिष्यामि (mokṣayiṣyāmi) mean?",
+      "prompt": "In this verse, what does मोक्षयिष्यामि (mokṣayiṣyāmi) mean? (verse reference: “18.66 Abandoning all duties, take refuge in Me alone: I will liberate thee from all sins; grieve not.” — BG18.66)",
       "options": [
         "will liberate",
         "King of Kashi",
@@ -16457,7 +16457,7 @@
       "prerequisite_concept": "karma_yoga",
       "prerequisite_verse": "BG2.47",
       "source": "Local verse-word gloss; verify against the verse",
-      "prompt": "In this verse, what does योगेश्वरः (yogeśvaraḥ) mean?",
+      "prompt": "In this verse, what does योगेश्वरः (yogeśvaraḥ) mean? (verse reference: “18.78 Wherever is Krishna, the Lord of Yoga; wherever is Arjuna, the wielder of the bow; there are prosperity, victory, happiness and firm policy;…” — BG18.78)",
       "options": [
         "the Pandava army",
         "the Lord of Yoga",

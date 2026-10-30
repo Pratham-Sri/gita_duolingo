@@ -96,6 +96,23 @@ def normalize_display(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
+VAGUE_VERSE_REFERENCE = re.compile(r"\b(?:this\s+(?:shloka|verse)|the\s+shloka)\b", re.I)
+EXPLICIT_VERSE_REFERENCE = re.compile(r"\bBG\s*\d+\.\d+\b|\bChapter\s+\d+\s*,?\s*Verse\s+\d+", re.I)
+
+
+def clarify_verse_reference(prompt, verse_key, reference_text):
+    prompt = re.sub(r"\s+", " ", (prompt or "")).strip()
+    if VAGUE_VERSE_REFERENCE.search(prompt) and not EXPLICIT_VERSE_REFERENCE.search(prompt):
+        excerpt = normalize_display(reference_text)
+        excerpt = re.split(r"(?<=[.!?])\s+", excerpt)[0]
+        if len(excerpt) > 150:
+            excerpt = excerpt[:147].rsplit(" ", 1)[0] + "…"
+        if excerpt:
+            return f"{prompt} (verse reference: “{excerpt}” — {verse_key})"
+        return f"{prompt} (verse {verse_key})"
+    return prompt
+
+
 def short_answer(text, limit=35):
     text = re.sub(r"\s+", " ", text or "").strip()
     sentences = re.split(r"(?<=[.!?])\s+", text)
@@ -259,6 +276,11 @@ def main():
     conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
     align_legacy_schema(conn)
+    for row in conn.execute("""SELECT q.id,q.verse_key,q.prompt,v.translation_en
+                                FROM questions q JOIN verses v ON v.id=q.verse_id"""):
+        clarified = clarify_verse_reference(row["prompt"], row["verse_key"], row["translation_en"])
+        if clarified != row["prompt"]:
+            conn.execute("UPDATE questions SET prompt=? WHERE id=?", (clarified, row["id"]))
     conn.commit()
     verses = {r["verse_key"]: dict(r) for r in conn.execute("SELECT * FROM verses")}
     words_by_key = defaultdict(list)
@@ -317,7 +339,7 @@ def main():
                 "difficulty": difficulty_for(kind, prompt, answer), "difficulty_status": "provisional",
                 "concept": concept, "prerequisite_concept": prereq_concept,
                 "prerequisite_verse": prereq,
-                "source": source, "prompt": prompt, "options": options,
+                "source": source, "prompt": clarify_verse_reference(prompt, key, verse["translation_en"]), "options": options,
                 "correct_answer": answer, "explanation": explanation,
                 "sanskrit": verse_text, "transliteration": transliteration,
                 "base_translation": "Purohit Swami (1935), reference only; not the learner-facing paraphrase",
