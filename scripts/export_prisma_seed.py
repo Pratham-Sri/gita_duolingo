@@ -1,6 +1,7 @@
 """Export source data using the app's Chapter -> Module -> Lesson -> Verse model."""
 
 import hashlib
+import csv
 import json
 import os
 import re
@@ -17,6 +18,7 @@ from gitalingo.transliteration import normalize_sanskrit_word
 
 DB_PATH = ROOT / "database" / "gita_duolingo.db"
 OUT_PATH = ROOT / "exports" / "prisma_seed_content.json"
+PRACTICAL_PATH = ROOT / "data" / "practical_meanings.json"
 QUESTION_TABLE = os.environ.get("GITALINGO_QUESTION_TABLE", "questions")
 if QUESTION_TABLE not in {"questions", "curated_questions_v2"}:
     raise ValueError("GITALINGO_QUESTION_TABLE must be 'questions' or 'curated_questions_v2'")
@@ -78,6 +80,12 @@ def group_lesson_chunks(chunks, max_lessons=8):
     return [chunks[start:start + max_lessons] for start in range(0, len(chunks), max_lessons)]
 
 
+def practical_meanings():
+    """Build application-first copy from verse-aligned everyday-life Q&A candidates."""
+    data = json.loads(PRACTICAL_PATH.read_text(encoding="utf-8")) if PRACTICAL_PATH.exists() else {}
+    return data
+
+
 def main():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -90,6 +98,7 @@ def main():
         f"SELECT * FROM {QUESTION_TABLE} ORDER BY chapter_number, verse_number, lesson_level, question_order",
     )
     curriculum = json.loads((ROOT / "data" / "curriculum.json").read_text(encoding="utf-8"))
+    practical_by_key = practical_meanings()
     conn.close()
 
     scripture_id = oid("scripture", "bhagavad-gita")
@@ -289,7 +298,7 @@ def main():
         })
         for language, kind, content, source in (
             ("en", "CONTEMPORARY", verse.get("translation_en"), verse.get("translation_source")),
-            ("en", "PRACTICAL", verse.get("meaning_en"), "GitaLingo contextual learning meaning"),
+            ("en", "PRACTICAL", practical_by_key.get(key, {}).get("practical_meaning"), "GitaLingo modern-life application; draft for editorial review"),
             ("hi", "CONTEMPORARY", verse.get("translation_hi"), None),
         ):
             if content:
